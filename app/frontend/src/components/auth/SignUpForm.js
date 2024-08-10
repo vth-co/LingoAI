@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login, signUp } from "../../store/session";
+import { login, signUp } from '../../store/actions/sessionAction';
 import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router-dom";
 import {
@@ -40,7 +40,7 @@ const SignUpForm = ({ locale, setLocale }) => {
     const credential = "Demo-lition@gmail.com";
     const password = "password";
 
-    await dispatch(login(credential, password ));
+    await dispatch(login(credential, password));
 
   };
 
@@ -108,17 +108,17 @@ const SignUpForm = ({ locale, setLocale }) => {
           mb="10px"
         >
           <Typography
-          variant="h1"
-          m={2}
-          sx={{
-            // color: "primary.main",
-            fontSize: "2rem",
-            textAlign: "center",
-            fontWeight: "bold",
-          }}
-        >
-          Create your Account
-        </Typography>
+            variant="h1"
+            m={2}
+            sx={{
+              // color: "primary.main",
+              fontSize: "2rem",
+              textAlign: "center",
+              fontWeight: "bold",
+            }}
+          >
+            Create your Account
+          </Typography>
         </Box>
 
         <Box display="flex" flexDirection="row" p={1}>
@@ -273,8 +273,8 @@ const SignUpForm = ({ locale, setLocale }) => {
             borderRadius: 100,
             mt: 1,
           }}>
-          Demo
-        </Button>
+            Demo
+          </Button>
         </Box>
       </Container>
     </form>

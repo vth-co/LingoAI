@@ -36,7 +36,7 @@ function ConceptPage() {
         {concepts.map(concept => (
           <Grid item key={concept.id}>
             <Button>
-              <Link href={`${concept.id}/topics`}>
+              <Link href={`/concepts/${concept.id}`}>
                 <Box display='flex' flexDirection='column'>
                   <p>{concept.concept_name}</p> <p>{concept.level}</p>{' '}
                   <LinearProgress

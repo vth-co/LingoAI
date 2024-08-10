@@ -113,68 +113,67 @@ const NavBar = () => {
           onClose={handleClose}
         >
 
-          {user ? (
-            <Box>
-              <NoHoverMenuItem>
+          {/* {user ? ( */}
+          <Box>
+            <NoHoverMenuItem>
+              <Typography
+                sx={{ fontWeight: "bold" }}
+              >
+                Hello, {user.email}!
+              </Typography>
+            </NoHoverMenuItem>
+            <MenuItem>
+              <Link href='/'
+                // exact={true}activeClassName='active'
+                underline="none">
                 <Typography
-                  sx={{ fontWeight: "bold" }}
+                  color="primary"
                 >
-                  Hello, {user.email}!
+                  Profile
                 </Typography>
-              </NoHoverMenuItem>
-              <MenuItem>
-                <Link href='/'
-                  // exact={true}activeClassName='active'
-                  underline="none">
-                  <Typography
-                    color="primary"
-                  >
-                    Profile
-                  </Typography>
-                </Link>
-              </MenuItem>
-              <MenuItem>
-                <Link href='/concepts'
-                  // exact={true}activeClassName='active'
-                  underline="none">
-                  <Typography
-                    color="primary"
-                  >
-                    Concepts
-                  </Typography>
-                </Link>
-              </MenuItem>
-              <NoHoverMenuItem>
-                <LogoutButton />
-              </NoHoverMenuItem>
-            </Box>
-          ) : (
-            <Box>
-              <MenuItem>
-                <Link href='/login'
-                  // exact={true}activeClassName='active'
-                  underline="none">
-                  <Typography
-                    color="primary"
-                  >
-                    Log In
-                  </Typography>
-                </Link>
-              </MenuItem>
-              <MenuItem>
-                <Link href='/sign-up'
-                  // exact={true}activeClassName='active'
-                  underline="none">
-                  <Typography
-                    color="primary"
-                  >
-                    Sign Up
-                  </Typography>
-                </Link>
-              </MenuItem>
-            </Box>
-          )
-          }
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link href='/concepts'
+                // exact={true}activeClassName='active'
+                underline="none">
+                <Typography
+                  color="primary"
+                >
+                  Concepts
+                </Typography>
+              </Link>
+            </MenuItem>
+            <NoHoverMenuItem>
+              <LogoutButton />
+            </NoHoverMenuItem>
+          </Box>
+          {/* ) : ( */}
+          <Box>
+            <MenuItem>
+              <Link href='/login'
+                // exact={true}activeClassName='active'
+                underline="none">
+                <Typography
+                  color="primary"
+                >
+                  Log In
+                </Typography>
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link href='/sign-up'
+                // exact={true}activeClassName='active'
+                underline="none">
+                <Typography
+                  color="primary"
+                >
+                  Sign Up
+                </Typography>
+              </Link>
+            </MenuItem>
+          </Box>
+          {/* )} */}
         </StyledMenu>
       </Container>
     </nav>

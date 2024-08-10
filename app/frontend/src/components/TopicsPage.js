@@ -9,6 +9,7 @@ function TopicsPage() {
     const conceptId = useParams()
     const concept = useSelector(state => state.concepts[conceptId.conceptId])
     const topics = useSelector(state => state.concepts.topics)
+    const state = useSelector(state => console.log("SS", state))
     console.log("TOPICS", topics);
 
     useEffect(() => {
