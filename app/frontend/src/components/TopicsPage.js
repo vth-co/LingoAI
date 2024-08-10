@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, LinearProgress, Link } from "@mui/material";
+import { Box, Button, Container, Grid, LinearProgress, Link, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
@@ -9,8 +9,7 @@ function TopicsPage() {
     const conceptId = useParams()
     const concept = useSelector(state => state.concepts[conceptId.conceptId])
     const topics = useSelector(state => state.concepts.topics)
-    const state = useSelector(state => console.log("SS", state))
-    console.log("TOPICS", topics);
+    console.log(topics.length)
 
     useEffect(() => {
         dispatch(fetchOneConcept(conceptId.conceptId))
@@ -37,24 +36,28 @@ function TopicsPage() {
                 </Box>
             </Box>
 
-            <Grid container spacing={10} justifyContent='center' py={5}>
-                {topics.map(topic => (
-                    <Grid item key={topic.id}>
-                        <Button>
-                            <Link href={`${topic.id}/topics`}>
-                                <Box display='flex' flexDirection='column'>
-                                    <p>{topic.topic_name}</p> <p>EXPLANATION</p>{' '}
-                                    <LinearProgress
-                                        variant='determinate'
-                                        value={50}
-                                        sx={{ height: 15 }}
-                                    />
-                                </Box>
-                            </Link>
-                        </Button>
-                    </Grid>
-                ))}
-            </Grid>
+            {topics.length > 0 ? (
+                <Grid container spacing={10} justifyContent='center' py={5}>
+                    {topics.map(topic => (
+                        <Grid item key={topic.id}>
+                            <Button>
+                                <Link href={`${topic.id}/topics`}>
+                                    <Box display='flex' flexDirection='column'>
+                                        <p>{topic.topic_name}</p> <p>EXPLANATION</p>{' '}
+                                        <LinearProgress
+                                            variant='determinate'
+                                            value={50}
+                                            sx={{ height: 15 }}
+                                        />
+                                    </Box>
+                                </Link>
+                            </Button>
+                        </Grid>
+                    ))}
+                </Grid>
+            ) : (
+                <Typography textAlign="center" paddingTop="40px">No topics found.</Typography>
+            )}
         </Container>
     );
 }

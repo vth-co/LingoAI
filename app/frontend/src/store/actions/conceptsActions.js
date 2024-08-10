@@ -52,6 +52,7 @@ export const fetchOneConcept = (conceptId) => async (dispatch) => {
 };
 
 export const fetchTopicsbyConcept = (conceptId) => async (dispatch) => {
+    console.log("CONCEPTIDHERE", conceptId);
     try {
         const response = await fetch(`/api/concepts/${conceptId}/topics`);
         console.log("CONCEPTID", response);
