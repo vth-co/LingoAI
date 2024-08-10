@@ -112,46 +112,6 @@ const addCardsToDeckInDB = async (deckId, userId, aiGeneratedRequestId) => {
     }
 };
 
-// const addCardsToDeckInDB = async (deckId, userId) => {
-//     try {
-//         const deck = [];
-//         const userRef = doc(db, 'users', userId);
-//         const deckRef = doc(db, 'decks', deckId);
-//         const deckDoc = await getDoc(deckRef);
-//         if (!deckDoc.exists()) {
-//             throw new Error('Deck not found');
-//         }
-
-//         const topicRef = doc(db, 'topics', deckDoc.data().topic_id);
-//         console.log('topicRef: ', topicRef);
-//         const topicDoc = await getDoc(topicRef);
-//         if (!topicDoc.exists()) {
-//             throw new Error('Topic not found');
-//         }
-//         const level = deckDoc.data().level;
-//         const topic_name = topicDoc.data().topic_name;
-//         const aiGeneratedRequestsRef = collection(userRef, "ai_generated_requests");
-//         //check ai_generated_id, then check topic/level
-//         console.log('topic_name: ', topic_name, 'level: ', level)
-//         const snapshot = await getDocs(aiGeneratedRequestsRef);
-//         console.log('snapshot: ', snapshot.docs);
-//         snapshot.docs.map(doc => {
-//             console.log('doc: ', doc.data());
-//             if (doc.data().questionData.topic === topic_name && doc.data().questionData.level === level) {
-//                 console.log('inside if statement: ', doc.data());
-//                 deck.push(doc.data());
-//             }
-//         })
-//         console.log('deck: ', deck);
-//         //we look for the deck in the db and add the deck
-
-//         await setDoc(deckRef, { userId: userId, cards: deck });
-//         return deck;
-//     } catch (error) {
-//         throw new Error('Error adding card to deck: ' + error.message);
-//     }
-// }
-
 //service to remove a card from a deck
 const removeCardFromDeckInDB = async () => {
     return
