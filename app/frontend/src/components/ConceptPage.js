@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchConcepts } from '../store/actions/conceptsActions'
-import { Box, Button, Container, Grid, LinearProgress } from '@mui/material'
+import { Box, Button, Container, Grid, LinearProgress, Link } from '@mui/material'
 
 
 function ConceptPage() {
@@ -36,14 +36,16 @@ function ConceptPage() {
         {concepts.map(concept => (
           <Grid item key={concept.id}>
             <Button>
-              <Box display='flex' flexDirection='column'>
-                <p>{concept.concept_name}</p> <p>{concept.level}</p>{' '}
-                <LinearProgress
-                  variant='determinate'
-                  value={50}
-                  sx={{ height: 15 }}
-                />
-              </Box>
+              <Link href={`${concept.id}/topics`}>
+                <Box display='flex' flexDirection='column'>
+                  <p>{concept.concept_name}</p> <p>{concept.level}</p>{' '}
+                  <LinearProgress
+                    variant='determinate'
+                    value={50}
+                    sx={{ height: 15 }}
+                  />
+                </Box>
+              </Link>
             </Button>
           </Grid>
         ))}
