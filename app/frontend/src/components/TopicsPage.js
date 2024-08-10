@@ -1,7 +1,19 @@
 import { Box, Button, Container, Grid, LinearProgress } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { fetchTopics } from "../store/actions/topicsActions";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from 'react-router-dom';
 
 function TopicsPage() {
+    const dispatch = useDispatch();
+    const topics = Object.values(useSelector(state => state.topics))
+    const conceptId = useParams()
+    console.log("TOPICS", conceptId);
+
+    useEffect(() => {
+        dispatch(fetchTopics())
+    }, [dispatch])
+
     return (
         <Container>
             <Box>

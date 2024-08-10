@@ -52,7 +52,7 @@ function App({ locale, setLocale }) {
         <Route path='/sign-up'>
           {currentUser ? <Redirect to='/' /> : <SignUpForm setLocale={setLocale} locale={locale} />}
         </Route>
-        <Route path='/topics'>
+        <Route path='/:conceptId/topics'>
           {currentUser ? <TopicsPage /> : <WelcomePage setLocale={setLocale} />}
         </Route>
         <Route path='/concepts'>
