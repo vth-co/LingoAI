@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchUsers } from '../store/actions/userActions';
+import { fetchUsers } from '../store/actions/usersActions';
 import { Box, Button, Container, Grid, LinearProgress, Link, Typography } from "@mui/material";
 
 

@@ -53,7 +53,7 @@ const NoHoverMenuItem = styled(MenuItem)(({ theme }) => ({
 }));
 
 const NavBar = () => {
-  const user = useSelector((state) => state.user);
+  const user = useSelector((state) => state.users);
 
   console.log('state from useSelector:', user); // Log the user object
 

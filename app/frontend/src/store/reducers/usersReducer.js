@@ -1,4 +1,4 @@
-import { LOAD_USERS } from "../actions/userActions";
+import { LOAD_USERS } from "../actions/usersActions";
 
 const initialState = {
 };

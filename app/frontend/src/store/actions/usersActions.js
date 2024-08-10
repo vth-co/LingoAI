@@ -8,7 +8,7 @@ export const fetchUsersFailure = (error) => ({ type: 'FETCH_USERS_FAILURE', erro
 
 export const LOAD_USERS = () => "users/LOAD_USERS";
 
-const load = (users) => (console.log("USER ACTION", users), {
+const load = (users) => ({
     type: LOAD_USERS,
     users,
 });
