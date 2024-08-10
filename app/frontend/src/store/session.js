@@ -43,47 +43,49 @@ export const login = (email, password) => async dispatch => {
   }
 }
 
-
-export const signUp = async (email, password, username, firstName, lastName, nativeLanguage) => {
-  console.log('Signing up with:', {
-  email,
-  password,
-  username,
-  firstName,
-  lastName,
-  nativeLanguage
-})
-
-if (!email) {
-  console.error('Email is undefined or empty.')
-  return // Prevent further execution if email is empty
-}
-
-
+export const signUp = (email, password, username, first_name, last_name, locale, level) => async (dispatch) => {
   try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      password
-    )
-    const user = userCredential.user
+    const response = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        username,
+        first_name,
+        last_name,
+        native_language: locale,
+        level,
+      }),
+    });
 
-    // Create or update the Firestore document
-    await setDoc(doc(db, 'users', user.uid), {
-      email,
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Error signing up:', errorData.message);
+      throw new Error(errorData.message);
+    }
+
+    const data = await response.json();
+    console.log('User signed up successfully:', data.loginCredential.user.providerData[0]);
+
+    // Set the user in Redux state
+    dispatch(setUser({
+      uid: data.uid,
+      email: data.loginCredential.user.email,
       username,
-      first_name: firstName || '',
-      last_name: lastName || '',
-      native_language: nativeLanguage || 'en' // Assume default or get from another input
-    })
-
-    console.log('User signed up and added to Firestore')
+      first_name,
+      last_name,
+      native_language: locale,
+      level
+    }));
+    return data;
   } catch (error) {
-    console.error('Error signing up:', error)
-    throw error
+    console.error('Error during sign up:', error);
+    throw error;
   }
-}
-
+};
 
 
 export const logout = () => async dispatch => {
