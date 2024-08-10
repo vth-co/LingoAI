@@ -7,7 +7,7 @@ import { Box, Button, Container, Grid, LinearProgress } from '@mui/material'
 function ConceptPage() {
   const dispatch = useDispatch()
   const concepts = Object.values(useSelector(state => state.concepts))
-  console.log("CONCEPT SELETOR:", concepts);
+  // console.log("CONCEPT SELETOR:", concepts);
   useEffect(() => {
     dispatch(fetchConcepts())
   }, [dispatch])
