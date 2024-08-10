@@ -1,4 +1,4 @@
-import { LOAD_TOPICS } from "../actions/topicsActions";
+import { LOAD_TOPICS, LOAD_ONE_TOPIC } from "../actions/topicsActions";
 
 const initialState = {
 };
@@ -13,6 +13,9 @@ const topicsReducer = (state = initialState, action) => {
             });
 
             return newState;
+        }
+        case LOAD_ONE_TOPIC: {
+            return { ...state, [action.topic.id]: action.topic }
         }
         default:
             return state;

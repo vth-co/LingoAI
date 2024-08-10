@@ -1,4 +1,4 @@
-import { LOAD_CONCEPTS } from "../actions/conceptsActions";
+import { LOAD_CONCEPTS, LOAD_ONE_CONCEPT } from "../actions/conceptsActions";
 
 const initialState = {
 };
@@ -13,6 +13,10 @@ const conceptsReducer = (state = initialState, action) => {
             });
 
             return newState;
+        }
+        case LOAD_ONE_CONCEPT: {
+            console.log("REDUCER", action)
+            return { ...state, [action.concept.id]: action.concept }
         }
         default:
             return state;

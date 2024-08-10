@@ -3,22 +3,25 @@ import React, { useEffect } from "react";
 import { fetchTopics } from "../store/actions/topicsActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
+import { fetchOneConcept } from "../store/actions/conceptsActions";
 
 function TopicsPage() {
     const dispatch = useDispatch();
-    const topics = Object.values(useSelector(state => state.topics))
     const conceptId = useParams()
-    console.log("TOPICS", conceptId);
+    const topics = Object.values(useSelector(state => state.topics))
+    const concept = useSelector(state => state.concepts[conceptId.conceptId])
+    console.log("TOPICS", concept);
 
     useEffect(() => {
-        dispatch(fetchTopics())
-    }, [dispatch])
+        // dispatch(fetchTopics())
+        dispatch(fetchOneConcept(conceptId.conceptId))
+    }, [dispatch, conceptId])
 
     return (
         <Container>
             <Box>
                 <Box display="flex" flexDirection="column" alignItems="center">
-                    <h1>Select a Basic Vocabulary Topic</h1>
+                    <h1>Select a {concept?.concept_name} Topic</h1>
                     <p>
                         Select any topic to begin. In order to pass a topic, you must score at least 80% three times.
                     </p>
