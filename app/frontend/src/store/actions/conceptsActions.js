@@ -1,5 +1,6 @@
 export const LOAD_CONCEPTS = () => "concepts/LOAD_CONCEPTS";
 export const LOAD_ONE_CONCEPT = () => "concepts/LOAD_ONE_CONCEPT";
+export const LOAD_TOPICS_BY_CONCEPT = () => "concepts/LOAD_TOPICS_BY_CONCEPT";
 
 const load = (concepts) => ({
     type: LOAD_CONCEPTS,
@@ -10,6 +11,11 @@ const loadOne = (concept) => ({
     type: LOAD_ONE_CONCEPT,
     concept,
 });
+
+const loadConceptTopics = (topics) => ({
+    type: LOAD_TOPICS_BY_CONCEPT,
+    topics
+})
 
 export const fetchConcepts = () => async (dispatch) => {
     try {
@@ -30,15 +36,29 @@ export const fetchConcepts = () => async (dispatch) => {
 
 export const fetchOneConcept = (conceptId) => async (dispatch) => {
     try {
-        console.log("ID", conceptId)
         const response = await fetch(`/api/concepts/${conceptId}`);
-        console.log("RES", response)
 
         if (response.ok) {
             const concept = await response.json();
             dispatch(loadOne(concept));
-            console.log("CONCEPT", concept);
             return concept
+        } else {
+            console.error("Response failed:", response.statusText);
+        }
+    } catch (error) {
+        console.error('Error fetching concept:', error);
+        // Dispatch error action or handle error appropriately
+    }
+};
+
+export const fetchTopicsbyConcept = (conceptId) => async (dispatch) => {
+    try {
+        const response = await fetch(`/api/concepts/${conceptId}/topics`);
+        console.log("CONCEPTID", response);
+        if (response.ok) {
+            const topics = await response.json();
+            dispatch(loadConceptTopics(topics));
+            return topics
         } else {
             console.error("Response failed:", response.statusText);
         }

@@ -16,19 +16,29 @@ export const fetchTopics = () => async (dispatch) => {
 
     if (response.ok) {
         const topics = await response.json();
-        return dispatch(load(topics));
+        dispatch(load(topics));
+        return topics
     } else {
         console.log("Internal server error");
     }
 };
 
 export const fetchOneTopic = (topicId) => async (dispatch) => {
-    const response = await fetch(`/api/topics/${topicId}`);
+    try {
+        console.log("ID", topicId)
+        const response = await fetch(`/api/topics/${topicId}`);
+        console.log("RES", response)
 
-    if (response.ok) {
-        const topic = await response.json();
-        return dispatch(loadOne(topic));
-    } else {
-        console.log("Internal server error");
+        if (response.ok) {
+            const topic = await response.json();
+            dispatch(loadOne(topic));
+            console.log("TOPIC", topic);
+            return topic
+        } else {
+            console.error("Response failed:", response.statusText);
+        }
+    } catch (error) {
+        console.error('Error fetching topic:', error);
+        // Dispatch error action or handle error appropriately
     }
 };

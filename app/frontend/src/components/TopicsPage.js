@@ -1,20 +1,19 @@
-import { Box, Button, Container, Grid, LinearProgress } from "@mui/material";
+import { Box, Button, Container, Grid, LinearProgress, Link } from "@mui/material";
 import React, { useEffect } from "react";
-import { fetchTopics } from "../store/actions/topicsActions";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
-import { fetchOneConcept } from "../store/actions/conceptsActions";
+import { fetchTopicsbyConcept, fetchOneConcept } from "../store/actions/conceptsActions";
 
 function TopicsPage() {
     const dispatch = useDispatch();
     const conceptId = useParams()
-    const topics = Object.values(useSelector(state => state.topics))
     const concept = useSelector(state => state.concepts[conceptId.conceptId])
-    console.log("TOPICS", concept);
+    const topics = useSelector(state => state.concepts.topics)
+    console.log("TOPICS", topics);
 
     useEffect(() => {
-        // dispatch(fetchTopics())
         dispatch(fetchOneConcept(conceptId.conceptId))
+        dispatch(fetchTopicsbyConcept(conceptId.conceptId))
     }, [dispatch, conceptId])
 
     return (
@@ -37,88 +36,23 @@ function TopicsPage() {
                 </Box>
             </Box>
 
-            <Grid container spacing={10} justifyContent="center" py={5}>
-                <Grid item>
-                    <Button>
-                        <Box display="flex" flexDirection="column">
-                            <p>Common Nouns</p>
-                            <p>explanation</p>
-                            <LinearProgress
-                                variant="determinate"
-                                value={50}
-                                sx={{ height: 15 }}
-                            />
-                        </Box>
-                    </Button>
-                </Grid>
-
-                <Grid item>
-                    <Button>
-                        <Box display="flex" flexDirection="column">
-                            <p>Pronouns</p>
-                            <p>explanation</p>
-                            <LinearProgress
-                                variant="determinate"
-                                value={50}
-                                sx={{ height: 15 }}
-                            />
-                        </Box>
-                    </Button>
-                </Grid>
-                <Grid item>
-                    <Button>
-                        <Box display="flex" flexDirection="column">
-                            <p>Basic Verbs</p>
-                            <p>explanation</p>
-                            <LinearProgress
-                                variant="determinate"
-                                value={50}
-                                sx={{ height: 15 }}
-                            />
-                        </Box>
-                    </Button>
-                </Grid>
-            </Grid>
-            <Grid container spacing={10} justifyContent="center" py={5}>
-                <Grid item>
-                    <Button>
-                        <Box display="flex" flexDirection="column">
-                            <p>Adjectives</p>
-                            <p>explanation</p>
-                            <LinearProgress
-                                variant="determinate"
-                                value={50}
-                                sx={{ height: 15 }}
-                            />
-                        </Box>
-                    </Button>
-                </Grid>
-                <Grid item>
-                    <Button>
-                        <Box display="flex" flexDirection="column">
-                            <p>Numbers</p>
-                            <p>explanation</p>
-                            <LinearProgress
-                                variant="determinate"
-                                value={50}
-                                sx={{ height: 15 }}
-                            />
-                        </Box>
-                    </Button>
-                </Grid>
-                <Grid item>
-                    <Button>
-                        <Box display="flex" flexDirection="column">
-                            <p>Days and Months</p>
-                            <p>explanation</p>
-                            <LinearProgress
-                                variant="determinate"
-                                value={50}
-                                sx={{ height: 15 }}
-                            />
-                        </Box>
-                    </Button>
-                </Grid>
+            <Grid container spacing={10} justifyContent='center' py={5}>
+                {topics.map(topic => (
+                    <Grid item key={topic.id}>
+                        <Button>
+                            <Link href={`${topic.id}/topics`}>
+                                <Box display='flex' flexDirection='column'>
+                                    <p>{topic.topic_name}</p> <p>EXPLANATION</p>{' '}
+                                    <LinearProgress
+                                        variant='determinate'
+                                        value={50}
+                                        sx={{ height: 15 }}
+                                    />
+                                </Box>
+                            </Link>
+                        </Button>
+                    </Grid>
+                ))}
             </Grid>
         </Container>
     );
