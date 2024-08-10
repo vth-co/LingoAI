@@ -1,10 +1,17 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUsers } from '../store/actions/userActions';
 import { Box, Button, Container, Grid, LinearProgress, Link, Typography } from "@mui/material";
 
 
 function HomePage() {
-  const user = useSelector((state) => state.session.user);
+  const user = useSelector((state) => console.log(state));
+  console.log("USERHOME", user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch, user]);
 
   const data = [
     {
@@ -53,7 +60,7 @@ function HomePage() {
     <Container>
       <Box>
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-          <h1>Welcome, {user.email}.</h1>
+          {/* <h1>Welcome, {user.email}.</h1> */}
           <Link href='/concepts'
             // exact={true}activeClassName='active'
             underline="none">

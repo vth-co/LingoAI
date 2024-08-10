@@ -39,6 +39,7 @@ const firebaseConfig = {
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
+console.log("FIREBASE INITIALIZED", firebaseApp);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 

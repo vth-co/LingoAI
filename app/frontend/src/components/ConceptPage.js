@@ -4,17 +4,17 @@ import { fetchConcepts } from '../store/concepts'
 import { Box, Button, Container, Grid, LinearProgress } from '@mui/material'
 
 
-function ConceptPage () {
+function ConceptPage() {
   const dispatch = useDispatch()
-  const {
-    items: concepts,
-    loading,
-    error
-  } = useSelector(state => state.concepts)
+  // const {
+  //   items: concepts,
+  //   loading,
+  //   error
+  // } = useSelector(state => state.concepts)
 
-  useEffect(() => {
-    dispatch(fetchConcepts())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(fetchConcepts())
+  // }, [dispatch])
 
   return (
     <Container>
@@ -36,7 +36,7 @@ function ConceptPage () {
         </Box>
       </Box>
 
-      {loading && <p>Loading concepts...</p>}
+      {/* {loading && <p>Loading concepts...</p>}
       {error && <p>Error loading concepts: {error}</p>}
       {!loading && !error && (
         <Grid container spacing={10} justifyContent='center' py={5}>
@@ -55,7 +55,7 @@ function ConceptPage () {
             </Grid>
           ))}
         </Grid>
-      )}
+      )} */}
     </Container>
   )
 }

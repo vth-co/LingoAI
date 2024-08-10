@@ -53,8 +53,9 @@ const NoHoverMenuItem = styled(MenuItem)(({ theme }) => ({
 }));
 
 const NavBar = () => {
-  const user = useSelector((state) => state.session.user);
-  // console.log(user);
+  const user = useSelector((state) => state.user);
+
+  console.log('state from useSelector:', user); // Log the user object
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -74,8 +75,8 @@ const NavBar = () => {
         padding: '2vw',
       }}>
         <NavLink to='/' exact={true} activeClassName='active'>
-          <img src='../../logo.png' alt="Lingo.ai" 
-          style={{ width: '200px', height: 'auto' }}
+          <img src='../../logo.png' alt="Lingo.ai"
+            style={{ width: '200px', height: 'auto' }}
           />
         </NavLink>
         <Box
