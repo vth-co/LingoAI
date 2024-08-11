@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import MaterialIcon from "material-icons-react";
 import {
   Link,
@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import LogoutButton from "./auth/LogoutButton";
+import { fetchSingleUser } from "../store/actions/usersActions";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -61,7 +62,10 @@ const NoHoverMenuItem = styled(MenuItem)(({ theme }) => ({
 }));
 
 const NavBar = () => {
+  const dispatch = useDispatch();
+
   const user = useSelector((state) => state.session.user);
+  console.log('navbar', user)
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -71,6 +75,12 @@ const NavBar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  useEffect(() => {
+    if (user && user.uid) { // Only fetch if user is logged in
+      dispatch(fetchSingleUser(user.uid)); 
+    }
+  }, [dispatch, user]);
 
   return (
     <nav>

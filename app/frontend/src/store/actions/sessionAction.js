@@ -99,8 +99,6 @@ export const signUp =
         password
       );
       const userId = userCredential.user.uid;
-      console.log("userCredential: ", userCredential);
-      console.log("userId: ", userId);
 
       // Update user profile with additional data
       // await user.updateProfile({
@@ -116,7 +114,6 @@ export const signUp =
         native_language: locale,
         level,
       });
-      console.log("database", db);
 
       // Set the user in Redux state
       dispatch(

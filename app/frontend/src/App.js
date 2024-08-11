@@ -55,6 +55,9 @@ function App({ locale, setLocale }) {
         <Route path='/concepts/:conceptId'>
           {currentUser ? <TopicsPage /> : <WelcomePage setLocale={setLocale} />}
         </Route>
+        <Route path='/topics/:topicId'>
+          {currentUser ? <MainPage /> : <WelcomePage setLocale={setLocale} />}
+        </Route>
         <Route path='/concepts'>
           {currentUser ? <ConceptPage /> : <WelcomePage setLocale={setLocale} />}
         </Route>

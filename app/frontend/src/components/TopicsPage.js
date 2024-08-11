@@ -11,6 +11,7 @@ function TopicsPage() {
     const topics = useSelector(state => state.concepts.topics)
     console.log(concept)
 
+
     useEffect(() => {
         dispatch(fetchOneConcept(conceptId.conceptId))
         dispatch(fetchTopicsbyConcept(conceptId.conceptId))
@@ -41,7 +42,7 @@ function TopicsPage() {
                     {topics.map(topic => (
                         <Grid item key={topic.id}>
                             <Button>
-                                <Link href={`/concepts/${conceptId.conceptId}/${topic.id}/topics`}>
+                                <Link href={`/topics/${topic.id}`}>
                                     <Box display='flex' flexDirection='column'>
                                         <p>{topic.topic_name}</p> <p>EXPLANATION</p>{' '}
                                         <LinearProgress
