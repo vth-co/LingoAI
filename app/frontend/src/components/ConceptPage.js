@@ -24,6 +24,12 @@ function ConceptPage() {
   }, [dispatch]);
 
   const conceptsFilter = concepts.filter((concept) => concept.level === user.level);
+  conceptsFilter.sort((a, b) => {
+    if (!a.concept_name || !b.concept_name) {
+      return 0;
+    }
+    return b.concept_name.localeCompare(a.concept_name);
+  });
   console.log("user level", user.level)
   console.log("filter", conceptsFilter)
 
@@ -57,8 +63,8 @@ function ConceptPage() {
         {conceptsFilter.map(concept => (
           <Grid item key={concept.id}>
             <Button component={NavLink} to={`/concepts/${concept.id}`}>
-              <Box display='flex' flexDirection='column'>
-                <p>{concept.concept_name}</p> <p>{concept.level}</p>{' '}
+              <Box display='flex' flexDirection='column' width="200px">
+                <h3>{concept.concept_name}</h3> <p>{concept.level}</p>{' '}
                 <LinearProgress
                   variant='determinate'
                   value={50}

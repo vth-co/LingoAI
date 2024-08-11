@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { fetchTopicsbyConcept, fetchOneConcept } from "../store/actions/conceptsActions";
+import { NavLink } from "react-router-dom";
 
 function TopicsPage() {
     const dispatch = useDispatch();
@@ -41,17 +42,15 @@ function TopicsPage() {
                 <Grid container spacing={10} justifyContent='center' py={5}>
                     {topics.map(topic => (
                         <Grid item key={topic.id}>
-                            <Button>
-                                <Link href={`/topics/${topic.id}`}>
-                                    <Box display='flex' flexDirection='column'>
-                                        <p>{topic.topic_name}</p> <p>EXPLANATION</p>{' '}
-                                        <LinearProgress
-                                            variant='determinate'
-                                            value={50}
-                                            sx={{ height: 15 }}
-                                        />
-                                    </Box>
-                                </Link>
+                            <Button component={NavLink} to={`/topics/${topic.id}`}>
+                                <Box display='flex' flexDirection='column' width="200px">
+                                    <h3>{topic.topic_name}</h3> <p>EXPLANATION</p>{' '}
+                                    <LinearProgress
+                                        variant='determinate'
+                                        value={50}
+                                        sx={{ height: 15 }}
+                                    />
+                                </Box>
                             </Button>
                         </Grid>
                     ))}
