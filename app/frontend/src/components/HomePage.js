@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSingleUser, fetchUsers } from '../store/actions/usersActions';
-import { Box, Button, Container, Grid, LinearProgress, Link, Typography } from "@mui/material";
-import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
+import { Box, Button, Container, Grid, LinearProgress, Typography } from "@mui/material";
+import { NavLink } from 'react-router-dom';
 
 
 function HomePage() {
@@ -51,7 +51,7 @@ function HomePage() {
     },
     {
       left: 'Badges:',
-      right: <img src="/assets/badges/Beginner-badge.png"
+      right: <img src="/assets/badges/beginner-badge.png" alt='Beginner Badge'
         style={{
           width: "25%"
         }}

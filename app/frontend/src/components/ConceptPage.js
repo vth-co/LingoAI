@@ -1,16 +1,35 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { fetchConcepts } from '../store/actions/conceptsActions'
-import { Box, Button, Container, Grid, LinearProgress, Link } from '@mui/material'
+import { Box, Button, Container, Grid, LinearProgress } from '@mui/material'
+import { fetchSingleUser } from '../store/actions/usersActions'
+import { NavLink } from "react-router-dom";
 
 
 function ConceptPage() {
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.session.user)
   const concepts = Object.values(useSelector(state => state.concepts))
+  const [loading, setLoading] = useState(true);
   console.log("CONCEPTPAGE", concepts)
   useEffect(() => {
-    dispatch(fetchConcepts())
-  }, [dispatch])
+    const fetchData = async () => {
+      setLoading(true);
+      await dispatch(fetchConcepts());
+      await dispatch(fetchSingleUser(user.uid));
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [dispatch]);
+
+  const conceptsFilter = concepts.filter((concept) => concept.level === user.level);
+  console.log("user level", user.level)
+  console.log("filter",conceptsFilter)
+
+  if (loading) {
+    return <LinearProgress />;
+  }
 
   return (
     <Container>
@@ -33,10 +52,9 @@ function ConceptPage() {
       </Box>
 
       <Grid container spacing={10} justifyContent='center' py={5}>
-        {concepts.map(concept => (
+        {conceptsFilter.map(concept => (
           <Grid item key={concept.id}>
-            <Button>
-              <Link href={`/concepts/${concept.id}`}>
+            <Button component={NavLink} to={`/concepts/${concept.id}`}>
                 <Box display='flex' flexDirection='column'>
                   <p>{concept.concept_name}</p> <p>{concept.level}</p>{' '}
                   <LinearProgress
@@ -45,7 +63,6 @@ function ConceptPage() {
                     sx={{ height: 15 }}
                   />
                 </Box>
-              </Link>
             </Button>
           </Grid>
         ))}
