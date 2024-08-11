@@ -16,6 +16,7 @@ const {
 } = require("firebase/auth");
 const { doc, setDoc } = require("firebase/firestore");
 const { auth, db } = require("../../firebase/firebaseConfig");
+
 export const SET_USER = () => "session/SET_USER";
 
 const setUser = (user) => ({

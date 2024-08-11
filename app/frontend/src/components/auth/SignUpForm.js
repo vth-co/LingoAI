@@ -37,7 +37,7 @@ const SignUpForm = ({ locale, setLocale }) => {
   const handleDemoClick = async (e) => {
     e.preventDefault();
 
-    const credential = "Demo-lition@gmail.com";
+    const credential = "demo@aa.io";
     const password = "password";
 
     await dispatch(login(credential, password));
@@ -255,7 +255,7 @@ const SignUpForm = ({ locale, setLocale }) => {
           >
             <MenuItem value="Beginner">1: Beginner</MenuItem>
             <MenuItem value="Intermediate">2: Intermediate</MenuItem>
-            <MenuItem value="advance">3: Advance</MenuItem>
+            <MenuItem value="Advance">3: Advance</MenuItem>
           </Select>
           <Button
             variant="contained"
