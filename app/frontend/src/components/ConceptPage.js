@@ -25,7 +25,7 @@ function ConceptPage() {
 
   const conceptsFilter = concepts.filter((concept) => concept.level === user.level);
   console.log("user level", user.level)
-  console.log("filter",conceptsFilter)
+  console.log("filter", conceptsFilter)
 
   if (loading) {
     return <LinearProgress />;
@@ -35,12 +35,14 @@ function ConceptPage() {
     <Container>
       <Box>
         <Box display='flex' flexDirection='column' alignItems='center'>
-          <h1>Select a Beginner Concept</h1>
+          <h1>Select a {user.level} Concept</h1>
           <p>
             These are the recommended concepts based on your selected
             proficiency level.
           </p>
-          <p>Pass all the concepts to unlock the next proficiency level.</p>
+          {user.level !== "Advanced" ? (<p>Pass all the concepts to unlock the next proficiency level.</p>)
+            : (<p>Pass all the concepts to get your Lingo.ai Advanced Champion badge.</p>)
+          }
         </Box>
         <Box px={50}>
           <LinearProgress
@@ -55,14 +57,14 @@ function ConceptPage() {
         {conceptsFilter.map(concept => (
           <Grid item key={concept.id}>
             <Button component={NavLink} to={`/concepts/${concept.id}`}>
-                <Box display='flex' flexDirection='column'>
-                  <p>{concept.concept_name}</p> <p>{concept.level}</p>{' '}
-                  <LinearProgress
-                    variant='determinate'
-                    value={50}
-                    sx={{ height: 15 }}
-                  />
-                </Box>
+              <Box display='flex' flexDirection='column'>
+                <p>{concept.concept_name}</p> <p>{concept.level}</p>{' '}
+                <LinearProgress
+                  variant='determinate'
+                  value={50}
+                  sx={{ height: 15 }}
+                />
+              </Box>
             </Button>
           </Grid>
         ))}

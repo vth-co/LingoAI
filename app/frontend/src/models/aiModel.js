@@ -74,8 +74,8 @@ Special people won.What is the adjective here ? using this` + prompt
 
         }
     } catch (error) {
-        res.status(500).json({ message: `Error generating questions from AI: ${error.message}` });
-
+        // res.status(500).json({ message: `Error generating questions from AI: ${error.message}` });
+        return error
     }
 
 
