@@ -12,8 +12,7 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addQuestions } from "../store/questions";
 import { useHistory } from "react-router-dom";
-import { getDeckFromDB } from "../services/deckService";
-import { getAllDecks } from "../controllers/deckController";
+
 
 function MainPage() {
   const dispatch = useDispatch();
@@ -104,6 +103,7 @@ function MainPage() {
               title="start new deck"
               subtitle="explanation"
               sx={{ height: "300px" }}
+              topicId={topicId}
             />
           </Button>
         </Grid>

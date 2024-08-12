@@ -14,6 +14,7 @@ import MainPage from './components/MainPage'
 import Footer from './components/Footer'
 import { fetchSingleUser } from './store/users'
 import { authenticate } from './store/session'
+import DeckPage from './components/Decks/DeckPage'
 
 function App({ locale, setLocale }) {
   const [loaded, setLoaded] = useState(false)
@@ -57,11 +58,14 @@ function App({ locale, setLocale }) {
         <Route path='/concepts/:conceptId'>
           {currentUser ? <TopicsPage /> : <WelcomePage setLocale={setLocale} />}
         </Route>
-        <Route path='/topics/:topicId'>
+        {/* <Route path='/topics/:topicId'>
           {currentUser ? <MainPage /> : <WelcomePage setLocale={setLocale} />}
-        </Route>
+        </Route> */}
         <Route path='/concepts'>
           {currentUser ? <ConceptPage /> : <WelcomePage setLocale={setLocale} />}
+        </Route>
+        <Route path='/topics/:topicId'>
+          {currentUser ? <DeckPage /> : <WelcomePage setLocale={setLocale} />}
         </Route>
         <Route path='/main'>
           {currentUser ? <MainPage /> : <WelcomePage setLocale={setLocale} />}

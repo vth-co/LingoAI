@@ -1,7 +1,5 @@
 import { Container, Box, Typography } from "@mui/material";
 import React from "react";
-import LanguageSelector from "./LanguageSelector";
-import InfiniteScroll from "./InfiniteLogIn";
 import { NavLink } from "react-router-dom";
 
 function CardPage() {

@@ -5,6 +5,7 @@ import usersReducer from './users';
 import conceptsReducer from './concepts';
 import topicsReducer from './topics';
 import questionsReducer from './questions';
+import decksReducer from './decks';
 
 // Import your reducers
 
@@ -16,6 +17,8 @@ const rootReducer = combineReducers({
     concepts: conceptsReducer,
     topics: topicsReducer,
     questions: questionsReducer,
+    decks: decksReducer,
+    // cards: cardsReducer,
 });
 
 // Create and configure the store with middleware
