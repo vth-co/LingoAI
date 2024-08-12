@@ -1,4 +1,5 @@
 import { addQuestionsToDB } from "../services/aiService";
+import { addCardsToDeckInDB, createDeckInDB } from "../services/deckService";
 
 const { db } = require("../firebase/firebaseConfig");
 const { collection, getDoc, doc } = require("firebase/firestore");
@@ -19,8 +20,9 @@ const add = (question) => ({
 
 
 export const addQuestions =
-  (topic_id, user_native_language, user_level, userId) => async (dispatch) => {
-    const topicRef = doc(db, "topics", topic_id);
+  (topicId, user_native_language, user_level, userId) => async (dispatch) => {
+
+    const topicRef = doc(db, "topics", topicId);
     console.log("topicRef: ", topicRef);
 
     const topicDoc = await getDoc(topicRef);
@@ -30,6 +32,7 @@ export const addQuestions =
     }
 
     const topicData = topicDoc.data();
+    console.log('topic name', topicData.topic_name)
     const topic_name = topicData.topic_name;
     console.log("topicData: ", topicData);
 
@@ -42,13 +45,13 @@ export const addQuestions =
         topic_name,
         user_native_language,
         user_level,
-        topic_id
+        topicId
       );
       console.log("questionData: ", questionData);
 
       dispatch(
         add({
-          topic_id,
+          topicId,
           user_native_language,
           user_level,
           userId,
@@ -60,6 +63,22 @@ export const addQuestions =
           questionData,
         });
         console.log("Created questions successfully:", question_from_ai);
+
+
+        // Create a new deck in the database
+        const deck = await createDeckInDB({
+          userId,
+          topic_id: topicId,
+          createdAt: new Date(),
+          archived: false,
+        });
+
+        console.log("Deck created successfully:", deck);
+
+        // Add the generated questions as cards to the deck
+        const cardsAdded = await addCardsToDeckInDB(deck.id, userId, question_from_ai);
+
+        console.log("Cards added to deck successfully:", cardsAdded);
       }
     } catch (error) {
       console.error("Error during sign up:", error);

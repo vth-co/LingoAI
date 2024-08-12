@@ -70,7 +70,6 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const theme = useTheme();
   const user = useSelector((state) => state.session.user);
-  console.log('navbar', user)
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);

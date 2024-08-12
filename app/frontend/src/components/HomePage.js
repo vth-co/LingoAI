@@ -5,6 +5,7 @@ import InfoIcon from "@mui/icons-material/Info";
 
 function HomePage() {
   const user = useSelector((state) => state.session.user);
+  console.log("user info", user);
 
   const data = [
     {

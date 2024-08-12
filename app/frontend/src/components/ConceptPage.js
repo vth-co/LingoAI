@@ -11,12 +11,11 @@ function ConceptPage() {
   const user = useSelector((state) => state.session.user)
   const concepts = Object.values(useSelector(state => state.concepts))
   const [loading, setLoading] = useState(true);
-  console.log("CONCEPTPAGE", concepts)
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       await dispatch(fetchConcepts());
-      await dispatch(fetchSingleUser(user.uid));
       setLoading(false);
     };
 
