@@ -12,7 +12,7 @@ import WelcomePage from './components/WelcomePage'
 import ConceptPage from './components/ConceptPage'
 import TopicsPage from './components/TopicsPage'
 import MainPage from './components/MainPage'
-import Footer from './components/Footer'
+// import Footer from './components/Footer'
 
 function App({ locale, setLocale }) {
   const [loaded, setLoaded] = useState(false)
@@ -69,7 +69,7 @@ function App({ locale, setLocale }) {
           {currentUser ? <HomePage /> : <Redirect to='/login' />}
         </ProtectedRoute>
       </Switch>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
