@@ -5,9 +5,10 @@ export const LOAD_CONCEPTS = () => "concepts/LOAD_CONCEPTS";
 export const LOAD_ONE_CONCEPT = () => "concepts/LOAD_ONE_CONCEPT";
 export const LOAD_TOPICS_BY_CONCEPT = () => "concepts/LOAD_TOPICS_BY_CONCEPT";
 
-const load = (concepts) => ({
+const load = (concepts, userLevel) => ({
     type: LOAD_CONCEPTS,
     concepts,
+    userLevel
 });
 
 const loadOne = (concept) => ({
@@ -39,22 +40,22 @@ const loadConceptTopics = (topics) => ({
 
 // use this if the 1st fetchConcepts break, may need to import things
 
-export const fetchConcepts = () => async (dispatch) => {
+export const fetchConcepts = (userLevel) => async (dispatch) => {
     try {
-      const conceptsCollectionRef = collection(db, 'concepts');
-      const conceptsSnapshot = await getDocs(conceptsCollectionRef);
-  
-      const conceptsData = conceptsSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-  
-      dispatch(load(conceptsData)); // Update Redux state with concepts data
+        const conceptsCollectionRef = collection(db, 'concepts');
+        const conceptsSnapshot = await getDocs(conceptsCollectionRef);
+
+        const conceptsData = conceptsSnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+        }));
+
+        dispatch(load(conceptsData, userLevel)); // Update Redux state with concepts data
     } catch (error) {
-      console.error("Error fetching concepts:", error);
-      // Dispatch error action or handle error appropriately
+        console.error("Error fetching concepts:", error);
+        // Dispatch error action or handle error appropriately
     }
-  };
+};
 
 export const fetchOneConcept = (conceptId) => async (dispatch) => {
     try {
