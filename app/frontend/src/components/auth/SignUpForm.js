@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login, signUp } from '../../store/actions/sessionAction';
 import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router-dom";
 import {
@@ -14,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
+import { login, signUp } from "../../store/session";
 
 const SignUpForm = ({ locale, setLocale }) => {
   const [email, setEmail] = useState("");

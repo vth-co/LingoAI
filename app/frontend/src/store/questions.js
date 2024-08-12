@@ -88,11 +88,13 @@ export const addQuestions =
 
 const initialState = {};
 
-export default function questionsReducer(state = initialState, action) {
+const questionsReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_QUESTION:
       return { ...state, user: action.payload };
     default:
       return state;
   }
-}
+};
+
+export default  questionsReducer;

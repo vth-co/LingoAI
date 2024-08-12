@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSingleUser, fetchUsers } from '../store/actions/usersActions';
 import { Box, Button, Container, Grid, LinearProgress, Typography } from "@mui/material";
 import { NavLink } from 'react-router-dom';
 

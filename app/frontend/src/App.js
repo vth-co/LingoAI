@@ -5,7 +5,6 @@ import LoginForm from './components/auth/LoginForm'
 import SignUpForm from './components/auth/SignUpForm'
 import NavBar from './components/NavBar'
 import ProtectedRoute from './components/auth/ProtectedRoute'
-import { authenticate } from './store/actions/sessionAction'
 import { auth } from './firebase/firebaseConfig'
 import HomePage from './components/HomePage'
 import WelcomePage from './components/WelcomePage'
@@ -13,7 +12,8 @@ import ConceptPage from './components/ConceptPage'
 import TopicsPage from './components/TopicsPage'
 import MainPage from './components/MainPage'
 import Footer from './components/Footer'
-import { fetchSingleUser } from './store/actions/usersActions'
+import { fetchSingleUser } from './store/users'
+import { authenticate } from './store/session'
 
 function App({ locale, setLocale }) {
   const [loaded, setLoaded] = useState(false)

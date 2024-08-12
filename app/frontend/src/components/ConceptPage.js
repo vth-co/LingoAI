@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { fetchConcepts } from '../store/actions/conceptsActions'
 import { Box, Button, Container, Grid, LinearProgress } from '@mui/material'
-import { fetchSingleUser } from '../store/actions/usersActions'
 import { NavLink } from "react-router-dom";
+import { fetchConcepts } from '../store/concepts';
 
 
 function ConceptPage() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.session.user)
-  const concepts = useSelector((state) => state.concepts.concepts);
+  const concepts = Object.values(useSelector((state) => state.concepts.concepts));
   const [loading, setLoading] = useState(true);
+
+  // console.log(concepts)
 
   useEffect(() => {
     const fetchData = async () => {

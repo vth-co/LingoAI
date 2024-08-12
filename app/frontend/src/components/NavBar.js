@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import MaterialIcon from "material-icons-react";
 import {
-  Link,
   Menu,
   Box,
   Container,
@@ -12,7 +11,6 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/styles";
 import LogoutButton from "./auth/LogoutButton";
-import { fetchSingleUser } from "../store/actions/usersActions";
 
 const StyledMenu = styled((props) => (
   <Menu
