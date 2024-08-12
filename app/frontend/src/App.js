@@ -18,7 +18,6 @@ import { fetchSingleUser } from './store/actions/usersActions'
 function App({ locale, setLocale }) {
   const [loaded, setLoaded] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
-  console.log(currentUser)
   const dispatch = useDispatch()
 
   useEffect(() => {

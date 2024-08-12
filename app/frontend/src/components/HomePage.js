@@ -7,7 +7,6 @@ import { NavLink } from 'react-router-dom';
 
 function HomePage() {
   const user = useSelector((state) => state.session.user);
-  console.log("user info", user);
 
   const data = [
     {

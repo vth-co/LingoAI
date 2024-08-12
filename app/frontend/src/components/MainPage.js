@@ -1,5 +1,4 @@
 import {
-  Link,
   Container,
   Box,
   Typography,
@@ -7,12 +6,14 @@ import {
   Grid,
   Button,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import DeckSample from "./Decks/DeckSample";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addQuestions } from "../store/questions";
 import { useHistory } from "react-router-dom";
+import { getDeckFromDB } from "../services/deckService";
+import { getAllDecks } from "../controllers/deckController";
 
 function MainPage() {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ function MainPage() {
   const { topicId } = useParams();
   const user = useSelector((state) => state.session.user);
 
-  console.log(user.uid)
+  
 
   const handleGenerateQuestions = async (e) => {
     e.preventDefault();
