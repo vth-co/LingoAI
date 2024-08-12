@@ -17,13 +17,13 @@ function CardPage() {
             display: "flex",
             flexDirection: "column",
             width: "325px",
-            height: "400px",
+            height: "450px",
             borderRadius: "3px",
             border: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
           }}>
             <Box sx={{
               backgroundColor: "#a8716f",
-              height: "250px",
+              height: "300px",
               padding: "20px",
               overflow: "auto",
             }}>
@@ -70,13 +70,13 @@ function CardPage() {
             display: "flex",
             flexDirection: "column",
             width: "325px",
-            height: "400px",
+            height: "450px",
             borderRadius: "3px",
             border: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#bababa'}`,
           }}>
             <Box sx={{
               backgroundColor: `${theme.palette.secondary.main}`,
-              height: "250px",
+              height: "300px",
               padding: "20px",
             }}>
               <h2>Don't eat the rotten apple.</h2>
@@ -100,13 +100,13 @@ function CardPage() {
             display: "flex",
             flexDirection: "column",
             width: "325px",
-            height: "400px",
+            height: "450px",
             borderRadius: "3px",
             border: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
           }}>
             <Box sx={{
               backgroundColor: `${theme.palette.secondary.main}`,
-              height: "250px",
+              height: "300px",
               padding: "20px",
             }}>
               <h2>Don't eat the rotten apple.</h2>
