@@ -15,6 +15,7 @@ import Footer from './components/Footer'
 import { fetchSingleUser } from './store/users'
 import { authenticate } from './store/session'
 import DeckPage from './components/Decks/DeckPage'
+import CardPage from './components/Cards/CardPage'
 
 function App({ locale, setLocale }) {
   const [loaded, setLoaded] = useState(false)
@@ -70,12 +71,15 @@ function App({ locale, setLocale }) {
         <Route path='/main'>
           {currentUser ? <MainPage /> : <WelcomePage setLocale={setLocale} />}
         </Route>
+        <Route path='/card'>
+          <CardPage />
+        </Route>
         {/* Ensure your ProtectedRoute component is redirecting correctly */}
         <ProtectedRoute path='/'>
           {currentUser ? <HomePage /> : <Redirect to='/login' />}
         </ProtectedRoute>
       </Switch>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }

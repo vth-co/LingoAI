@@ -255,7 +255,7 @@ const SignUpForm = ({ locale, setLocale }) => {
           >
             <MenuItem value="Beginner">1: Beginner</MenuItem>
             <MenuItem value="Intermediate">2: Intermediate</MenuItem>
-            <MenuItem value="Advance">3: Advance</MenuItem>
+            <MenuItem value="Advanced">3: Advanced</MenuItem>
           </Select>
           <Button
             variant="contained"
