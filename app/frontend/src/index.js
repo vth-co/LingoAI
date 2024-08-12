@@ -30,9 +30,13 @@ const Main = () => {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <App setLocale={setLocale} locale={locale} />
-            <IconButton onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}>
-              {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
-            </IconButton>
+            <div style={{ textAlign: "center", paddingBottom: "20px" }}>
+
+
+              <IconButton onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}>
+                {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+              </IconButton>
+            </div>
           </ThemeProvider>
         </Provider>
       </BrowserRouter>
