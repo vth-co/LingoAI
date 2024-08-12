@@ -22,7 +22,7 @@ function CardPage() {
             border: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
           }}>
             <Box sx={{
-              backgroundColor: "#a8716f",
+              backgroundColor: `${theme.palette.primary.main}`,
               height: "300px",
               padding: "20px",
               overflow: "auto",
@@ -72,7 +72,7 @@ function CardPage() {
             width: "325px",
             height: "450px",
             borderRadius: "3px",
-            border: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#bababa'}`,
+            border: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
           }}>
             <Box sx={{
               backgroundColor: `${theme.palette.secondary.main}`,
