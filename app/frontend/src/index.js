@@ -10,7 +10,9 @@ import store from './store';
 import { darkTheme, lightTheme } from "./theme/theme";
 import messages from "./locales/messages.json"
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import Button from '@mui/material/Button'; // For demonstration purposes
+import IconButton from '@mui/material/IconButton';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 // const store = configureStore();
 
@@ -28,7 +30,9 @@ const Main = () => {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <App setLocale={setLocale} locale={locale} />
-            <Button onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}>Toggle Theme</Button>
+            <IconButton onClick={() => setMode(mode === 'light' ? 'dark' : 'light')}>
+              {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
           </ThemeProvider>
         </Provider>
       </BrowserRouter>
