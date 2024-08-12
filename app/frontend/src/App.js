@@ -12,6 +12,7 @@ import WelcomePage from './components/WelcomePage'
 import ConceptPage from './components/ConceptPage'
 import TopicsPage from './components/TopicsPage'
 import MainPage from './components/MainPage'
+import Flashcard from './components/Flashcard'
 // import Footer from './components/Footer'
 
 function App({ locale, setLocale }) {
@@ -63,6 +64,9 @@ function App({ locale, setLocale }) {
         </Route>
         <Route path='/main'>
           {currentUser ? <MainPage /> : <WelcomePage setLocale={setLocale} />}
+        </Route>
+        <Route path='/flashcard'>
+          <Flashcard />
         </Route>
         {/* Ensure your ProtectedRoute component is redirecting correctly */}
         <ProtectedRoute path='/'>
