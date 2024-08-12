@@ -9,11 +9,9 @@ const conceptsReducer = (state = initialState, action) => {
     switch (action.type) {
         case LOAD_CONCEPTS: {
             const newState = { ...state };
-            action.concepts.forEach((concept) => {
-                newState[concept.id] = {
-                    ...concept, // Copy concept properties
-                };
-            });
+            newState.concepts = action.concepts.filter(
+                (concept) => concept.level === action.userLevel
+            );
             return newState;
         }
         case LOAD_ONE_CONCEPT: {

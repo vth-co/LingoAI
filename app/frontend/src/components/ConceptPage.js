@@ -9,20 +9,18 @@ import { NavLink } from "react-router-dom";
 function ConceptPage() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.session.user)
-  const concepts = Object.values(useSelector(state => state.concepts))
+  const concepts = useSelector((state) => state.concepts.concepts);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await dispatch(fetchConcepts());
+      await dispatch(fetchConcepts(user.level));
       setLoading(false);
     };
 
     fetchData();
   }, [dispatch]);
-
-  const conceptsFilter = concepts.filter((concept) => concept.level === user.level);
 
   if (loading) {
     return <LinearProgress />;
@@ -49,17 +47,17 @@ function ConceptPage() {
       </Box>
 
       <Grid container spacing={10} justifyContent='center' py={5}>
-        {conceptsFilter.map(concept => (
+        {concepts.map(concept => (
           <Grid item key={concept.id}>
             <Button component={NavLink} to={`/concepts/${concept.id}`}>
-                <Box display='flex' flexDirection='column'>
-                  <p>{concept.concept_name}</p> <p>{concept.level}</p>{' '}
-                  <LinearProgress
-                    variant='determinate'
-                    value={50}
-                    sx={{ height: 15 }}
-                  />
-                </Box>
+              <Box display='flex' flexDirection='column'>
+                <p>{concept.concept_name}</p> <p>{concept.level}</p>{' '}
+                <LinearProgress
+                  variant='determinate'
+                  value={50}
+                  sx={{ height: 15 }}
+                />
+              </Box>
             </Button>
           </Grid>
         ))}
