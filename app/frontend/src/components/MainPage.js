@@ -31,7 +31,7 @@ function MainPage() {
       await dispatch(
         addQuestions(topicId, user.native_language, user.level, user.uid)
       );
-      // history.push("/home");
+      history.push("/deck");
     } catch (error) {
       console.log("Error generating questions:", error.message);
     }
