@@ -43,7 +43,7 @@ function ConceptPage() {
         <Box display='flex' flexDirection='column' alignItems='center'>
           <h1>Select a {user.level} Concept</h1>
           <p>
-            These are the recommended concepts based on your selected
+            These are the recommended concepts based on your current
             proficiency level.
           </p>
           {user.level !== "Advanced" ? (<p>Pass all the concepts to unlock the next proficiency level.</p>)
