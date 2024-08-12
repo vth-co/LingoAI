@@ -20,7 +20,7 @@ function CardPage() {
         borderRadius: "3px",
         backgroundColor: "#a8716f",
         border: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#bababa'}`,
-        overflow: "hidden"
+        overflow: "auto"
       }}>
         <Box sx={{
           padding: "20px",
@@ -78,7 +78,7 @@ function CardPage() {
         borderRadius: "3px",
         backgroundColor: `${theme.palette.secondary.main}`,
         border: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#bababa'}`,
-        overflow: "hidden"
+        overflow: "auto"
       }}>
         <Box sx={{
           padding: "20px",
@@ -113,7 +113,7 @@ function CardPage() {
         borderRadius: "3px",
         backgroundColor: `${theme.palette.secondary.main}`,
         border: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#bababa'}`,
-        overflow: "hidden"
+        overflow: "auto"
       }}>
         <Box sx={{
           padding: "20px",
