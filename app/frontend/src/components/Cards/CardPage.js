@@ -108,14 +108,18 @@ function CardPage() {
           padding: "20px",
           height: "150px",
           display: "flex",
-          alignItems: "center",
+          flexDirection: "column",
+          justifyContent: "center",
           overflow: "auto",
         }}>
-          <CloseIcon sx={{ color: theme.palette.completion.poor }} /> <Typography sx={{ ml: 2 }}>Eat</Typography>
-
-          <Typography>Correct Answer:</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <CloseIcon sx={{ color: theme.palette.completion.poor }} />
+            <Typography sx={{ ml: 2 }}>Eat</Typography>
+          </Box>
+          <p><span style={{ fontWeight: "bold" }}>Correct Answer:</span> Apple</p>
         </Box>
-      </Box >
+
+      </Box>
 
     </Container>
   );
