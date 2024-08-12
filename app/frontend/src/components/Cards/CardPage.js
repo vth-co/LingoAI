@@ -30,24 +30,39 @@ function CardPage() {
           <h2>Don't eat the rotten apple.</h2>
         </Box>
         <Box sx={{
-          backgroundColor: "#fff",
+          backgroundColor: `${theme.palette.background.main}`,
           padding: "20px",
           height: "150px",
           display: "flex",
-          alignItems: "center",
+          flexDirection: "column",
+          justifyContent: "center",
           overflow: "auto",
+          borderTop: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
         }}>
           <FormControl sx={{ width: "100%" }}>
-            <FormLabel id="demo-row-radio-buttons-group-label">Identify the common noun in this sentence.</FormLabel>
+            <FormLabel disabled>
+              <Typography sx={{ color: theme.palette.text.primary }}>
+                Identify the common noun in this sentence.
+              </Typography>
+            </FormLabel>
             <RadioGroup
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
               sx={{ paddingTop: "15px" }}
             >
-              <FormControlLabel value="Rotten" control={<Radio />} label="Rotten" />
-              <FormControlLabel value="Eat" control={<Radio />} label="Eat" />
-              <FormControlLabel value="Apple" control={<Radio />} label="Apple" />
+              <FormControlLabel
+                value="Rotten"
+                control={<Radio sx={{ color: theme.palette.primary.main }} />}
+                label="Rotten" />
+              <FormControlLabel
+                value="Eat"
+                control={<Radio sx={{ color: theme.palette.primary.main }} />}
+                label="Eat" />
+              <FormControlLabel
+                value="Apple"
+                control={<Radio sx={{ color: theme.palette.primary.main }} />}
+                label="Apple" />
             </RadioGroup>
           </FormControl>
         </Box>
@@ -61,7 +76,7 @@ function CardPage() {
         width: "300px",
         height: "400px",
         borderRadius: "3px",
-        backgroundColor: "#a8716f",
+        backgroundColor: `${theme.palette.secondary.main}`,
         border: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#bababa'}`,
         overflow: "hidden"
       }}>
@@ -73,14 +88,18 @@ function CardPage() {
           <h2>Don't eat the rotten apple.</h2>
         </Box>
         <Box sx={{
-          backgroundColor: "#fff",
+          backgroundColor: `${theme.palette.background.main}`,
           padding: "20px",
           height: "150px",
           display: "flex",
-          alignItems: "center",
+          flexDirection: "column",
+          justifyContent: "center",
           overflow: "auto",
+          borderTop: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
         }}>
-          <CheckIcon sx={{ color: theme.palette.completion.good }} /> <Typography sx={{ ml: 2 }}>Apple</Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <CheckIcon sx={{ color: theme.palette.completion.good }} /> <Typography sx={{ ml: 2 }}>Apple</Typography>
+          </Box>
         </Box>
       </Box >
 
@@ -92,7 +111,7 @@ function CardPage() {
         width: "300px",
         height: "400px",
         borderRadius: "3px",
-        backgroundColor: "#a8716f",
+        backgroundColor: `${theme.palette.secondary.main}`,
         border: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#bababa'}`,
         overflow: "hidden"
       }}>
@@ -104,13 +123,14 @@ function CardPage() {
           <h2>Don't eat the rotten apple.</h2>
         </Box>
         <Box sx={{
-          backgroundColor: "#fff",
+          backgroundColor: `${theme.palette.background.main}`,
           padding: "20px",
           height: "150px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           overflow: "auto",
+          borderTop: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <CloseIcon sx={{ color: theme.palette.completion.poor }} />
