@@ -51,7 +51,7 @@ export const darkTheme = createTheme({
       hint: "rgb(138, 151, 183)",
     },
     background: {
-      main: "#0a0a0a",
+      main: "#222425",
     },
     completion: {
       good: "#4caf50",
