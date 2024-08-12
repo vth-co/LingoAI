@@ -74,8 +74,8 @@ Special people won.What is the adjective here ? using this` + prompt
 
         }
     } catch (error) {
-        res.status(500).json({ message: `Error generating questions from AI: ${error.message}` });
-
+        // res.status(500).json({ message: `Error generating questions from AI: ${error.message}` });
+        return error;
     }
 
 
@@ -84,15 +84,17 @@ Special people won.What is the adjective here ? using this` + prompt
 
         const result = await model.generateContent(prompt);
         console.log('result: ', result);
-        const jsonString = result.response.text();
+
+        const jsonString = await result.response.text();
+        const jsonData = JSON.parse(jsonString);
 
 
         console.log("------------------------------")
-        let jsonData = JSON.parse([jsonString])
         console.log('topic: ', topic)
         return { topic_id, topic, level, jsonData }
     } catch (error) {
         console.error('Error generating content:', error);
+        throw error; // Re-throw the error to be handled by the calling function
     }
 }
 

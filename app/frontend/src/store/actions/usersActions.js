@@ -23,7 +23,7 @@ export const fetchSingleUser = (uid) => async (dispatch) => {
   
       if (userDoc.exists()) {
         const userData = userDoc.data();
-        dispatch(setUser(userData)); // Update Redux state with user data
+        dispatch(setUser({...userData, uid})); // Update Redux state with user data
       } else {
         console.error('User not found');
       }

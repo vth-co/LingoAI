@@ -62,10 +62,7 @@ const NoHoverMenuItem = styled(MenuItem)(({ theme }) => ({
 }));
 
 const NavBar = () => {
-  const dispatch = useDispatch();
-
   const user = useSelector((state) => state.session.user);
-  console.log('navbar', user)
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -76,11 +73,6 @@ const NavBar = () => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    if (user && user.uid) { // Only fetch if user is logged in
-      dispatch(fetchSingleUser(user.uid)); 
-    }
-  }, [dispatch, user]);
 
   return (
     <nav>

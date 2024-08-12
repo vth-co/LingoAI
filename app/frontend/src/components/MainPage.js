@@ -10,24 +10,30 @@ import {
 import React from "react";
 import DeckSample from "./Decks/DeckSample";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-// import { addCardQuestions } from '../controllers/aiController'
-
+import { useDispatch, useSelector } from "react-redux";
+import { addQuestions } from "../store/questions";
+import { useHistory } from "react-router-dom";
 
 function MainPage() {
-
   const dispatch = useDispatch();
-  const topicId = useParams();
+  const history = useHistory();
+
+  const { topicId } = useParams();
+  const user = useSelector((state) => state.session.user);
+
+  console.log(user.uid)
 
   const handleGenerateQuestions = async (e) => {
     e.preventDefault();
 
-
-    // await dispatch(addCardQuestions(
-    //   {
-
-    //   }
-    // ));
+    try {
+      await dispatch(
+        addQuestions(topicId, user.native_language, user.level, user.uid)
+      );
+      // history.push("/home");
+    } catch (error) {
+      console.log("Error generating questions:", error.message);
+    }
   };
 
   return (
@@ -92,11 +98,13 @@ function MainPage() {
           </Box>
         </Grid>
         <Grid item xs={5}>
-          <DeckSample
-            title="start new deck"
-            subtitle="explanation"
-            sx={{ height: "300px" }}
-          />
+          <Button onClick={handleGenerateQuestions}>
+            <DeckSample
+              title="start new deck"
+              subtitle="explanation"
+              sx={{ height: "300px" }}
+            />
+          </Button>
         </Grid>
       </Grid>
     </Container>

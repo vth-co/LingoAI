@@ -13,16 +13,19 @@ import ConceptPage from './components/ConceptPage'
 import TopicsPage from './components/TopicsPage'
 import MainPage from './components/MainPage'
 import Footer from './components/Footer'
+import { fetchSingleUser } from './store/actions/usersActions'
 
 function App({ locale, setLocale }) {
   const [loaded, setLoaded] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
+  console.log(currentUser)
   const dispatch = useDispatch()
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async user => {
       if (user) {
         await dispatch(authenticate()) // Make sure this properly sets the user
+        await dispatch(fetchSingleUser(user.uid))
         setCurrentUser(user)
       } else {
         setCurrentUser(null)
