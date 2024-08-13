@@ -37,7 +37,7 @@ function HomePage() {
     return conceptCount
   })
 
-  console.log("USER", user);
+  console.log("USER", progress);
 
   let conceptPercentage = (conceptCount / currentConcepts?.length) * 100
 

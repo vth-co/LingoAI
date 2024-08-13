@@ -4,7 +4,6 @@ const { getConceptsByLevel, getTopicsByConceptId } = require('./conceptService')
 
 // Service to add a user
 const addUserToDB = async ({ uid, email, username, first_name, last_name, native_language, level }) => {
-    let badges = []
     await setDoc(doc(db, 'users', uid), {
         email,
         username,
@@ -12,7 +11,7 @@ const addUserToDB = async ({ uid, email, username, first_name, last_name, native
         last_name,
         native_language,
         level,
-        badges,
+        badges: [],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
     });
