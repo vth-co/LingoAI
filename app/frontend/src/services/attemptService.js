@@ -126,11 +126,14 @@ const checkAnswerInDB = async (userId, id, attemptId, answer, deckId) => {
             await updateDoc(attemptDocRef, { passes: increment(1) });
             const updatedAttemptDoc = await getDoc(attemptDocRef);
             const updatedAttemptData = updatedAttemptDoc.data();
+
+             // Determine if the user is passing based on passes count
+             const isPassing = updatedAttemptData.passes >= 3;
+
             // if passes >= 3, call checkTopicProgression service
             console.log('deck data', updatedAttemptData)
-            if (updatedAttemptData.passes >= 3) {
-
-                await checkTopicProgression(deckData.userId, deckData.cards[0].questionData.topic_id, isPassing=true);
+            if (isPassing) {
+                await checkTopicProgression(deckData.userId, deckData.cards[0].questionData.topic_id, isPassing);
                 await archiveDeckInDB(deckId, deckData.userId);
             }
 

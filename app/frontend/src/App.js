@@ -71,7 +71,7 @@ function App({ locale, setLocale }) {
         <Route path='/main'>
           {currentUser ? <MainPage /> : <WelcomePage setLocale={setLocale} />}
         </Route>
-        <Route path='/card'>
+        <Route path='/decks/:deckId'>
           <CardPage />
         </Route>
         {/* Ensure your ProtectedRoute component is redirecting correctly */}

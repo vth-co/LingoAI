@@ -48,11 +48,12 @@ function TopicsPage() {
                 <Grid container spacing={10} justifyContent='center' py={5}>
                     {topics.map(topic => (
                         <Grid item key={topic.id}>
-                            <Button component={NavLink} to={`/topics/${topic.id}`}>
+                            <Button component={NavLink} to={`/topics/${topic.id}`} variant="outlined">
                                 <Box display='flex' flexDirection='column' width="200px">
                                     <h3>{topic.topic_name}</h3> <p>EXPLANATION</p>{' '}
                                     <LinearProgress
                                         variant='determinate'
+                                        color="text"
                                         value={50}
                                         sx={{ height: 15 }}
                                     />

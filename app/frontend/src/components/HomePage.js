@@ -9,7 +9,7 @@ function HomePage() {
   const data = [
     {
       left: 'Current English Proficiency Level:',
-      right: `${user.level}`
+      right: `${user.current_level}`
     },
     {
       left: 'Proficiency Level Progress:',

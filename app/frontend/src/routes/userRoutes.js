@@ -35,9 +35,9 @@ router.get('/:userId/attempts/:attemptId/check', checkUserAttempt)
 router.get('/:userId/attempts/:attemptId', getUserAttemptById)
 
 //add user attempt
-router.post('/:id/attempts/new', addUserAttempt)
+router.post('/:id/attempts/new', addUserAttempt) //open a deck/begin
 
 //update user attempt
-router.put('/:userId/attempts/:attemptId/update', updateUserAttempt)
+router.put('/:userId/attempts/:attemptId/update', updateUserAttempt) //answering
 
 module.exports = router;

@@ -1,17 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { Box, Button, Container, Grid, LinearProgress } from '@mui/material'
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Box, Button, Container, Grid, LinearProgress } from '@mui/material';
+import { NavLink } from 'react-router-dom';
 import { fetchConcepts } from '../store/concepts';
 
-
 function ConceptPage() {
-  const dispatch = useDispatch()
-  const user = useSelector((state) => state.session.user)
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.session.user);
   const concepts = Object.values(useSelector((state) => state.concepts.concepts));
   const [loading, setLoading] = useState(true);
-
-  // console.log(concepts)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +18,7 @@ function ConceptPage() {
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, user.level]);
 
   if (loading) {
     return <LinearProgress />;
@@ -36,9 +33,11 @@ function ConceptPage() {
             These are the recommended concepts based on your current
             proficiency level.
           </p>
-          {user.level !== "Advanced" ? (<p>Pass all the concepts to unlock the next proficiency level.</p>)
-            : (<p>Pass all the concepts to get your Lingo.ai Advanced Champion badge.</p>)
-          }
+          {user.level !== "Advanced" ? (
+            <p>Pass all the concepts to unlock the next proficiency level.</p>
+          ) : (
+            <p>Pass all the concepts to get your Lingo.ai Advanced Champion badge.</p>
+          )}
         </Box>
         <Box px={50}>
           <LinearProgress
@@ -50,13 +49,25 @@ function ConceptPage() {
       </Box>
 
       <Grid container spacing={10} justifyContent='center' py={5}>
-        {concepts.map(concept => (
+        {concepts.map((concept) => (
           <Grid item key={concept.id}>
-            <Button component={NavLink} to={`/concepts/${concept.id}`}>
-              <Box display='flex' flexDirection='column' width="200px">
-                <h3>{concept.concept_name}</h3> <p>{concept.level}</p>{' '}
+            <Button
+              component={NavLink}
+              to={`/concepts/${concept.id}`}
+              sx={{
+                backgroundColor: 'primary.main',
+                color: 'text.primary',
+                '&:hover': {
+                  backgroundColor: 'primary.dark', // Darker shade on hover
+                },
+              }}
+            >
+              <Box display='flex' flexDirection='column' width='200px'>
+                <h3>{concept.concept_name}</h3>
+                <p>{concept.level}</p>
                 <LinearProgress
                   variant='determinate'
+                  color='text'
                   value={50}
                   sx={{ height: 15 }}
                 />
@@ -66,7 +77,7 @@ function ConceptPage() {
         ))}
       </Grid>
     </Container>
-  )
+  );
 }
 
-export default ConceptPage
+export default ConceptPage;
