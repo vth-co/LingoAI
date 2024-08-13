@@ -6,23 +6,35 @@ import {
   LinearProgress,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchOneConcept, fetchTopicsByConcept } from "../store/concepts";
 import { NavLink } from "react-router-dom";
+import { fetchUserProgress } from '../store/users';
 
 function TopicsPage() {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.session.user)
+  const userId = user.uid
   const { conceptId } = useParams();
+  const [loading, setLoading] = useState(true);
   const concept = useSelector((state) => state.concepts.concepts[conceptId]);
   const topics = useSelector(
     (state) => state.concepts.topics[conceptId]?.topics || []
-  ); // Safely accessing topics array
-
+  );
+  const progress = useSelector((state) => state.users.progress);
+  console.log("progress", progress);
   useEffect(() => {
-    dispatch(fetchOneConcept(conceptId));
-    dispatch(fetchTopicsByConcept(conceptId));
+    const fetchData = async () => {
+      setLoading(true);
+      await dispatch(fetchOneConcept(conceptId));
+      await dispatch(fetchTopicsByConcept(conceptId));
+      await dispatch(fetchUserProgress(userId))
+      setLoading(false);
+    };
+
+    fetchData();
   }, [dispatch, conceptId]);
 
   return (

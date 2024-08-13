@@ -53,7 +53,7 @@ function ConceptPage() {
       </Box>
 
       <Grid container justifyContent='center' py={5}>
-        {concepts.map(concept => (
+        {concepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name)).map(concept => (
           concept.status === true || concept.concept_name === "Vocabulary" ? (
             <Button component={NavLink} to={`/concepts/${concept.id}`}>
               <Box display='flex' flexDirection='column'
