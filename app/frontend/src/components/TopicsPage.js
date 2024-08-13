@@ -30,7 +30,7 @@ function TopicsPage() {
   const currentConcept = progress?.[0].concepts.find(concept =>
     conceptId === concept.id
   );
-
+  console.log("Progress", progress);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);

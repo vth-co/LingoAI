@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Container, Grid, LinearProgress, Link, Typography, Tooltip } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import { fetchUserProgress } from '../store/users';
+import CheckIcon from '@mui/icons-material/Check';
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -55,11 +56,13 @@ function HomePage() {
           </Tooltip>:
         </Box>
       </>),
-      right: <LinearProgress
-        variant="determinate"
-        value={proficiencyPercentage}
-        sx={{ height: 25 }}
-      />
+      right:
+        <LinearProgress
+          variant="determinate"
+          value={proficiencyPercentage}
+          sx={{ height: 25 }}
+        />
+
     },
     // {
     //   left: 'Current Concept:',
