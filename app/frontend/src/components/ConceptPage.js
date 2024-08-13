@@ -188,8 +188,8 @@ function ConceptPage() {
           )))}
       </Grid>
       <Divider />
-      <h2>Available Concept Levels</h2>
       <Box>
+        <h2 style={{ textAlign: "center" }}>Available Concept Levels</h2>
         <Box display="flex" alignItems="center" onClick={handleToggle} sx={{ cursor: 'pointer' }}>
 
           <Box>
