@@ -5,7 +5,7 @@ import InfoIcon from "@mui/icons-material/Info";
 
 function HomePage() {
   const user = useSelector((state) => state.session.user);
-
+  console.log("USER", user);
   const data = [
     {
       left: 'Current English Proficiency Level:',

@@ -1,10 +1,10 @@
-const { doc, getDoc } = require('firebase/firestore')
+const { doc, getDoc, collection, getDocs } = require('firebase/firestore')
 const { db } = require("../firebase/firebaseConfig");
 const { SET_USER } = require("./session");
 
 // Action Types
-export const LOAD_USERS = "users/LOAD_USERS";
-
+const LOAD_USERS = "users/LOAD_USERS";
+const LOAD_USER_PROGRESS = "users/LOAD_USER_PROGRESS";
 
 // Action Creators
 const setUser = (user) => ({
@@ -15,6 +15,11 @@ const setUser = (user) => ({
 const loadUsers = (users) => ({
     type: LOAD_USERS,
     users,
+});
+
+const loadUserProgress = (uid, progress) => ({
+    type: LOAD_USER_PROGRESS,
+    payload: { uid, progress },
 });
 
 // Thunk Actions
@@ -34,6 +39,21 @@ export const fetchSingleUser = (uid) => async (dispatch) => {
     }
 };
 
+export const fetchUserProgress = (uid) => async (dispatch) => {
+    try {
+        const response = await fetch(`/api/users/${uid}/progress`);
+
+        if (response.ok) {
+            const progress = await response.json();
+            dispatch(loadUserProgress(uid, progress));
+        } else {
+            console.error("Response not OK");
+        }
+    } catch (error) {
+        console.error('Error fetching users:', error);
+    }
+};
+
 export const fetchUsers = () => async (dispatch) => {
     try {
         const response = await fetch("/api/users/all-users");
@@ -42,7 +62,7 @@ export const fetchUsers = () => async (dispatch) => {
             const users = await response.json();
             dispatch(loadUsers(users));
         } else {
-            console.error("Internal server error");
+            console.error("Response not OK");
         }
     } catch (error) {
         console.error('Error fetching users:', error);
@@ -61,6 +81,10 @@ const usersReducer = (state = initialState, action) => {
                 newState[user.id] = user;
             });
             return newState;
+        }
+        case LOAD_USER_PROGRESS: {
+            console.log("USER ACTION", action);
+            return { ...state }
         }
         default:
             return state;

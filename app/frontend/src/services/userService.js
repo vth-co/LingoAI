@@ -204,7 +204,7 @@ const updateUserProgressFromDB = async (uid, topic_id) => {
         }
 
         // If all concepts are passed, consider leveling up the user
-        const current_level = userDoc.data().current_level
+        current_level = userDoc.data().current_level
         if (allConceptsPassed) {
             console.log("All concepts are passed, leveling up the user");
             console.log("Old level:", current_level);

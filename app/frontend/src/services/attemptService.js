@@ -130,7 +130,7 @@ const checkAnswerInDB = async (userId, id, attemptId, answer, deckId) => {
             console.log('deck data', updatedAttemptData)
             if (updatedAttemptData.passes >= 3) {
 
-                await checkTopicProgression(deckData.userId, deckData.cards[0].questionData.topic_id, isPassing=true);
+                await checkTopicProgression(deckData.userId, deckData.cards[0].questionData.topic_id, isPassing = true);
                 await archiveDeckInDB(deckId, deckData.userId);
             }
 
