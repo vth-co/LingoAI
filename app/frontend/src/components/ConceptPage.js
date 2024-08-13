@@ -36,6 +36,7 @@ function ConceptPage() {
     };
   });
 
+  console.log("combined concepts", combinedConcepts);
   const sortedConcepts = combinedConcepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name));
 
   const currentConcepts = progress?.[0].concepts.filter(concept =>

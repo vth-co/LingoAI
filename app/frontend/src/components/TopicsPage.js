@@ -27,10 +27,10 @@ function TopicsPage() {
   const progressState = useSelector((state) => state.users.progress);
   const progress = progressState && Object.values(progressState)
   const theme = useTheme()
-  const currentConcept = progress?.[0].concepts.find(concept =>
+  const currentConcept = progress?.[0]?.concepts?.find(concept =>
     conceptId === concept.id
   );
-  console.log("Progress", progressState);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -42,6 +42,18 @@ function TopicsPage() {
 
     fetchData();
   }, [dispatch, conceptId, userId]);
+
+
+  const combinedTopics = currentConcept?.topics?.map(topic => {
+    console.log("topicc", topic);
+    const progressData = topics.find(p => topic.id === p.id)
+    console.log("progressdata", progressData);
+    return {
+      ...topic,
+      topic_name: progressData?.topic_name,
+      description: progressData?.description
+    }
+  })
 
   return (
     <Container>
@@ -63,45 +75,48 @@ function TopicsPage() {
           />
         </Box>
       </Box>
-      {topics.length > 0 ? (
-        <Grid container spacing={10} justifyContent='center' py={5}>
-          {topics.map(topic => (
-            <Grid item key={topic.id}>
-              <Button component={NavLink} to={`/topics/${topic.id}`}
+
+      <Grid container spacing={10} justifyContent='center' py={5}>
+        {combinedTopics?.map(topic => (
+          <Grid item key={topic.id}>
+            <Button component={NavLink} to={`/topics/${topic.id}`}
+              sx={{
+                backgroundColor: `${theme.palette.primary.main}`,
+                color: `${theme.palette.text.main}`,
+              }}>
+              <Box display='flex' flexDirection='column'
                 sx={{
-                  backgroundColor: `${theme.palette.primary.main}`,
-                  color: `${theme.palette.text.main}`,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignContent: "center",
+                  padding: "10px 20px",
+                  width: "400px",
+                  height: "200px"
                 }}>
-                <Box display='flex' flexDirection='column'
+                <Box
                   sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignContent: "center",
-                    padding: "10px 20px",
-                    width: "400px",
-                    height: "200px"
+                    height: "80px"
                   }}>
-                  <Box
-                    sx={{
-                      height: "125px"
-                    }}>
-                    <h3>{topic.topic_name}</h3>
-                  </Box>
-                  <p>{topic.description}</p>
-                  <LinearProgress
-                    variant='determinate'
-                    value={50}
-                    sx={{ height: 15 }}
-                    color='secondary'
-                  />
+                  <h3>{topic.topic_name}</h3>
                 </Box>
-              </Button>
-            </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <Typography textAlign="center" paddingTop="40px">No topics found.</Typography>
-      )}
+                <Box
+                  sx={{
+                    height: "70px"
+                  }}>
+                  {topic.description ? (<p>{topic.description}</p>) : (<p>&nbsp;</p>)}
+                </Box>
+                <LinearProgress
+                  variant='determinate'
+                  value={(topic.passes / 3) * 100}
+                  sx={{ height: 15 }}
+                  color='secondary'
+                />
+              </Box>
+            </Button>
+          </Grid>
+        ))}
+      </Grid>
+
     </Container>
   );
 }
