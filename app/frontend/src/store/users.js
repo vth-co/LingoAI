@@ -42,7 +42,7 @@ export const fetchSingleUser = (uid) => async (dispatch) => {
 export const fetchUserProgress = (uid) => async (dispatch) => {
     try {
         const response = await fetch(`/api/users/${uid}/progress`);
-        console.log("THUNK", uid);
+
         if (response.ok) {
             const progress = await response.json();
             dispatch(loadUserProgress(uid, progress));

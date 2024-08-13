@@ -27,6 +27,18 @@ function ConceptPage() {
     fetchData();
   }, [dispatch]);
 
+  const combinedConcepts = concepts.map(concept => {
+
+    const progressData = progress?.[0].concepts.find(p => p.id === concept.id);
+
+    return {
+      ...concept,
+      progress: progressData?.status
+    };
+  });
+
+  const sortedConcepts = combinedConcepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name));
+
   const currentConcepts = progress?.[0].concepts.filter(concept =>
     concept.level == user.current_level
   );
@@ -72,8 +84,8 @@ function ConceptPage() {
       </Box>
 
       <Grid container justifyContent='center' py={5}>
-        {concepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name)).map(concept => (
-          concept.status === true || concept.concept_name === "Vocabulary" ? (
+        {sortedConcepts?.map(concept => (
+          concept.progress === true || concept.concept_name === "Vocabulary" ? (
             <Grid item key={concept.id}>
               <Button component={NavLink} to={`/concepts/${concept.id}`}>
                 <Box display='flex' flexDirection='column'
