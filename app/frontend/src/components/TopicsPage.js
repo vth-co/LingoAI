@@ -26,22 +26,9 @@ function TopicsPage() {
 
   const progress = Object.values(useSelector((state) => state.users.progress));
 
-  console.log("progress", progress);
-
   const currentConcept = progress?.[0].concepts.find(concept =>
     conceptId === concept.id
   );
-
-  let topicsPassed = 0;
-  let totalTopics = currentConcept?.topics.length
-
-  currentConcept?.topics.map(topic => {
-    if (topic.status === true) topicsPassed++
-  })
-
-  const conceptBarProgress = (topicsPassed / totalTopics) * 100
-
-  console.log(progress);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,7 +56,7 @@ function TopicsPage() {
         <Box px={50}>
           <LinearProgress
             variant="determinate"
-            value={conceptBarProgress}
+            value={currentConcept.topics_passed_fraction * 100}
             sx={{ height: 25 }}
           />
         </Box>
