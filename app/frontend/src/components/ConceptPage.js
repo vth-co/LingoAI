@@ -3,20 +3,23 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Box, Button, Container, Grid, LinearProgress } from '@mui/material'
 import { NavLink } from "react-router-dom";
 import { fetchConcepts } from '../store/concepts';
-
+import { fetchUserProgress } from '../store/users';
+import { useTheme } from '@emotion/react';
+import LockIcon from '@mui/icons-material/Lock';
 
 function ConceptPage() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.session.user)
+  const progress = useSelector((state) => state.users.progress);
   const concepts = Object.values(useSelector((state) => state.concepts.concepts));
   const [loading, setLoading] = useState(true);
-
-  // console.log(concepts)
+  const theme = useTheme();
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       await dispatch(fetchConcepts(user.current_level));
+      await dispatch(fetchUserProgress(user.uid))
       setLoading(false);
     };
 
@@ -49,7 +52,78 @@ function ConceptPage() {
         </Box>
       </Box>
 
-      <Grid container spacing={10} justifyContent='center' py={5}>
+      <Grid container justifyContent='center' py={5}>
+        {concepts.map(concept => (
+          concept.status === true || concept.concept_name === "Vocabulary" ? (
+            <Button component={NavLink} to={`/concepts/${concept.id}`}>
+              <Box display='flex' flexDirection='column'
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignContent: "center",
+                  padding: "10px 20px",
+                  width: "200px",
+                  height: "200px"
+                }}>
+                <Box
+                  sx={{
+                    height: "100px"
+                  }}>
+                  <h3>{concept.concept_name}</h3>
+                </Box>
+                <p>{concept.level}</p>
+                <LinearProgress
+                  variant='determinate'
+                  value={50}
+                  sx={{ height: 15 }}
+                />
+              </Box>
+            </Button>
+          ) : (
+            <Button sx={{
+              textAlign: "left",
+              color: `${theme.palette.text.disabled}`,
+              "&:hover": {
+                cursor: "default",
+              },
+            }}>
+              <Box display='flex' flexDirection='column'
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignContent: "center",
+                  backgroundColor: `${theme.palette.text.disabled}`,
+                  padding: "10px 20px",
+                  width: "200px",
+                  height: "200px"
+                }}>
+                <Box
+                  sx={{
+                    height: "100px"
+                  }}>
+                  <h3>{concept.concept_name}</h3>
+                </Box>
+                <p>{concept.level}</p>
+                <LinearProgress
+                  variant='determinate'
+                  value={50}
+                  sx={{
+                    height: 15
+                  }}
+                />
+              </Box>
+              <LockIcon sx={{
+                position: 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                color: `${theme.palette.text.secondary}`,
+              }} />
+            </Button>
+          )))}
+      </Grid>
+
+      {/* <Grid container spacing={10} justifyContent='center' py={5}>
         {concepts.map(concept => (
           <Grid item key={concept.id}>
             <Button component={NavLink} to={`/concepts/${concept.id}`}>
@@ -64,7 +138,7 @@ function ConceptPage() {
             </Button>
           </Grid>
         ))}
-      </Grid>
+      </Grid> */}
     </Container>
   )
 }
