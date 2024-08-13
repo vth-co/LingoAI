@@ -44,28 +44,41 @@ function TopicsPage() {
           />
         </Box>
       </Box>
-            {topics.length > 0 ? (
-                <Grid container spacing={10} justifyContent='center' py={5}>
-                    {topics.map(topic => (
-                        <Grid item key={topic.id}>
-                            <Button component={NavLink} to={`/topics/${topic.id}`}>
-                                <Box display='flex' flexDirection='column' width="200px">
-                                    <h3>{topic.topic_name}</h3> <p>EXPLANATION</p>{' '}
-                                    <LinearProgress
-                                        variant='determinate'
-                                        value={50}
-                                        sx={{ height: 15 }}
-                                    />
-                                </Box>
-                            </Button>
-                        </Grid>
-                    ))}
-                </Grid>
-            ) : (
-                <Typography textAlign="center" paddingTop="40px">No topics found.</Typography>
-            )}
-        </Container>
-    );
+      {topics.length > 0 ? (
+        <Grid container spacing={10} justifyContent='center' py={5}>
+          {topics.map(topic => (
+            <Grid item key={topic.id}>
+              <Button component={NavLink} to={`/topics/${topic.id}`}>
+                <Box display='flex' flexDirection='column'
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignContent: "center",
+                    padding: "10px 20px",
+                    width: "200px",
+                    height: "200px"
+                  }}>
+                  <Box
+                    sx={{
+                      height: "158px"
+                    }}>
+                    <h3>{topic.topic_name}</h3>
+                  </Box>
+                  <LinearProgress
+                    variant='determinate'
+                    value={50}
+                    sx={{ height: 15 }}
+                  />
+                </Box>
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Typography textAlign="center" paddingTop="40px">No topics found.</Typography>
+      )}
+    </Container>
+  );
 }
 
 export default TopicsPage;
