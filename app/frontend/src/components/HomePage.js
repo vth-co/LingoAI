@@ -12,35 +12,39 @@ function HomePage() {
   const progressState = useSelector((state) => state.users.progress);
   const progress = progressState && Object.values(progressState)
   const theme = useTheme();
+  console.log("UID", user.uid);
 
   useEffect(() => {
-    dispatch(fetchUserProgress(user.uid))
-  }, [dispatch]);
+    if (user.uid) dispatch(fetchUserProgress(user.uid))
+  }, [dispatch, user.uid]);
 
   let proficiencyCount = 0;
 
-  if (user.current_level === "Beginner") proficiencyCount = 1;
-  if (user.current_level === "Intermediate") proficiencyCount = 2;
-  if (user.current_level === "Advanced") proficiencyCount = 3;
+  if (user.level === "Beginner") proficiencyCount = 1;
+  if (user.level === "Intermediate") proficiencyCount = 2;
+  if (user.level === "Advanced") proficiencyCount = 3;
 
   let proficiencyPercentage = (proficiencyCount / 3) * 100
 
   const currentConcepts = progress?.[0].concepts.filter(concept =>
-    concept.level == user.current_level
+    concept.level === user.level
   );
 
   let conceptCount = 0;
 
   currentConcepts?.map(concept => {
     if (concept.status === true) conceptCount++
+    return conceptCount
   })
+
+  console.log("USER", user);
 
   let conceptPercentage = (conceptCount / currentConcepts?.length) * 100
 
   const data = [
     {
       left: 'Current English Proficiency Level',
-      right: `${user.current_level}`
+      right: `${user.level}`
     },
     {
       left: (<>
@@ -120,6 +124,7 @@ function HomePage() {
         </>
       ),
       right: <img src="/assets/badges/beginner-badge.png"
+        alt="Lingo.ai Beginner Champion Badge"
         style={{
           width: "25%",
           borderRadius: "3.5px",

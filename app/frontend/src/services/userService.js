@@ -1,6 +1,5 @@
 const { db } = require('../firebase/firebaseConfig');
 const { collection, addDoc, getDocs, updateDoc, getDoc, doc, query, where, setDoc } = require('firebase/firestore');
-// const { checkAndUpdateUserLevel } = require('./levelService');
 const { getConceptsByLevel, getTopicsByConceptId } = require('./conceptService');
 
 // Service to add a user
@@ -12,7 +11,7 @@ const addUserToDB = async ({ uid, email, username, first_name, last_name, native
         first_name,
         last_name,
         native_language,
-        current_level: level,
+        level,
         badges,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
@@ -22,7 +21,7 @@ const addUserToDB = async ({ uid, email, username, first_name, last_name, native
 
 const setUserLevel = async (uid, level) => {
     await setDoc(doc(db, 'users', uid), {
-        current_level: level,
+        level,
         updatedAt: new Date().toISOString()
     }, { merge: true });
 };
@@ -78,7 +77,7 @@ const getProgressFromDB = async (uid) => {
         const conceptsSnapshot = await getDocs(conceptsCollectionRef);
         const concepts = conceptsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-        return { uid, username: userDoc.data().username, current_level: userDoc.data().current_level, concepts };
+        return { uid, username: userDoc.data().username, level: userDoc.data().level, concepts };
     } catch (error) {
         throw new Error('Error fetching progress: ' + error.message);
     }
@@ -99,7 +98,7 @@ const initializeUserProgress = async (uid, level = null) => {
 
         const userInfo = userInfoSnap.data();
         console.log('User info:', userInfo);
-        const currentLevel = level || userInfo.current_level;
+        const currentLevel = level || userInfo.level;
 
         // Fetch existing concepts progress
         const existingConceptsSnapshot = await getDocs(conceptsCollectionRef);
@@ -252,14 +251,14 @@ const updateUserProgressFromDB = async (uid, topic_id) => {
 
         // Level up logic
         const levels = ["Beginner", "Intermediate", "Advanced"];
-        const current_level = userDoc.data().current_level;
+        const current_level = userDoc.data().level;
         const new_level = levels[Math.min(levels.indexOf(current_level) + 1, levels.length - 1)];
 
         if (new_level !== current_level) {
             console.log("New level:", new_level);
 
             // Update user's level
-            await updateDoc(userDocRef, { current_level: new_level });
+            await updateDoc(userDocRef, { level: new_level });
 
             // Re-initialize user progress with new concepts
             await initializeUserProgress(uid, new_level);

@@ -26,7 +26,7 @@ function ConceptPage() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await dispatch(fetchConcepts(user.current_level));
+      await dispatch(fetchConcepts(user.level));
       await dispatch(fetchUserProgress(user.uid))
       setLoading(false);
     };
@@ -47,7 +47,7 @@ function ConceptPage() {
   console.log("combined concepts", sortedConcepts);
 
   const currentConcepts = progress?.[0].concepts.filter(concept =>
-    concept.level == user.current_level
+    concept.level == user.level
   );
 
   let conceptCount = 0;
@@ -67,13 +67,13 @@ function ConceptPage() {
     <Container>
       <Box>
         <Box display='flex' flexDirection='column' alignItems='center'>
-          <h1>Select a {user.current_level} Concept</h1>
+          <h1>Select a {user.level} Concept</h1>
           <p>
             These are the recommended concepts based on your current
             proficiency level.
           </p>
           {conceptPercentage === 100 ? (
-            <p>Congratulations! You've earned the Lingo.ai {user.current_level} Champion Badge.</p>
+            <p>Congratulations! You've earned the Lingo.ai {user.level} Champion Badge.</p>
           ) : (
             user.level !== "Advanced" ? (<p>Pass all the concepts to unlock the next proficiency level.</p>)
               : (<p>Pass all the concepts to get your Lingo.ai Advanced Champion Badge.</p>)
