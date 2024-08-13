@@ -70,7 +70,7 @@ function TopicsPage() {
               <Button component={NavLink} to={`/topics/${topic.id}`}
                 sx={{
                   backgroundColor: `${theme.palette.primary.main}`,
-                  color: `${theme.palette.primary.contrastText}`,
+                  color: `${theme.palette.text.main}`,
                 }}>
                 <Box display='flex' flexDirection='column'
                   sx={{
