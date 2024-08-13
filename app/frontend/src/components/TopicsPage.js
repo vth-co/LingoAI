@@ -6,23 +6,35 @@ import {
   LinearProgress,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchOneConcept, fetchTopicsByConcept } from "../store/concepts";
 import { NavLink } from "react-router-dom";
+import { fetchUserProgress } from '../store/users';
 
 function TopicsPage() {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.session.user)
+  const userId = user.uid
   const { conceptId } = useParams();
+  const [loading, setLoading] = useState(true);
   const concept = useSelector((state) => state.concepts.concepts[conceptId]);
   const topics = useSelector(
     (state) => state.concepts.topics[conceptId]?.topics || []
-  ); // Safely accessing topics array
-
+  );
+  const progress = useSelector((state) => state.users.progress);
+  console.log("progress", progress);
   useEffect(() => {
-    dispatch(fetchOneConcept(conceptId));
-    dispatch(fetchTopicsByConcept(conceptId));
+    const fetchData = async () => {
+      setLoading(true);
+      await dispatch(fetchOneConcept(conceptId));
+      await dispatch(fetchTopicsByConcept(conceptId));
+      await dispatch(fetchUserProgress(userId))
+      setLoading(false);
+    };
+
+    fetchData();
   }, [dispatch, conceptId]);
 
   return (
@@ -44,29 +56,41 @@ function TopicsPage() {
           />
         </Box>
       </Box>
-            {topics.length > 0 ? (
-                <Grid container spacing={10} justifyContent='center' py={5}>
-                    {topics.map(topic => (
-                        <Grid item key={topic.id}>
-                            <Button component={NavLink} to={`/topics/${topic.id}`} variant="outlined">
-                                <Box display='flex' flexDirection='column' width="200px">
-                                    <h3>{topic.topic_name}</h3> <p>EXPLANATION</p>{' '}
-                                    <LinearProgress
-                                        variant='determinate'
-                                        color="text"
-                                        value={50}
-                                        sx={{ height: 15 }}
-                                    />
-                                </Box>
-                            </Button>
-                        </Grid>
-                    ))}
-                </Grid>
-            ) : (
-                <Typography textAlign="center" paddingTop="40px">No topics found.</Typography>
-            )}
-        </Container>
-    );
+      {topics.length > 0 ? (
+        <Grid container spacing={10} justifyContent='center' py={5}>
+          {topics.map(topic => (
+            <Grid item key={topic.id}>
+              <Button component={NavLink} to={`/topics/${topic.id}`}>
+                <Box display='flex' flexDirection='column'
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignContent: "center",
+                    padding: "10px 20px",
+                    width: "200px",
+                    height: "200px"
+                  }}>
+                  <Box
+                    sx={{
+                      height: "158px"
+                    }}>
+                    <h3>{topic.topic_name}</h3>
+                  </Box>
+                  <LinearProgress
+                    variant='determinate'
+                    value={50}
+                    sx={{ height: 15 }}
+                  />
+                </Box>
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Typography textAlign="center" paddingTop="40px">No topics found.</Typography>
+      )}
+    </Container>
+  );
 }
 
 export default TopicsPage;

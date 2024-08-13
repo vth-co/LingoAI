@@ -45,11 +45,12 @@ export const darkTheme = createTheme({
       main: "#485575",
     },
     text: {
-      main: "#f1e9e9",
-      secondary: "rgba(22, 14, 14, 0.6)",
-      disabled: "rgba(22, 14, 14, 0.38)",
-      hint: "rgb(138, 151, 183)",
+      main: '#f1e9e9',
+      secondary: 'rgba(241, 233, 233, 0.6)',
+      disabled: 'rgba(241, 233, 233, 0.38)',
+      hint: '#8a97b7',
     },
+
     background: {
       default: "#222425",
     },
