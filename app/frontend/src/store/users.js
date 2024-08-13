@@ -42,7 +42,7 @@ export const fetchSingleUser = (uid) => async (dispatch) => {
 export const fetchUserProgress = (uid) => async (dispatch) => {
     try {
         const response = await fetch(`/api/users/${uid}/progress`);
-
+        console.log("THUNK", uid);
         if (response.ok) {
             const progress = await response.json();
             dispatch(loadUserProgress(uid, progress));
@@ -83,8 +83,13 @@ const usersReducer = (state = initialState, action) => {
             return newState;
         }
         case LOAD_USER_PROGRESS: {
-            console.log("USER ACTION", action);
-            return { ...state }
+            console.log("USER ACTION", action.payload);
+            const { uid, progress } = action.payload
+            console.log("PAYLOAD", uid, progress)
+            return {
+                ...state,
+                progress
+            }
         }
         default:
             return state;

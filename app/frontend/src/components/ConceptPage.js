@@ -16,7 +16,7 @@ function ConceptPage() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await dispatch(fetchConcepts(user.level));
+      await dispatch(fetchConcepts(user.current_level));
       setLoading(false);
     };
 
@@ -31,7 +31,7 @@ function ConceptPage() {
     <Container>
       <Box>
         <Box display='flex' flexDirection='column' alignItems='center'>
-          <h1>Select a {user.level} Concept</h1>
+          <h1>Select a {user.current_level} Concept</h1>
           <p>
             These are the recommended concepts based on your current
             proficiency level.

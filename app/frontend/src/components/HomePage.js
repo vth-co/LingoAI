@@ -1,15 +1,24 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Container, Grid, LinearProgress, Link, Typography, Tooltip } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
+import { fetchUserProgress } from '../store/users';
 
 function HomePage() {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
+  const progress = useSelector((state) => state.users.progress);
   console.log("USER", user);
+  console.log("PROGRESS", progress);
+
+  useEffect(() => {
+    dispatch(fetchUserProgress(user.uid))
+  }, [dispatch]);
+
   const data = [
     {
       left: 'Current English Proficiency Level:',
-      right: `${user.level}`
+      right: `${user.current_level}`
     },
     {
       left: 'Proficiency Level Progress:',
@@ -21,7 +30,7 @@ function HomePage() {
     },
     {
       left: 'Current Concept:',
-      right: `${user.level} - Basic Nouns`
+      right: `${user.current_level} - Basic Nouns`
     },
     {
       left: 'Concept Progress:',
