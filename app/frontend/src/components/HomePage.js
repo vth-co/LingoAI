@@ -15,6 +15,14 @@ function HomePage() {
     dispatch(fetchUserProgress(user.uid))
   }, [dispatch]);
 
+  let proficiencyCount = 0;
+
+  if (user.current_level === "Beginner") proficiencyCount = 1;
+  if (user.current_level === "Intermediate") proficiencyCount = 2;
+  if (user.current_level === "Advanced") proficiencyCount = 3;
+
+  let proficiencyPercentage = (proficiencyCount / 3) * 100
+
   const data = [
     {
       left: 'Current English Proficiency Level:',
@@ -24,30 +32,30 @@ function HomePage() {
       left: 'Proficiency Level Progress:',
       right: <LinearProgress
         variant="determinate"
-        value={50}
+        value={proficiencyPercentage}
         sx={{ height: 25 }}
       />
     },
-    {
-      left: 'Current Concept:',
-      right: `${user.current_level} - Basic Nouns`
-    },
+    // {
+    //   left: 'Current Concept:',
+    //   right: `${user.current_level} - Basic Nouns`
+    // },
     {
       left: 'Concept Progress:',
       right: <LinearProgress
         variant="determinate"
-        value={50}
+        value={25}
         sx={{ height: 25 }}
       />
     },
-    {
-      left: 'Topics Progress:',
-      right: <LinearProgress
-        variant="determinate"
-        value={50}
-        sx={{ height: 25 }}
-      />
-    },
+    // {
+    //   left: 'Topics Progress:',
+    //   right: <LinearProgress
+    //     variant="determinate"
+    //     value={50}
+    //     sx={{ height: 25 }}
+    //   />
+    // },
     {
       left: (
         <>
