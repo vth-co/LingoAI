@@ -70,71 +70,75 @@ function ConceptPage() {
       <Grid container justifyContent='center' py={5}>
         {concepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name)).map(concept => (
           concept.status === true || concept.concept_name === "Vocabulary" ? (
-            <Button component={NavLink} to={`/concepts/${concept.id}`}>
-              <Box display='flex' flexDirection='column'
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignContent: "center",
-                  padding: "10px 20px",
-                  width: "200px",
-                  height: "200px"
-                }}>
-                <Box
+            <Grid item key={concept.id}>
+              <Button component={NavLink} to={`/concepts/${concept.id}`}>
+                <Box display='flex' flexDirection='column'
                   sx={{
-                    height: "100px"
+                    display: "flex",
+                    flexDirection: "column",
+                    alignContent: "center",
+                    padding: "10px 20px",
+                    width: "200px",
+                    height: "200px"
                   }}>
-                  <h3>{concept.concept_name}</h3>
+                  <Box
+                    sx={{
+                      height: "100px"
+                    }}>
+                    <h3>{concept.concept_name}</h3>
+                  </Box>
+                  <p>{concept.level}</p>
+                  <LinearProgress
+                    variant='determinate'
+                    value={50}
+                    sx={{ height: 15 }}
+                  />
                 </Box>
-                <p>{concept.level}</p>
-                <LinearProgress
-                  variant='determinate'
-                  value={50}
-                  sx={{ height: 15 }}
-                />
-              </Box>
-            </Button>
+              </Button>
+            </Grid>
           ) : (
-            <Button sx={{
-              textAlign: "left",
-              color: `${theme.palette.text.disabled}`,
-              "&:hover": {
-                cursor: "default",
-              },
-            }}>
-              <Box display='flex' flexDirection='column'
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignContent: "center",
-                  backgroundColor: `${theme.palette.text.disabled}`,
-                  padding: "10px 20px",
-                  width: "200px",
-                  height: "200px"
-                }}>
-                <Box
+            <Grid item key={concept.id}>
+              <Button sx={{
+                textAlign: "left",
+                color: `${theme.palette.text.disabled}`,
+                "&:hover": {
+                  cursor: "default",
+                },
+              }}>
+                <Box display='flex' flexDirection='column'
                   sx={{
-                    height: "100px"
+                    display: "flex",
+                    flexDirection: "column",
+                    alignContent: "center",
+                    backgroundColor: `${theme.palette.text.disabled}`,
+                    padding: "10px 20px",
+                    width: "200px",
+                    height: "200px"
                   }}>
-                  <h3>{concept.concept_name}</h3>
+                  <Box
+                    sx={{
+                      height: "100px"
+                    }}>
+                    <h3>{concept.concept_name}</h3>
+                  </Box>
+                  <p>{concept.level}</p>
+                  <LinearProgress
+                    variant='determinate'
+                    value={50}
+                    sx={{
+                      height: 15
+                    }}
+                  />
                 </Box>
-                <p>{concept.level}</p>
-                <LinearProgress
-                  variant='determinate'
-                  value={50}
-                  sx={{
-                    height: 15
-                  }}
-                />
-              </Box>
-              <LockIcon sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '50%',
-                transform: 'translate(-50%, -50%)',
-                color: `${theme.palette.text.secondary}`,
-              }} />
-            </Button>
+                <LockIcon sx={{
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  color: `${theme.palette.text.secondary}`,
+                }} />
+              </Button>
+            </Grid>
           )))}
       </Grid>
 
