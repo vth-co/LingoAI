@@ -77,6 +77,7 @@ function ConceptPage() {
             sx={{
               height: 25,
             }}
+            color='secondary'
           />
         </Box>
       </Box>
@@ -87,8 +88,8 @@ function ConceptPage() {
             <Grid item key={concept.id}>
               <Button component={NavLink} to={`/concepts/${concept.id}`}
                 sx={{
-                  backgroundColor: `${theme.palette.primary.main}`,
-                  color: `${theme.palette.primary.contrastText}`,
+                  backgroundColor: `${theme.palette.secondary.main}`,
+                  color: `${theme.palette.secondary.contrastText}`,
                 }}>
                 <Box display='flex' flexDirection='column'
                   sx={{
@@ -110,7 +111,7 @@ function ConceptPage() {
                     variant='determinate'
                     value={50}
                     sx={{ height: 15 }}
-                    color='secondary'
+                    color='divider'
                   />
                 </Box>
               </Button>

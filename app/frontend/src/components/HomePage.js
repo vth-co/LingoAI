@@ -36,11 +36,25 @@ function HomePage() {
 
   const data = [
     {
-      left: 'Current English Proficiency Level:',
+      left: 'Current English Proficiency Level',
       right: `${user.current_level}`
     },
     {
-      left: 'Proficiency Level Progress:',
+      left: (<>
+        <Box display="flex" alignItems="center">
+          Proficiency Level Progress
+          <Tooltip
+            title={
+              <Typography>
+                Unlock the next proficiency level by completing concepts for the current level.
+              </Typography>
+            }
+            arrow
+          >
+            <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+          </Tooltip>:
+        </Box>
+      </>),
       right: <LinearProgress
         variant="determinate"
         value={proficiencyPercentage}
@@ -52,11 +66,26 @@ function HomePage() {
     //   right: `${user.current_level} - Basic Nouns`
     // },
     {
-      left: 'Concept Progress:',
+      left: (<>
+        <Box display="flex" alignItems="center">
+          Concept Progress
+          <Tooltip
+            title={
+              <Typography>
+                Progress toward mastering your concepts for this level by completing topics.
+              </Typography>
+            }
+            arrow
+          >
+            <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+          </Tooltip>:
+        </Box>
+      </>),
       right: <LinearProgress
         variant="determinate"
         value={conceptPercentage}
         sx={{ height: 25 }}
+        color='secondary'
       />
     },
     // {
@@ -75,7 +104,7 @@ function HomePage() {
             <Tooltip
               title={
                 <Typography>
-                  Earn a Lingo.ai Champion badge for each level you complete.
+                  Earn a Lingo.ai Champion Badge for each level you complete.
                 </Typography>
               }
               arrow

@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import { fetchOneConcept, fetchTopicsByConcept } from "../store/concepts";
 import { NavLink } from "react-router-dom";
 import { fetchUserProgress } from '../store/users';
+import { useTheme } from "@emotion/react";
 
 function TopicsPage() {
   const dispatch = useDispatch();
@@ -23,10 +24,9 @@ function TopicsPage() {
   const topics = useSelector(
     (state) => state.concepts.topics[conceptId]?.topics || []
   );
-
   const progressState = useSelector((state) => state.users.progress);
   const progress = progressState && Object.values(progressState)
-
+  const theme = useTheme()
   const currentConcept = progress?.[0].concepts.find(concept =>
     conceptId === concept.id
   );
@@ -59,6 +59,7 @@ function TopicsPage() {
             variant="determinate"
             value={currentConcept?.topics_passed_fraction * 100}
             sx={{ height: 25 }}
+          // color='divider'
           />
         </Box>
       </Box>
@@ -66,26 +67,32 @@ function TopicsPage() {
         <Grid container spacing={10} justifyContent='center' py={5}>
           {topics.map(topic => (
             <Grid item key={topic.id}>
-              <Button component={NavLink} to={`/topics/${topic.id}`}>
+              <Button component={NavLink} to={`/topics/${topic.id}`}
+                sx={{
+                  backgroundColor: `${theme.palette.primary.main}`,
+                  color: `${theme.palette.primary.contrastText}`,
+                }}>
                 <Box display='flex' flexDirection='column'
                   sx={{
                     display: "flex",
                     flexDirection: "column",
                     alignContent: "center",
                     padding: "10px 20px",
-                    width: "200px",
+                    width: "400px",
                     height: "200px"
                   }}>
                   <Box
                     sx={{
-                      height: "158px"
+                      height: "125px"
                     }}>
                     <h3>{topic.topic_name}</h3>
                   </Box>
+                  <p>{topic.description}</p>
                   <LinearProgress
                     variant='determinate'
                     value={50}
                     sx={{ height: 15 }}
+                    color='secondary'
                   />
                 </Box>
               </Button>
