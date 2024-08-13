@@ -74,7 +74,6 @@ function ConceptPage() {
           <LinearProgress
             variant='determinate'
             value={conceptPercentage}
-            color="secondary"
             sx={{
               height: 25,
             }}
@@ -88,8 +87,8 @@ function ConceptPage() {
             <Grid item key={concept.id}>
               <Button component={NavLink} to={`/concepts/${concept.id}`}
                 sx={{
-                  backgroundColor: `${theme.palette.secondary.main}`,
-                  color: `${theme.palette.secondary.contrastText}`,
+                  backgroundColor: `${theme.palette.primary.main}`,
+                  color: `${theme.palette.primary.contrastText}`,
                 }}>
                 <Box display='flex' flexDirection='column'
                   sx={{
@@ -111,7 +110,7 @@ function ConceptPage() {
                     variant='determinate'
                     value={50}
                     sx={{ height: 15 }}
-                    color='divider'
+                    color='secondary'
                   />
                 </Box>
               </Button>
