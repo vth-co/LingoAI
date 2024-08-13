@@ -150,7 +150,7 @@ function ConceptPage() {
                     flexDirection: "column",
                     alignContent: "center",
                     padding: "10px 20px",
-                    width: "200px",
+                    width: "400px",
                     height: "200px"
                   }}>
                   <Box
@@ -180,6 +180,10 @@ function ConceptPage() {
             </Grid>
           )))}
       </Grid>
+
+      {/* <Box>
+        <h3>Beginner</h3>
+      </Box> */}
 
       {/* <Grid container spacing={10} justifyContent='center' py={5}>
         {concepts.map(concept => (
