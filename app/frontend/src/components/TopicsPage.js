@@ -24,7 +24,8 @@ function TopicsPage() {
     (state) => state.concepts.topics[conceptId]?.topics || []
   );
 
-  const progress = Object.values(useSelector((state) => state.users.progress));
+  const progressState = useSelector((state) => state.users.progress);
+  const progress = progressState && Object.values(progressState)
 
   const currentConcept = progress?.[0].concepts.find(concept =>
     conceptId === concept.id
@@ -56,7 +57,7 @@ function TopicsPage() {
         <Box px={50}>
           <LinearProgress
             variant="determinate"
-            value={currentConcept.topics_passed_fraction * 100}
+            value={currentConcept?.topics_passed_fraction * 100}
             sx={{ height: 25 }}
           />
         </Box>

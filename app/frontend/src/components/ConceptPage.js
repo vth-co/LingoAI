@@ -10,7 +10,8 @@ import LockIcon from '@mui/icons-material/Lock';
 function ConceptPage() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.session.user)
-  const progress = useSelector((state) => state.users.progress);
+  const progressState = useSelector((state) => state.users.progress);
+  const progress = progressState && Object.values(progressState)
   const concepts = Object.values(useSelector((state) => state.concepts.concepts));
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
@@ -26,6 +27,20 @@ function ConceptPage() {
     fetchData();
   }, [dispatch]);
 
+  console.log("progress", progress);
+
+  const currentConcepts = progress?.[0].concepts.filter(concept =>
+    concept.level == user.current_level
+  );
+
+  let conceptCount = 0;
+
+  currentConcepts?.map(concept => {
+    if (concept.status === true) conceptCount++
+  })
+
+  let conceptPercentage = (conceptCount / currentConcepts?.length) * 100
+  console.log("curr", currentConcepts);
   if (loading) {
     return <LinearProgress />;
   }
@@ -46,7 +61,7 @@ function ConceptPage() {
         <Box px={50}>
           <LinearProgress
             variant='determinate'
-            value={50}
+            value={conceptPercentage}
             sx={{ height: 25 }}
           />
         </Box>
