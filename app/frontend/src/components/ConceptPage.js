@@ -28,7 +28,6 @@ function ConceptPage() {
   }, [dispatch]);
 
   const combinedConcepts = concepts.map(concept => {
-
     const progressData = progress?.[0].concepts.find(p => p.id === concept.id);
 
     return {
@@ -83,11 +82,15 @@ function ConceptPage() {
         </Box>
       </Box>
 
-      <Grid container justifyContent='center' py={5}>
+      <Grid container justifyContent='center' py={5} spacing={5}>
         {sortedConcepts?.map(concept => (
           concept.progress === true || concept.concept_name === "Vocabulary" ? (
             <Grid item key={concept.id}>
-              <Button component={NavLink} to={`/concepts/${concept.id}`}>
+              <Button component={NavLink} to={`/concepts/${concept.id}`}
+                sx={{
+                  backgroundColor: `${theme.palette.secondary.main}`,
+                  color: `${theme.palette.secondary.contrastText}`,
+                }}>
                 <Box display='flex' flexDirection='column'
                   sx={{
                     display: "flex",
@@ -95,7 +98,7 @@ function ConceptPage() {
                     alignContent: "center",
                     padding: "10px 20px",
                     width: "200px",
-                    height: "200px"
+                    height: "200px",
                   }}>
                   <Box
                     sx={{
@@ -108,6 +111,7 @@ function ConceptPage() {
                     variant='determinate'
                     value={50}
                     sx={{ height: 15 }}
+                    color='divider'
                   />
                 </Box>
               </Button>
@@ -116,6 +120,7 @@ function ConceptPage() {
             <Grid item key={concept.id}>
               <Button sx={{
                 textAlign: "left",
+                // backgroundColor: `${theme.palette.text.disabled}`,
                 color: `${theme.palette.text.disabled}`,
                 "&:hover": {
                   cursor: "default",
@@ -126,7 +131,6 @@ function ConceptPage() {
                     display: "flex",
                     flexDirection: "column",
                     alignContent: "center",
-                    backgroundColor: `${theme.palette.text.disabled}`,
                     padding: "10px 20px",
                     width: "200px",
                     height: "200px"
@@ -140,10 +144,11 @@ function ConceptPage() {
                   <p>{concept.level}</p>
                   <LinearProgress
                     variant='determinate'
-                    value={50}
+                    value={0}
                     sx={{
                       height: 15
                     }}
+                    color="text"
                   />
                 </Box>
                 <LockIcon sx={{
