@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box, Button, Container, Grid, LinearProgress } from '@mui/material'
+import { Box, Button, Container, Grid, LinearProgress, Collapse, IconButton, Divider, Typography } from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { NavLink } from "react-router-dom";
 import { fetchConcepts } from '../store/concepts';
 import { fetchUserProgress } from '../store/users';
@@ -16,6 +17,11 @@ function ConceptPage() {
   const concepts = Object.values(useSelector((state) => state.concepts.concepts));
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
+  const [showBeginner, setShowBeginner] = useState(false);
+
+  const handleToggle = () => {
+    setShowBeginner(!showBeginner);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +61,7 @@ function ConceptPage() {
   if (loading) {
     return <LinearProgress />;
   }
+
 
   return (
     <Container>
@@ -180,10 +187,42 @@ function ConceptPage() {
             </Grid>
           )))}
       </Grid>
+      <Divider />
+      <h2>Available Concept Levels</h2>
+      <Box>
+        <Box display="flex" alignItems="center" onClick={handleToggle} sx={{ cursor: 'pointer' }}>
 
-      {/* <Box>
-        <h3>Beginner</h3>
-      </Box> */}
+          <Box>
+            <h3>Beginner</h3>
+          </Box>
+          <IconButton size="small">
+            <ExpandMoreIcon />
+          </IconButton>
+        </Box>
+        <Collapse in={showBeginner}>
+          <Box>
+            <Box
+              sx={{
+                display: "grid",
+                justifyContent: "center"
+              }}
+            >
+              <Typography>Pass all the concepts to get your Lingo.ai Beginner Champion Badge.</Typography>
+              <Box>
+                <LinearProgress
+                  variant='determinate'
+                  value={50}
+                  sx={{
+                    height: 25,
+                  }}
+                  color='secondary'
+                />
+              </Box>
+            </Box>
+            <p>xx</p>
+          </Box>
+        </Collapse>
+      </Box>
 
       {/* <Grid container spacing={10} justifyContent='center' py={5}>
         {concepts.map(concept => (
