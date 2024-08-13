@@ -52,9 +52,12 @@ function ConceptPage() {
             These are the recommended concepts based on your current
             proficiency level.
           </p>
-          {user.level !== "Advanced" ? (<p>Pass all the concepts to unlock the next proficiency level.</p>)
-            : (<p>Pass all the concepts to get your Lingo.ai Advanced Champion badge.</p>)
-          }
+          {conceptPercentage === 100 ? (
+            <p>Congratulations! You've earned the Lingo.ai {user.current_level} Champion Badge.</p>
+          ) : (
+            user.level !== "Advanced" ? (<p>Pass all the concepts to unlock the next proficiency level.</p>)
+              : (<p>Pass all the concepts to get your Lingo.ai Advanced Champion Badge.</p>)
+          )}
         </Box>
         <Box px={50}>
           <LinearProgress
