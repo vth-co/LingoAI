@@ -23,7 +23,10 @@ function TopicsPage() {
   const topics = useSelector(
     (state) => state.concepts.topics[conceptId]?.topics || []
   );
+
   const progress = Object.values(useSelector((state) => state.users.progress));
+
+  console.log("progress", progress);
 
   const currentConcept = progress?.[0].concepts.find(concept =>
     conceptId === concept.id
@@ -38,6 +41,8 @@ function TopicsPage() {
 
   const conceptBarProgress = (topicsPassed / totalTopics) * 100
 
+  console.log(progress);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -48,7 +53,7 @@ function TopicsPage() {
     };
 
     fetchData();
-  }, [dispatch, conceptId]);
+  }, [dispatch, conceptId, userId]);
 
   return (
     <Container>
