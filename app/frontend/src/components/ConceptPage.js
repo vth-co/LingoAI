@@ -27,8 +27,6 @@ function ConceptPage() {
     fetchData();
   }, [dispatch]);
 
-  console.log("progress", progress);
-
   const currentConcepts = progress?.[0].concepts.filter(concept =>
     concept.level == user.current_level
   );
@@ -40,7 +38,7 @@ function ConceptPage() {
   })
 
   let conceptPercentage = (conceptCount / currentConcepts?.length) * 100
-  console.log("curr", currentConcepts);
+
   if (loading) {
     return <LinearProgress />;
   }
@@ -62,7 +60,10 @@ function ConceptPage() {
           <LinearProgress
             variant='determinate'
             value={conceptPercentage}
-            sx={{ height: 25 }}
+            color="secondary"
+            sx={{
+              height: 25,
+            }}
           />
         </Box>
       </Box>

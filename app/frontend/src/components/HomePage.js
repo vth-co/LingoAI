@@ -7,9 +7,8 @@ import { fetchUserProgress } from '../store/users';
 function HomePage() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
-  const progress = useSelector((state) => state.users.progress);
-  console.log("USER", user);
-  console.log("PROGRESS", progress);
+  const progressState = useSelector((state) => state.users.progress);
+  const progress = progressState && Object.values(progressState)
 
   useEffect(() => {
     dispatch(fetchUserProgress(user.uid))
@@ -22,6 +21,18 @@ function HomePage() {
   if (user.current_level === "Advanced") proficiencyCount = 3;
 
   let proficiencyPercentage = (proficiencyCount / 3) * 100
+
+  const currentConcepts = progress?.[0].concepts.filter(concept =>
+    concept.level == user.current_level
+  );
+
+  let conceptCount = 0;
+
+  currentConcepts?.map(concept => {
+    if (concept.status === true) conceptCount++
+  })
+
+  let conceptPercentage = (conceptCount / currentConcepts?.length) * 100
 
   const data = [
     {
@@ -44,7 +55,7 @@ function HomePage() {
       left: 'Concept Progress:',
       right: <LinearProgress
         variant="determinate"
-        value={25}
+        value={conceptPercentage}
         sx={{ height: 25 }}
       />
     },
