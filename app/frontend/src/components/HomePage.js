@@ -4,12 +4,14 @@ import { Box, Button, Container, Grid, LinearProgress, Link, Typography, Tooltip
 import InfoIcon from "@mui/icons-material/Info";
 import { fetchUserProgress } from '../store/users';
 import CheckIcon from '@mui/icons-material/Check';
+import { useTheme } from '@mui/material/styles';
 
 function HomePage() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
   const progressState = useSelector((state) => state.users.progress);
   const progress = progressState && Object.values(progressState)
+  const theme = useTheme();
 
   useEffect(() => {
     dispatch(fetchUserProgress(user.uid))
@@ -119,7 +121,9 @@ function HomePage() {
       ),
       right: <img src="/assets/badges/beginner-badge.png"
         style={{
-          width: "25%"
+          width: "25%",
+          borderRadius: "3.5px",
+          boxShadow: `0 0 2.5px ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
         }}
       />
     },
