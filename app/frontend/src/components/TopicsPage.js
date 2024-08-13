@@ -13,6 +13,7 @@ import { fetchOneConcept, fetchTopicsByConcept } from "../store/concepts";
 import { NavLink } from "react-router-dom";
 import { fetchUserProgress } from '../store/users';
 import { useTheme } from "@emotion/react";
+import CheckIcon from '@mui/icons-material/Check';
 
 function TopicsPage() {
   const dispatch = useDispatch();
@@ -43,11 +44,9 @@ function TopicsPage() {
     fetchData();
   }, [dispatch, conceptId, userId]);
 
-
+  console.log(currentConcept);
   const combinedTopics = currentConcept?.topics?.map(topic => {
-    console.log("topicc", topic);
     const progressData = topics.find(p => topic.id === p.id)
-    console.log("progressdata", progressData);
     return {
       ...topic,
       topic_name: progressData?.topic_name,
@@ -89,19 +88,26 @@ function TopicsPage() {
                   display: "flex",
                   flexDirection: "column",
                   alignContent: "center",
-                  padding: "10px 20px",
+                  padding: "0px 20px",
                   width: "400px",
                   height: "200px"
                 }}>
                 <Box
                   sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    alignSelf: "start",
                     height: "80px"
                   }}>
                   <h3>{topic.topic_name}</h3>
+                  {topic.passes === 3 && <CheckIcon sx={{
+                    ml: 1,
+                    color: `${theme.palette.completion.good}`,
+                  }} />}
                 </Box>
                 <Box
                   sx={{
-                    height: "70px"
+                    height: "80px"
                   }}>
                   {topic.description ? (<p>{topic.description}</p>) : (<p>&nbsp;</p>)}
                 </Box>
