@@ -6,6 +6,7 @@ import { fetchConcepts } from '../store/concepts';
 import { fetchUserProgress } from '../store/users';
 import { useTheme } from '@emotion/react';
 import LockIcon from '@mui/icons-material/Lock';
+import CheckIcon from '@mui/icons-material/Check';
 
 function ConceptPage() {
   const dispatch = useDispatch()
@@ -36,8 +37,8 @@ function ConceptPage() {
     };
   });
 
-  console.log("combined concepts", combinedConcepts);
   const sortedConcepts = combinedConcepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name));
+  console.log("combined concepts", sortedConcepts);
 
   const currentConcepts = progress?.[0].concepts.filter(concept =>
     concept.level == user.current_level
@@ -98,14 +99,30 @@ function ConceptPage() {
                     flexDirection: "column",
                     alignContent: "center",
                     padding: "10px 20px",
-                    width: "200px",
+                    width: "400px",
                     height: "200px",
                   }}>
                   <Box
                     sx={{
+                      display: "flex",
+                      alignItems: "start",
                       height: "100px"
                     }}>
-                    <h3>{concept.concept_name}</h3>
+                    <Box
+                      sx={{
+                        width: "fit-content",
+                        display: "flex",
+                        alignItems: "center"
+                      }}>
+
+                      <h3>{concept.concept_name}</h3>
+                      {concept.status === true &&
+                        <CheckIcon sx={{
+                          ml: 1,
+                          color: `${theme.palette.completion.good}`,
+                        }} />
+                      }
+                    </Box>
                   </Box>
                   <p>{concept.level}</p>
                   <LinearProgress
