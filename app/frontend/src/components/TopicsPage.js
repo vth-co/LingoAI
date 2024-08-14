@@ -45,7 +45,7 @@ function TopicsPage() {
     fetchData();
   }, [dispatch, conceptId, userId]);
 
-  console.log(currentConcept);
+  console.log("CC", currentConcept);
   const combinedTopics = currentConcept?.topics?.map(topic => {
     const progressData = topics.find(p => topic.id === p.id)
     return {
@@ -64,7 +64,7 @@ function TopicsPage() {
             Select any topic to begin. In order to pass a topic, you must score
             at least 80% three times.
           </p>
-          {currentConcept?.topics_passed_fraction * 100 === 100 ? (<p>Congratulations! You've completed this concept.</p>) : (<p>Pass all the topics to unlock the next concept.</p>)}
+          {currentConcept?.status === true ? (<p>Congratulations! You've completed this concept.</p>) : (<p>Pass all the topics to unlock the next concept.</p>)}
         </Box>
         <Box px={50}>
           <LinearProgress

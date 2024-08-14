@@ -12,7 +12,6 @@ function HomePage() {
   const progressState = useSelector((state) => state.users.progress);
   const progress = progressState && Object.values(progressState)
   const theme = useTheme();
-  console.log("UID", user.uid);
 
   useEffect(() => {
     if (user.uid) dispatch(fetchUserProgress(user.uid))
@@ -36,8 +35,6 @@ function HomePage() {
     if (concept.status === true) conceptCount++
     return conceptCount
   })
-
-  console.log("USER", user);
 
   let conceptPercentage = (conceptCount / currentConcepts?.length) * 100
 
@@ -131,7 +128,7 @@ function HomePage() {
           <Box
             sx={{
               display: "flex",
-              columnGap: "20px"
+              columnGap: "20px",
             }}>
 
             {user.badges?.includes("Bronze") &&
@@ -209,7 +206,22 @@ function HomePage() {
           </Link>
           <h2 style={{ padding: "16px 0px", }}>Your Latest Lingo.ai Progress</h2>
         </Box>
-        <Grid container rowSpacing={4} sx={{ display: 'flex', justifyContent: 'center' }}>
+        {user.badges?.length === 3 &&
+          <Box
+            sx={{
+              display: 'grid',
+              justifyContent: "center",
+              justifyItems: "center",
+              padding: "0px 0px 20px 0px",
+              backgroundColor: `${theme.palette.secondary.main}`,
+              borderRadius: "5px",
+              width: "100%"
+            }}>
+            <h3> Congratulations! You're the ultimate Lingo.ai champ.</h3>
+            <span>The Lingo.ai team is working on adding more content. Stay tuned!</span>
+          </Box>
+        }
+        <Grid container rowSpacing={4} sx={{ display: 'flex', justifyContent: 'center', paddingTop: "20px" }}>
           {data.map((row, index) => (
             <React.Fragment key={index}>
               <Grid item xs={4}>
