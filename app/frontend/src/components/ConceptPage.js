@@ -61,15 +61,24 @@ function ConceptPage() {
   ).sort((a, b) => b.concept_name.localeCompare(a.concept_name));
 
   let conceptCount = 0;
+  let topicsCount = 0;
+  let passedConcepts = 0
 
   currentConcepts?.map(concept => {
     if (concept.status === true) conceptCount++
+    concept.topics.map(topic => {
+      if (topic.passes === 3) topicsCount++
+    })
     return conceptCount
   })
 
+  if (topicsCount === 4) passedConcepts = 1
+
+  console.log("TOPICC", topicsCount);
+
   let conceptPercentage = (conceptCount / currentConcepts?.length) * 100
 
-
+  console.log(currentConcepts);
   if (loading) {
     return <LinearProgress />;
   }
