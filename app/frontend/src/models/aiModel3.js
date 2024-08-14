@@ -99,10 +99,10 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
                 For example:
                 Question: The weather is very __ today.
                 Options:
-                hot (mainit)
-                warm (mainit-init)
-                cold (malamig)
-                rainy (maulan)
+                hot (${native_language})
+                warm (${native_language})
+                cold (${native_language})
+                rainy (${native_language})
                 Ensure that the explanation for the correct answer is also provided in ${native_language} using this` + jsonschema
 
             }
