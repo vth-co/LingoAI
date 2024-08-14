@@ -18,9 +18,14 @@ function ConceptPage() {
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
   const [showBeginner, setShowBeginner] = useState(false);
+  const [showIntermediate, setShowIntermediate] = useState(false);
 
-  const handleToggle = () => {
+  const handleBeginnerToggle = () => {
     setShowBeginner(!showBeginner);
+  };
+
+  const handleIntermediateToggle = () => {
+    setShowIntermediate(!showIntermediate);
   };
 
   useEffect(() => {
@@ -62,6 +67,18 @@ function ConceptPage() {
     return <LinearProgress />;
   }
 
+  // user should see avail concepts section if user is intermediate or advanced.
+  // user should see beginner concept if user is intermediate or advanced
+  // user should see intermediate if user is advanced
+
+
+  // // intermediate should see beginner if:
+  // if level is intermediate and badge is empty => signed up as intermediate ==> see beginner
+  // if level is intermediate and badge has Bronze => user completed beginner ==> see beginner
+  // // advanced should see
+  // if level is advanced and badge is empty => signed up as advanced ==> see beginner, intermediate
+  // if level is advanced and badge has Bronze and Silver => user completed beginner, intermediate ==> see beginner, intermediate
+  // if level is advanced and bage has Bronze, Silver, Gold => user completed beginner, intermediate, advanced ==> see beginner, intermediate, advanced
 
   return (
     <Container>
@@ -187,42 +204,82 @@ function ConceptPage() {
             </Grid>
           )))}
       </Grid>
-      <Divider />
-      <Box>
-        <h2 style={{ textAlign: "center" }}>Available Concept Levels</h2>
-        <Box display="flex" alignItems="center" onClick={handleToggle} sx={{ cursor: 'pointer' }}>
+      {(user?.level === "Intermediate" || user?.level === "Advanced") &&
+        <>
+          <Divider />
+          <Box>
+            <h2 style={{ textAlign: "center" }}>Available Concept Levels</h2>
 
-          <Box>
-            <h3>Beginner</h3>
-          </Box>
-          <IconButton size="small">
-            <ExpandMoreIcon />
-          </IconButton>
-        </Box>
-        <Collapse in={showBeginner}>
-          <Box>
-            <Box
-              sx={{
-                display: "grid",
-                justifyContent: "center"
-              }}
-            >
-              <Typography>Pass all the concepts to get your Lingo.ai Beginner Champion Badge.</Typography>
+
+            {user?.level === "Advanced" &&
+              <>
+                <Box display="flex" alignItems="center" onClick={handleIntermediateToggle} sx={{ cursor: 'pointer' }}>
+                  <Box>
+                    <h3>Intermediate</h3>
+                  </Box>
+                  <IconButton size="small">
+                    <ExpandMoreIcon />
+                  </IconButton>
+                </Box>
+                <Collapse in={showIntermediate}>
+                  <Box>
+                    <Box
+                      sx={{
+                        display: "grid",
+                        justifyContent: "center"
+                      }}
+                    >
+                      <Typography>Pass all the concepts to get your Lingo.ai Intermediate Champion Badge.</Typography>
+                      <Box>
+                        <LinearProgress
+                          variant='determinate'
+                          value={50}
+                          sx={{
+                            height: 25,
+                          }}
+                          color='secondary'
+                        />
+                      </Box>
+                    </Box>
+                    <p>xx</p>
+                  </Box>
+                </Collapse>
+              </>
+            }
+            <Box display="flex" alignItems="center" onClick={handleBeginnerToggle} sx={{ cursor: 'pointer' }}>
               <Box>
-                <LinearProgress
-                  variant='determinate'
-                  value={50}
-                  sx={{
-                    height: 25,
-                  }}
-                  color='secondary'
-                />
+                <h3>Beginner</h3>
               </Box>
+              <IconButton size="small">
+                <ExpandMoreIcon />
+              </IconButton>
             </Box>
-            <p>xx</p>
+            <Collapse in={showBeginner}>
+              <Box>
+                <Box
+                  sx={{
+                    display: "grid",
+                    justifyContent: "center"
+                  }}
+                >
+                  <Typography>Pass all the concepts to get your Lingo.ai Beginner Champion Badge.</Typography>
+                  <Box>
+                    <LinearProgress
+                      variant='determinate'
+                      value={50}
+                      sx={{
+                        height: 25,
+                      }}
+                      color='secondary'
+                    />
+                  </Box>
+                </Box>
+                <p>xx</p>
+              </Box>
+            </Collapse>
           </Box>
-        </Collapse>
-      </Box>
+        </>
+      }
 
       {/* <Grid container spacing={10} justifyContent='center' py={5}>
         {concepts.map(concept => (
@@ -240,7 +297,7 @@ function ConceptPage() {
           </Grid>
         ))}
       </Grid> */}
-    </Container>
+    </Container >
   )
 }
 
