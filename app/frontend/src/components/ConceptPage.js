@@ -8,8 +8,8 @@ import { fetchUserConcepts } from '../store/concepts';
 import { useTheme } from '@emotion/react';
 import LockIcon from '@mui/icons-material/Lock';
 import CheckIcon from '@mui/icons-material/Check';
-// import BeginnerConcepts from './ConceptsPage-Beginner';
-// import IntermediateConcepts from './ConceptsPage-Intermediate';
+import BeginnerConcepts from './ConceptsPage-Beginner';
+import IntermediateConcepts from './ConceptsPage-Intermediate';
 
 function ConceptPage() {
   const dispatch = useDispatch()
@@ -42,7 +42,7 @@ function ConceptPage() {
     };
 
     fetchData();
-  }, [dispatch, user.level, user.uid]);
+  }, [dispatch, user.uid]);
 
   // const combinedConcepts = concepts.map(concept => {
   //   const progressData = progress?.[0].concepts.find(p => p.id === concept.id);
@@ -55,7 +55,7 @@ function ConceptPage() {
 
   // const sortedConcepts = combinedConcepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name));
 
-  const currentConcepts = progress?.[0].concepts.filter(concept =>
+  const currentConcepts = concepts.filter(concept =>
     concept.level === user.level
   ).sort((a, b) => b.concept_name.localeCompare(a.concept_name));
 
@@ -210,7 +210,7 @@ function ConceptPage() {
             </Grid>
           )))}
       </Grid>
-      {/* {(user?.level === "Intermediate" || user?.level === "Advanced") &&
+      {(user?.level === "Intermediate" || user?.level === "Advanced") &&
         <>
           <Divider />
           <Box>
@@ -229,7 +229,7 @@ function ConceptPage() {
                 </Box>
                 <Collapse in={showIntermediate}>
                   <Box>
-                    <IntermediateConcepts user={user} progress={progress} />
+                    <IntermediateConcepts user={user} concepts={concepts} />
                   </Box>
                 </Collapse>
               </>
@@ -244,12 +244,12 @@ function ConceptPage() {
             </Box>
             <Collapse in={showBeginner}>
               <Box>
-                <BeginnerConcepts user={user} progress={progress} />
+                <BeginnerConcepts user={user} concepts={concepts} />
               </Box>
             </Collapse>
           </Box>
         </>
-      } */}
+      }
 
     </Container >
   )
