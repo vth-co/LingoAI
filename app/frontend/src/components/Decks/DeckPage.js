@@ -171,7 +171,7 @@ function DeckPage() {
                     ))}
                   </Grid>
                 ) : (
-                  <Typography>No decks available</Typography>
+                  <Typography>You currently do not have any new decks (decks with zero attempts).</Typography>
                 )}
               </Box>
 
@@ -208,7 +208,7 @@ function DeckPage() {
                     ))}
                   </Grid>
                 ) : (
-                  <Typography>No decks available</Typography>
+                  <Typography>You currently do not have any decks in progress (decks with at least one attempt).</Typography>
                 )}
               </Box>
             </Box>
@@ -245,7 +245,7 @@ function DeckPage() {
                     ))}
                   </Grid>
                 ) : (
-                  <Typography>No decks available</Typography>
+                  <Typography>You currently do not have any archieved decks (completed decks).</Typography>
                 )}
               </Box>
             </Box>
