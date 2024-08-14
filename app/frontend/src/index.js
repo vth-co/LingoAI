@@ -21,7 +21,6 @@ import Footer from "./components/Footer";
 const Main = () => {
   const [locale, setLocale] = useState("en");
   const [mode, setMode] = useState(localStorage.getItem('theme') || 'light')
-
   const theme = mode === 'light' ? lightTheme : darkTheme;
   const handleModeChange = () => {
     const newMode = mode === 'light' ? 'dark' : 'light';

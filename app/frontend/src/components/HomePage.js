@@ -125,12 +125,16 @@ function HomePage() {
       ),
       right: (
         <>
+          {!user.badges &&
+            <span>No badges yet!</span>}
+
           <Box
             sx={{
               display: "flex",
               columnGap: "20px"
             }}>
-            {user.badges.includes("Bronze") &&
+
+            {user.badges?.includes("Bronze") &&
               <img src="/assets/badges/beginner-badge.png"
                 alt="Lingo.ai Beginner Champion Badge"
                 style={{
@@ -140,7 +144,7 @@ function HomePage() {
                 }}
               />}
 
-            {user.badges.includes("Silver") &&
+            {user.badges?.includes("Silver") &&
               <img src="/assets/badges/intermediate-badge.png"
                 alt="Lingo.ai Intermediate Champion Badge"
                 style={{
@@ -150,7 +154,7 @@ function HomePage() {
                 }}
               />}
 
-            {user.badges.includes("Gold") &&
+            {user.badges?.includes("Gold") &&
               <img src="/assets/badges/advanced-badge.png"
                 alt="Lingo.ai Advanced Champion Badge"
                 style={{
