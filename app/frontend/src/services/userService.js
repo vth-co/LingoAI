@@ -70,7 +70,6 @@ const getProgressFromDB = async (uid) => {
         const userDocRef = doc(db, 'users', uid);
 
         const userDoc = await getDoc(userDocRef);
-        console.log('User doc:', userDoc.data());
 
         // Access the 'concepts' subcollection
         const conceptsCollectionRef = collection(progressDocRef, 'concepts');

@@ -9,46 +9,50 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchOneConcept, fetchTopicsByConcept } from "../store/concepts";
 import { NavLink } from "react-router-dom";
 import { fetchUserProgress } from '../store/users';
 import { useTheme } from "@emotion/react";
 import CheckIcon from '@mui/icons-material/Check';
+import { fetchTopicsThroughProgress } from "../store/topics";
+import { fetchUserConcepts } from "../store/concepts";
 
 function TopicsPage() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user)
-  const userId = user.uid
+  const userId = user.uid;
   const { conceptId } = useParams();
   const [loading, setLoading] = useState(true);
-  const concept = useSelector((state) => state.concepts.concepts[conceptId]);
-  const topics = useSelector(
-    (state) => state.concepts.topics[conceptId]?.topics || []
-  );
+  const topics = useSelector((state) => state.topics);
   const progressState = useSelector((state) => state.users.progress);
   const progress = progressState && Object.values(progressState)
+  const concepts = Object.values(useSelector((state) => state.concepts));
+
   const theme = useTheme()
+
   const currentConcept = progress?.[0]?.concepts?.find(concept =>
     conceptId === concept.id
   );
 
-  console.log("PG", progress);
+  const currConcept = concepts.find(concept => conceptId === concept.id);
+
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await dispatch(fetchOneConcept(conceptId));
-      await dispatch(fetchTopicsByConcept(conceptId));
+      // await dispatch(fetchOneConcept(conceptId));
+      // await dispatch(fetchTopicsByConcept(conceptId));
       await dispatch(fetchUserProgress(userId))
+      await dispatch(fetchTopicsThroughProgress(userId))
+      await dispatch(fetchUserConcepts(userId))
+
       setLoading(false);
     };
 
     fetchData();
-  }, [dispatch, conceptId, userId]);
+  }, [dispatch, userId]);
 
-  console.log(currentConcept);
   const combinedTopics = currentConcept?.topics?.map(topic => {
-    const progressData = topics.find(p => topic.id === p.id)
+    const progressData = currConcept.topics.find(p => topic.id === p.id)
     return {
       ...topic,
       topic_name: progressData?.topic_name,
@@ -60,7 +64,7 @@ function TopicsPage() {
     <Container>
       <Box>
         <Box display="flex" flexDirection="column" alignItems="center">
-          <h1>Select a {concept?.concept_name} Topic</h1>
+          {/* <h1>Select a {concept?.concept_name} Topic</h1> */}
           <p>
             Select any topic to begin. In order to pass a topic, you must score
             at least 80% three times.

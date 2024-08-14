@@ -3,13 +3,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Box, Button, Container, Grid, LinearProgress, Collapse, IconButton, Divider, Typography } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { NavLink } from "react-router-dom";
-import { fetchConcepts, fetchUserConcepts } from '../store/concepts';
-import { fetchUserProgress } from '../store/users';
+import { fetchUserConcepts } from '../store/concepts';
+// import { fetchUserProgress } from '../store/users';
 import { useTheme } from '@emotion/react';
 import LockIcon from '@mui/icons-material/Lock';
 import CheckIcon from '@mui/icons-material/Check';
-import BeginnerConcepts from './ConceptsPage-Beginner';
-import IntermediateConcepts from './ConceptsPage-Intermediate';
+// import BeginnerConcepts from './ConceptsPage-Beginner';
+// import IntermediateConcepts from './ConceptsPage-Intermediate';
 
 function ConceptPage() {
   const dispatch = useDispatch()
@@ -23,7 +23,6 @@ function ConceptPage() {
   const [showBeginner, setShowBeginner] = useState(false);
   const [showIntermediate, setShowIntermediate] = useState(false);
 
-  console.log("PROGRESS", progress);
   const handleBeginnerToggle = () => {
     setShowBeginner(!showBeginner);
   };
@@ -32,15 +31,13 @@ function ConceptPage() {
     setShowIntermediate(!showIntermediate);
   };
 
-  console.log("concepts" , concepts)
 
-  
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       await dispatch(fetchUserConcepts(user.uid));
-      await dispatch(fetchUserProgress(user.uid))
-      await dispatch(fetchConcepts(user.level));
+      // await dispatch(fetchUserProgress(user.uid))
       setLoading(false);
     };
 
@@ -213,7 +210,7 @@ function ConceptPage() {
             </Grid>
           )))}
       </Grid>
-      {(user?.level === "Intermediate" || user?.level === "Advanced") &&
+      {/* {(user?.level === "Intermediate" || user?.level === "Advanced") &&
         <>
           <Divider />
           <Box>
@@ -252,7 +249,7 @@ function ConceptPage() {
             </Collapse>
           </Box>
         </>
-      }
+      } */}
 
     </Container >
   )

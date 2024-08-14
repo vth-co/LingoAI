@@ -1,3 +1,6 @@
+const { db } = require("../firebase/firebaseConfig");
+const { collection, getDocs, getDoc, doc } = require("firebase/firestore");
+
 // Action Types
 export const LOAD_TOPICS = "topics/LOAD_TOPICS";
 export const LOAD_ONE_TOPIC = "topics/LOAD_ONE_TOPIC";
@@ -29,6 +32,28 @@ export const fetchTopics = () => async (dispatch) => {
         console.error('Error fetching topics:', error);
     }
 };
+
+export const fetchTopicsThroughProgress = (userId) => async (dispatch) => {
+    try {
+   
+        const progressDocRef = doc(db, "progress", userId);
+
+        const conceptRef = collection(progressDocRef, 'concepts');
+
+        const conceptDoc = await getDocs(conceptRef);
+
+        const topics = conceptDoc.docs.map((doc) => ({
+            id: doc.id,
+              ...doc.data(),
+            }))
+            
+        console.log("topics", topics)
+    
+        dispatch(loadTopics(topics));
+      } catch (error) {
+        throw new Error("Error fetching progress: " + error.message);
+      }
+}
 
 export const fetchOneTopic = (topicId) => async (dispatch) => {
     try {
