@@ -13,7 +13,7 @@ import {
 import { addQuestions } from "../../store/questions";
 import { fetchOneTopic } from "../../store/topics";
 import { NavLink, useHistory } from "react-router-dom";
-import { fetchUserAttempt, startUserAttempt } from "../../store/attempt";
+import { createUserAttempt, fetchUserAttempt, startUserAttempt } from "../../store/attempt";
 import { fetchUserConcepts } from "../../store/concepts";
 
 function DeckPage() {
@@ -27,7 +27,6 @@ function DeckPage() {
   const concepts = Object.values(useSelector((state) => state.concepts));
   const conceptFilter = concepts.find(concept => conceptId === concept.id)
   
-  console.log('decks', decks)
   useEffect(() => {
     if (user && topicId) {
       setLoading(true);
@@ -60,7 +59,7 @@ function DeckPage() {
       const userId = user.uid; // You need to implement this based on your authentication logic
   
       // Create a new attempt
-      const result = await dispatch(startUserAttempt(userId, deckId));
+      const result = await dispatch(createUserAttempt(userId, deckId));
       const newAttemptId = result.payload; // Get the new attempt ID from the action payload
   
       // Update the deck status to indicate that it's in progress
@@ -113,7 +112,7 @@ function DeckPage() {
                 variant="contained"
                 fullWidth
                 size="large"
-                sx={{ height: "150px" }}
+                sx={{ height: "50px" }}
               >
                 Add New Deck
               </Button>
@@ -139,11 +138,11 @@ function DeckPage() {
                           onClick={() => handleStartAttempt(deck.id)} // Start user attempt when clicking the deck
                         >
                           <Typography variant="h6">{`Deck #${
-                            index + 1
+                            deck.deck_name
                           }`}</Typography>
-                          <Typography variant="body1">
+                          {/* <Typography variant="body1">
                             {deck.deckName}
-                          </Typography>{" "}
+                          </Typography>{" "} */}
                           {/* Update with your deck field */}
                         </Button>
                       </Grid>
@@ -173,11 +172,11 @@ function DeckPage() {
                           }}
                         >
                           <Typography variant="h6">{`Deck #${
-                            index + 1
+                            deck.deck_name
                           }`}</Typography>
-                          <Typography variant="body1">
+                          {/* <Typography variant="body1">
                             {deck.deckName}
-                          </Typography>{" "}
+                          </Typography>{" "} */}
                           {/* Update with your deck field */}
                         </Button>
                       </Grid>
@@ -206,11 +205,11 @@ function DeckPage() {
                           }}
                         >
                           <Typography variant="h6">{`Deck #${
-                            index + 1
+                            deck.deck_name
                           }`}</Typography>
-                          <Typography variant="body1">
+                          {/* <Typography variant="body1">
                             {deck.deckName}
-                          </Typography>{" "}
+                          </Typography>{" "} */}
                           {/* Update with your deck field */}
                         </Button>
                       </Grid>

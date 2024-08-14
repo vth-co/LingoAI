@@ -26,9 +26,11 @@ function CardPage() {
   const user = useSelector((state) => state.session.user);
   const deck = useSelector((state) => state.decks.selectedDeck);
   const cards = deck?.cards?.[0]?.questionData?.jsonData || [];
+  const attempt = useSelector((state) => state.attempts)
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [feedback, setFeedback] = useState({});
-  const attemptId = useSelector((state) => state.userAttempts);
+
+  console.log('attempts', attempt)
 
 
   useEffect(() => {
@@ -36,41 +38,47 @@ function CardPage() {
     dispatch(fetchUserAttempt(deckId))
   }, [dispatch, deckId]);
 
-  const handleAnswerChange = async (cardIndex, optionIndex, questionId) => {
-    const selectedOption = cards[cardIndex].options[optionIndex];
-
-    // Update local state
-    setSelectedAnswers((prevAnswers) => ({
-      ...prevAnswers,
-      [cardIndex]: selectedOption,
-    }));
-
+  const handleAnswerChange = async (cardIndex, optionIndex, cardId) => {
     try {
+      // Update local state
+      setSelectedAnswers((prevAnswers) => ({
+        ...prevAnswers,
+        [cardIndex]: optionIndex,
+      }));
+
+      console.log('user', user.uid)
+      console.log('card id', cardId)
+      // console.log('attempt id', attemptId)
+      console.log('deck id', deckId)
+      console.log('optionIndex', optionIndex)
+  
       const checkAttempt = await dispatch(
         modifyUserAttempt(
           user.uid,
+          cardId,         // Pass the card ID here
           attemptId,
+          optionIndex,     // Pass the selected option index
           deckId,
-          questionId,
-          selectedOption
         )
-      ).unwrap();
-
+      );
+  
       // Set feedback based on the response
       if (checkAttempt.message === "Answer is correct!") {
-        setFeedback({ cardIndex, isCorrect: true });
+        setFeedback((prevFeedback) => ({
+          ...prevFeedback,
+          [cardIndex]: { isCorrect: true }
+        }));
       } else {
-        setFeedback({
-          cardIndex,
-          isCorrect: false,
-          correctAnswer: checkAttempt.correctAnswer,
-        });
+        setFeedback((prevFeedback) => ({
+          ...prevFeedback,
+          [cardIndex]: { isCorrect: false, correctAnswer: checkAttempt.correctAnswer }
+        }));
       }
     } catch (error) {
       console.error("Error modifying user attempt:", error);
     }
   };
-
+  
   return (
     <Container
       sx={{
