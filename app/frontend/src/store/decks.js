@@ -27,21 +27,11 @@ export const fetchDecks = (userId, topicId) => async (dispatch) => {
     if (!userDoc.exists()) {
         throw new Error('User not found');
     }
-    const decksCollectionRef = collection(userDocRef, "decks");
-    const decksSnapshot = await getDocs(decksCollectionRef);
-    const decksData = [];
+    const userDecksCollectionRef = collection(userDocRef, 'decks');
+    const userDecksSnapshot = await getDocs(userDecksCollectionRef);
+    const userDecks = userDecksSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-    for (const doc of decksSnapshot.docs) {
-      const deckData = { id: doc.id, ...doc.data() };
-
-      if (deckData.userId === userId && deckData.topic_id === topicId) {
-        const isDeckInProgress = await checkDeckIsInProgressFromDB(doc.id);
-        deckData.isInProgress = isDeckInProgress.message === 'Deck is in progress';
-        decksData.push(deckData);
-      }
-    }
-
-    dispatch(loadDecks(decksData));
+    dispatch(loadDecks(userDecks));
   } catch (error) {
     console.error("Error fetching decks:", error);
   }

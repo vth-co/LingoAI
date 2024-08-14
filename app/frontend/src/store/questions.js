@@ -21,47 +21,26 @@ const add = (question) => ({
 
 
 export const addQuestions =
-  (conceptId, topicId, user_native_language, user_level, userId) => async (dispatch) => {
+  (concept_name, topic_name, user_native_language, concept_level, topicId, userId) => async (dispatch) => {
 
-
-    console.log("user id", userId)
-    const progressRef = await getDocs(collection(db, 'progress', userId));
-    console.log('progressRef', progressRef)
-    
-
-    
-    const topicRef = doc(db, "topics", topicId);
-    const topicDoc = await getDoc(topicRef);
-    if (!topicDoc.exists()) {
-      throw new Error("Topic does not exist!");
-    }
-
-    const topicData = topicDoc.data();
-    console.log('topic name', topicData.topic_name)
-    const topic_name = topicData.topic_name;
-    console.log("topicData: ", topicData);
-
-    if (!topicData.concept_id) {
-      throw new Error("Invalid topic due to concept_id is empty!!");
-    }
-
+  
     try {
       let questionData = await generateQuestionsByAI(
-        // concept_name,
+        concept_name,
         topic_name,
         user_native_language,
-        user_level,
+        concept_level,
         topicId
       );
       console.log("questionData: ", questionData);
 
       dispatch(
         add({
-          conceptId,
-          topicId,
+          concept_name,
+          topic_name,
           user_native_language,
-          user_level,
-          userId,
+          concept_level,
+          topicId,
         })
       );
 
@@ -75,7 +54,6 @@ export const addQuestions =
         // Create a new deck in the database
         const deck = await createDeckInDB({
           userId,
-          concept_id: conceptId,
           topic_id: topicId,
           createdAt: new Date(),
           archived: false,
@@ -87,6 +65,8 @@ export const addQuestions =
         const cardsAdded = await addCardsToDeckInDB(deck.id, userId, question_from_ai);
 
         console.log("Cards added to deck successfully:", cardsAdded);
+
+        return cardsAdded;
       }
     } catch (error) {
       console.error("Error during sign up:", error);

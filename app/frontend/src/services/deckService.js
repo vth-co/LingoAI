@@ -137,7 +137,7 @@ const createDeckInDB = async ({ userId, topic_id, createdAt, archived }) => {
             createdAt,
             archived
         });
-        const deck = { id: docRef.id, level, userId: userId, topic_id: topic_id, createdAt, archived, attemptId: null };
+        const deck = { deck_name: docRef.id.slice(0, 4), id: docRef.id, level, userId: userId, topic_id: topic_id, createdAt, archived, attemptId: null };
         console.log('deck check: ', deck)
         const userDecksCollectionRef = collection(doc(db, 'users', userId), 'decks');
         await setDoc(doc(userDecksCollectionRef, docRef.id), deck);
@@ -183,13 +183,12 @@ const addCardsToDeckInDB = async (deckId, userId, aiGeneratedRequestId) => {
 
         // Check if the question data matches the deck's topic and level
         if (questionData.topic === topicName) {
-            console.log("所以這裡有落入嗎? aiGeneratedRequestDoc.data(): ", aiGeneratedRequestDoc.data())
             deck.push(aiGeneratedRequestDoc.data());
         }
 
         // Update the deck with the new cards
         await setDoc(deckRef, { ...deckDoc.data(), cards: deck }, { merge: true });
-        console.log("這裡是deckservice: ", deck)
+        console.log('deckdeckdeck',deck )
         return deck;
     } catch (error) {
         throw new Error('Error adding card to deck: ' + error.message);

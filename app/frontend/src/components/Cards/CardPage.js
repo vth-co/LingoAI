@@ -30,7 +30,6 @@ function CardPage() {
   const [feedback, setFeedback] = useState({});
   const attemptId = useSelector((state) => state.userAttempts);
 
-  // console.log("this is the attempt id",attemptId)
 
   useEffect(() => {
     dispatch(fetchOneDeck(deckId));

@@ -83,7 +83,8 @@ function TopicsPage() {
       <Grid container spacing={10} justifyContent='center' py={5}>
         {combinedTopics?.map(topic => (
           <Grid item key={topic.id}>
-            <Button component={NavLink} to={`/topics/${topic.id}`}
+            <Button component={NavLink} 
+             to={`/concepts/${conceptId}/topics/${topic.id}/decks`}
               sx={{
                 backgroundColor: `${theme.palette.primary.main}`,
                 color: `${theme.palette.text.main}`,

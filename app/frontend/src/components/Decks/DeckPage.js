@@ -14,21 +14,27 @@ import { addQuestions } from "../../store/questions";
 import { fetchOneTopic } from "../../store/topics";
 import { NavLink, useHistory } from "react-router-dom";
 import { fetchUserAttempt, startUserAttempt } from "../../store/attempt";
+import { fetchUserConcepts } from "../../store/concepts";
 
-function DeckPage({ conceptId }) {
+function DeckPage() {
   const dispatch = useDispatch();
   const history = useHistory();
   const { decks } = useSelector((state) => state.decks);
-  const { topicId } = useParams();
+  const { conceptId, topicId } = useParams();
   const topic = useSelector((state) => state.topics[topicId]); // Fetch the topic using topicId
   const user = useSelector((state) => state.session.user);
   const [loading, setLoading] = useState(false); // Add loading state
-
+  const concepts = Object.values(useSelector((state) => state.concepts));
+  const conceptFilter = concepts.find(concept => conceptId === concept.id)
+  
+  console.log('decks', decks)
   useEffect(() => {
     if (user && topicId) {
       setLoading(true);
       dispatch(fetchDecks(user.uid, topicId)).finally(() => setLoading(false));
       dispatch(fetchOneTopic(topicId));
+      dispatch(fetchUserConcepts(user.uid))
+
     }
   }, [dispatch, user, topicId]);
 
@@ -37,7 +43,7 @@ function DeckPage({ conceptId }) {
     setLoading(true); // Set loading to true before starting the process
     try {
       await dispatch(
-        addQuestions(conceptId, topicId, user.native_language, user.level, user.uid)
+        addQuestions(conceptFilter.concept_name, topic.topic_name, user.native_language, conceptFilter.level, topicId, user.uid)
       );
       // Fetch decks again after creating new questions
       dispatch(fetchDecks(user.uid, topicId));
@@ -66,9 +72,6 @@ function DeckPage({ conceptId }) {
     }
   };
 
-  // console.log(decks[0].attemptId)
-
-  console.log(decks)
 
   const getAllDecks = () => {
     return decks.filter(deck => !deck.attemptId && !deck.isArchived) // Include non-archived decks
