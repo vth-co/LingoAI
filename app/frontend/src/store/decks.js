@@ -1,10 +1,11 @@
+import { checkDeckIsInProgressFromDB } from "../services/deckService";
+
 const { db } = require("../firebase/firebaseConfig");
-const { collection, getDocs, getDoc, doc } = require("firebase/firestore");
+const { collection, getDocs, doc, updateDoc, setDoc, getDoc, FieldValue } = require("firebase/firestore");
 
 // Action Types
 export const LOAD_DECKS = "concepts/LOAD_DECKS";
 export const LOAD_ONE_DECK = "concepts/LOAD_ONE_DECK";
-export const LOAD_TOPICS_BY_DECK = "concepts/LOAD_TOPICS_BY_DECK";
 
 // Action Creators
 const loadDecks = (decks) => ({
@@ -20,41 +21,86 @@ const loadOneDeck = (deck) => ({
 // Thunk Actions
 export const fetchDecks = (userId, topicId) => async (dispatch) => {
   try {
-    // Adjust this query to filter decks based on userId and topicId
-    const decksCollectionRef = collection(db, "decks");
+
+    const userDocRef = doc(db, 'users', userId);
+    const userDoc = await getDoc(userDocRef);
+    if (!userDoc.exists()) {
+        throw new Error('User not found');
+    }
+    const decksCollectionRef = collection(userDocRef, "decks");
     const decksSnapshot = await getDocs(decksCollectionRef);
+    const decksData = [];
 
-    const decksData = decksSnapshot.docs
-      .map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }))
-      .filter((deck) => deck.userId === userId && deck.topic_id === topicId); // Filtering by userId and topicId
+    for (const doc of decksSnapshot.docs) {
+      const deckData = { id: doc.id, ...doc.data() };
 
-    console.log(decksData);
+      if (deckData.userId === userId && deckData.topic_id === topicId) {
+        const isDeckInProgress = await checkDeckIsInProgressFromDB(doc.id);
+        deckData.isInProgress = isDeckInProgress.message === 'Deck is in progress';
+        decksData.push(deckData);
+      }
+    }
 
-    dispatch(loadDecks(decksData)); // Update Redux state with filtered decks data
+    dispatch(loadDecks(decksData));
   } catch (error) {
     console.error("Error fetching decks:", error);
-    // Handle error appropriately
   }
 };
 
 export const fetchOneDeck = (deckId) => async (dispatch) => {
   try {
-    // Get the specific deck document by its ID
     const deckDocRef = doc(db, "decks", deckId);
     const deckSnapshot = await getDoc(deckDocRef);
 
     if (deckSnapshot.exists()) {
       const deckData = { id: deckSnapshot.id, ...deckSnapshot.data() };
-      dispatch(loadOneDeck(deckData)); // Dispatch the action to load the deck
+      dispatch(loadOneDeck(deckData));
     } else {
       console.log("No such deck found!");
     }
   } catch (error) {
     console.error("Error fetching deck:", error);
-    // Handle error appropriately
+  }
+};
+
+export const updateDeckStatus = async (deckId, attemptId) => {
+  try {
+    const deckRef = doc(db, 'decks', deckId);
+    await updateDoc(deckRef, {
+      status: "in_progress",
+      currentAttemptId: attemptId
+    });
+    console.log('Deck status updated to in_progress');
+  } catch (error) {
+    throw new Error('Error updating deck status: ' + error.message);
+  }
+};
+
+
+export const createAttemptIfNotExists = (deckId, attemptId) => async (dispatch, getState) => {
+  if (!attemptId) {
+    console.error("Invalid attemptId:", attemptId);
+    throw new Error("Attempt ID is undefined or invalid.");
+  }
+
+  const docRef = doc(db, "decks", deckId);
+  
+  try {
+    await setDoc(docRef, { attemptId }, { merge: true });
+    console.log("Attempt ID set successfully in deck:", deckId);
+  } catch (error) {
+    console.error("Error setting attempt ID:", error);
+    throw error;
+  }
+};
+
+export const updateAttemptId = (deckId, attemptId) => async (dispatch) => {
+  try {
+    const deckDocRef = doc(db, "decks", deckId);
+    await updateDoc(deckDocRef, { attemptId });
+    dispatch(fetchOneDeck(deckId)); // Optionally refresh the deck data
+  } catch (error) {
+    console.error("Error updating attempt ID:", error);
   }
 };
 
@@ -67,12 +113,12 @@ const decksReducer = (state = initialState, action) => {
     case LOAD_DECKS:
       return {
         ...state,
-        decks: action.decks, // Set decks data
+        decks: action.decks,
       };
     case LOAD_ONE_DECK:
       return {
         ...state,
-        selectedDeck: action.deck, // Set the selected deck data
+        selectedDeck: action.deck,
       };
     default:
       return state;

@@ -3,13 +3,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Container, Grid, LinearProgress, Link, Typography, Tooltip } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import { fetchUserProgress } from '../store/users';
+import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 
 function HomePage() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
   const progress = useSelector((state) => state.users.progress);
-  console.log("USER", user);
-  console.log("PROGRESS", progress);
+  // console.log("USER", user);
+  // console.log("PROGRESS", progress);
 
   useEffect(() => {
     dispatch(fetchUserProgress(user.uid))
@@ -102,16 +103,14 @@ function HomePage() {
       <Box>
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
           <h1>Welcome, {user.username}!</h1>
-          <Link href='/concepts'
-            // exact={true}activeClassName='active'
-            underline="none">
             <Button
               variant="contained"
               color="primary"
+              component={NavLink}
+              to='/concepts'
             >
               Start Learning Now
             </Button>
-          </Link>
           <h2 style={{ padding: "16px 0px", }}>Your Latest Lingo.ai Progress</h2>
         </Box>
         <Grid container rowSpacing={4} sx={{ display: 'flex', justifyContent: 'center' }}>

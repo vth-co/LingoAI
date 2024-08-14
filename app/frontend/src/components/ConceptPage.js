@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box, Button, Container, Grid, LinearProgress } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-import { fetchConcepts } from '../store/concepts';
+import { fetchConcepts, fetchUserConcepts } from '../store/concepts';
 import { fetchUserProgress } from '../store/users';
 import { useTheme } from '@emotion/react';
 import LockIcon from '@mui/icons-material/Lock';
@@ -11,14 +11,19 @@ function ConceptPage() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.session.user)
   const progress = useSelector((state) => state.users.progress);
-  const concepts = Object.values(useSelector((state) => state.concepts.concepts));
+  // const concepts = Object.values(useSelector((state) => state.concepts.concepts));
+  const concepts = useSelector((state) => state.concepts)
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
 
+  console.log("concepts" , concepts)
+
+  
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await dispatch(fetchConcepts(user.current_level));
+      // await dispatch(fetchConcepts(user.level));
+      await dispatch(fetchUserConcepts(user.uid));
       await dispatch(fetchUserProgress(user.uid))
       setLoading(false);
     };
@@ -34,7 +39,7 @@ function ConceptPage() {
     <Container>
       <Box>
         <Box display='flex' flexDirection='column' alignItems='center'>
-          <h1>Select a {user.current_level} Concept</h1>
+          <h1>Select a {user.level} Concept</h1>
           <p>
             These are the recommended concepts based on your current
             proficiency level.
@@ -57,7 +62,7 @@ function ConceptPage() {
       <Grid container justifyContent='center' py={5}>
         {concepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name)).map(concept => (
           concept.status === true || concept.concept_name === "Vocabulary" ? (
-            <Button component={NavLink} to={`/concepts/${concept.id}`}>
+            <Button component={NavLink} to={`/concepts/${concept.id}`} conceptId={concept.id}>
               <Box display='flex' flexDirection='column'
                 sx={{
                   display: "flex",
@@ -124,35 +129,6 @@ function ConceptPage() {
             </Button>
           )))}
       </Grid>
-
-      {/* <Grid container spacing={10} justifyContent='center' py={5}>
-        {concepts.map(concept => (
-          <Grid item key={concept.id}>
-            <Button
-              component={NavLink}
-              to={`/concepts/${concept.id}`}
-              sx={{
-                backgroundColor: 'primary.main',
-                color: 'text.primary',
-                '&:hover': {
-                  backgroundColor: 'primary.dark', // Darker shade on hover
-                },
-              }}
-            >
-              <Box display='flex' flexDirection='column' width='200px'>
-                <h3>{concept.concept_name}</h3>
-                <p>{concept.level}</p>
-                <LinearProgress
-                  variant='determinate'
-                  color='text'
-                  value={50}
-                  sx={{ height: 15 }}
-                />
-              </Box>
-            </Button>
-          </Grid>
-        ))}
-      </Grid> */}
     </Container>
   );
 }

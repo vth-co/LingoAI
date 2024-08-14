@@ -2,8 +2,9 @@ import { addQuestionsToDB } from "../services/aiService";
 import { addCardsToDeckInDB, createDeckInDB } from "../services/deckService";
 
 const { db } = require("../firebase/firebaseConfig");
-const { collection, getDoc, doc } = require("firebase/firestore");
-const { generateQuestionsByAI } = require("../models/aiModel");
+const { collection, getDoc, doc, getDocs } = require("firebase/firestore");
+// const { generateQuestionsByAI } = require("../models/aiModel");
+const { generateQuestionsByAI } = require("../models/aiModel2");
 
 export const LOAD_QUESTIONS = () => "questions/LOAD_QUESTIONS";
 export const ADD_QUESTION = () => "questions/ADD_QUESTION";
@@ -20,13 +21,17 @@ const add = (question) => ({
 
 
 export const addQuestions =
-  (topicId, user_native_language, user_level, userId) => async (dispatch) => {
+  (conceptId, topicId, user_native_language, user_level, userId) => async (dispatch) => {
 
+
+    console.log("user id", userId)
+    const progressRef = await getDocs(collection(db, 'progress', userId));
+    console.log('progressRef', progressRef)
+    
+
+    
     const topicRef = doc(db, "topics", topicId);
-    console.log("topicRef: ", topicRef);
-
     const topicDoc = await getDoc(topicRef);
-    console.log("topicDoc: ", topicDoc);
     if (!topicDoc.exists()) {
       throw new Error("Topic does not exist!");
     }
@@ -42,6 +47,7 @@ export const addQuestions =
 
     try {
       let questionData = await generateQuestionsByAI(
+        // concept_name,
         topic_name,
         user_native_language,
         user_level,
@@ -51,6 +57,7 @@ export const addQuestions =
 
       dispatch(
         add({
+          conceptId,
           topicId,
           user_native_language,
           user_level,
@@ -68,6 +75,7 @@ export const addQuestions =
         // Create a new deck in the database
         const deck = await createDeckInDB({
           userId,
+          concept_id: conceptId,
           topic_id: topicId,
           createdAt: new Date(),
           archived: false,

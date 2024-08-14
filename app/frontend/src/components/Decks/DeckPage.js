@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDecks } from "../../store/decks";
+import { createAttemptIfNotExists, deleteStatusField, fetchDecks, resetDeckStatuses, updateDeckStatus } from "../../store/decks";
 import { useParams } from "react-router-dom";
 import {
   Container,
@@ -12,11 +12,12 @@ import {
 } from "@mui/material";
 import { addQuestions } from "../../store/questions";
 import { fetchOneTopic } from "../../store/topics";
-import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
-import { startUserAttempt } from "../../store/attempt";
+import { NavLink, useHistory } from "react-router-dom";
+import { fetchUserAttempt, startUserAttempt } from "../../store/attempt";
 
-function DeckPage() {
+function DeckPage({ conceptId }) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { decks } = useSelector((state) => state.decks);
   const { topicId } = useParams();
   const topic = useSelector((state) => state.topics[topicId]); // Fetch the topic using topicId
@@ -25,8 +26,9 @@ function DeckPage() {
 
   useEffect(() => {
     if (user && topicId) {
-      dispatch(fetchDecks(user.uid, topicId)); // Fetch decks with userId and topicId
-      dispatch(fetchOneTopic(topicId)); // Fetch the topic name using topicId
+      setLoading(true);
+      dispatch(fetchDecks(user.uid, topicId)).finally(() => setLoading(false));
+      dispatch(fetchOneTopic(topicId));
     }
   }, [dispatch, user, topicId]);
 
@@ -35,7 +37,7 @@ function DeckPage() {
     setLoading(true); // Set loading to true before starting the process
     try {
       await dispatch(
-        addQuestions(topicId, user.native_language, user.level, user.uid)
+        addQuestions(conceptId, topicId, user.native_language, user.level, user.uid)
       );
       // Fetch decks again after creating new questions
       dispatch(fetchDecks(user.uid, topicId));
@@ -47,17 +49,37 @@ function DeckPage() {
   };
 
   const handleStartAttempt = async (deckId) => {
-    if (user && deckId) {
-      try {
-        await dispatch(startUserAttempt(user.uid, deckId)); // Start user attempt when a deck is clicked
-      } catch (error) {
-        console.log("Error starting user attempt:", error.message);
-      }
+    try {
+      // Assume you have the user ID available in the context
+      const userId = user.uid; // You need to implement this based on your authentication logic
+  
+      // Create a new attempt
+      const result = await dispatch(startUserAttempt(userId, deckId));
+      const newAttemptId = result.payload; // Get the new attempt ID from the action payload
+  
+      // Update the deck status to indicate that it's in progress
+      // await updateDeckStatus(deckId, newAttemptId);
+  
+      console.log('Attempt started successfully:', newAttemptId);
+    } catch (error) {
+      console.error('Error starting attempt:', error);
     }
   };
 
+  // console.log(decks[0].attemptId)
+
+  console.log(decks)
+
   const getAllDecks = () => {
-    return decks;
+    return decks.filter(deck => !deck.attemptId && !deck.isArchived) // Include non-archived decks
+  };
+  
+  const getInProgressDecks = () => {
+    return decks.filter(deck => deck.attemptId && !deck.archived);
+  };
+  
+  const getArchivedDecks = () => {
+    return decks.filter(deck => deck.archived);
   };
 
   return (
@@ -134,14 +156,66 @@ function DeckPage() {
                 <Typography variant="h5" mb={2}>
                   In Progress
                 </Typography>
-                <Typography>No decks available</Typography>
+                {getInProgressDecks().length > 0 ? (
+                  <Grid container spacing={2}>
+                    {getInProgressDecks().map((deck, index) => (
+                      <Grid item key={deck.id} xs={12} sm={6} md={4}>
+                        <Button
+                          component={NavLink}
+                          to={`/decks/${deck.id}`}
+                          variant="contained"
+                          color="primary"
+                          sx={{
+                            height: "175px",
+                          }}
+                        >
+                          <Typography variant="h6">{`Deck #${
+                            index + 1
+                          }`}</Typography>
+                          <Typography variant="body1">
+                            {deck.deckName}
+                          </Typography>{" "}
+                          {/* Update with your deck field */}
+                        </Button>
+                      </Grid>
+                    ))}
+                  </Grid>
+                ) : (
+                  <Typography>No decks available</Typography>
+                )}
               </Box>
 
               <Box flex={1} p={2}>
                 <Typography variant="h5" mb={2}>
                   Archived Decks
                 </Typography>
-                <Typography>No decks available</Typography>
+                {getArchivedDecks().length > 0 ? (
+                  <Grid container spacing={2}>
+                    {getArchivedDecks().map((deck, index) => (
+                      <Grid item key={deck.id} xs={12} sm={6} md={4}>
+                        <Button
+                          component={NavLink}
+                          to={`/decks/${deck.id}`}
+                          variant="contained"
+                          color="primary"
+                          sx={{
+                            height: "175px",
+                          }}
+                        >
+                          <Typography variant="h6">{`Deck #${
+                            index + 1
+                          }`}</Typography>
+                          <Typography variant="body1">
+                            {deck.deckName}
+                          </Typography>{" "}
+                          {/* Update with your deck field */}
+                        </Button>
+                      </Grid>
+                    ))}
+                  </Grid>
+                ) : (
+                  <Typography>No decks available</Typography>
+                )}
               </Box>
             </Box>
           </Container>
