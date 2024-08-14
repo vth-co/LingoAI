@@ -99,10 +99,10 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
                 For example:
                 Question: The weather is very __ today.
                 Options:
-                A) hot (mainit)
-                B) warm (mainit-init)
-                C) cold (malamig)
-                D) rainy (maulan)
+                hot (mainit)
+                warm (mainit-init)
+                cold (malamig)
+                rainy (maulan)
                 Ensure that the explanation for the correct answer is also provided in ${native_language} using this` + jsonschema
 
             }
@@ -150,10 +150,10 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
                 For example:
                 Question: Choose the sentence that uses the indefinite article \"a\" correctly:
                 Options:
-                A)"The professor gave a lecture on philosophy.",
-                B)"Professor gave lecture on philosophy.",
-                C)"A professor gave a lecture on philosophy."
-                D)"The professor gave the lecture on a philosophy."
+                "The professor gave a lecture on philosophy.",
+                "Professor gave lecture on philosophy.",
+                "A professor gave a lecture on philosophy."
+                "The professor gave the lecture on a philosophy."
 
                 Ensure that the explanation for the correct answer is also provided in ${native_language} using this` + jsonschema
 
@@ -174,10 +174,10 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
                 For example:
                 Question: Hello, I’m Emily , a Project Manager at Tech, Inc. I ______ leading cross-functional teams to develop innovative software solutions.
                 Options:
-                A)"specialize in",
-                B)"good at",
-                C)"expert on"
-                D)"good on"
+                "specialize in",
+                "good at",
+                "expert on"
+                "good on"
 
                 Ensure that the explanation for the correct answer is also provided in ${native_language} using this` + jsonschema
 
@@ -203,13 +203,13 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
 
                     Options:
 
-                    A) His name is John.
+                     His name is John.
 
-                    B) He lives in New York.
+                     He lives in New York.
 
-                    C) He is my best friend.
-
-                    D) He is very funny.
+                     He is my best friend.
+                     
+                     He is very funny.
 
 
 
@@ -233,10 +233,10 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
                     Person B: I wake up at 7 AM and then I _______________.
 
                     Options:
-                    A) watch TV
-                    B) go to bed
-                    C) read a book
-                    D) eat breakfast
+                     watch TV
+                     go to bed
+                     read a book
+                     eat breakfast
                 ensure answer and explaination in ${native_language} using this` + jsonschema
 
             }
@@ -262,13 +262,12 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
 
                     Options:
 
-                    A) How much is this one?
+                     How much is this one?
 
-                    B) What color is it?
+                     What color is it?
 
-                    C) How tall is it?
-
-                    D) Where is the fitting room?
+                     How tall is it?
+                     Where is the fitting room?
 
                 ensure answer and explaination in ${native_language} using this` + jsonschema
 

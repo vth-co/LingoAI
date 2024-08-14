@@ -38,7 +38,7 @@ function CardPage() {
   const topicName = deck?.cards?.[0]?.questionData?.topic;
   const topicLevel = deck?.level;
 
-  console.log('attempt id', attemptId)
+  console.log("cards", cards);
 
   useEffect(() => {
     dispatch(fetchOneDeck(deckId));
@@ -113,7 +113,7 @@ function CardPage() {
                 >
                   <Box
                     sx={{
-                      backgroundColor: `${theme.palette.primary.main}`,
+                      backgroundColor: `${theme.palette.divider.main}`,
                       height: "300px",
                       padding: "20px",
                       overflow: "auto",
@@ -201,12 +201,16 @@ function CardPage() {
                         backgroundColor: `${theme.palette.secondary.main}`,
                         height: "300px",
                         padding: "20px",
+                        overflow: "auto",
                       }}
                     >
                       <h2 style={{ margin: "0" }}>{card.question}</h2>
                       <FormLabel disabled>
-                        <Typography sx={{ color: theme.palette.text.primary }}>
+                        <Typography
+                          sx={{ color: theme.palette.text.primary, mt: 2 }}
+                        >
                           Correct!
+                          <p>{card.explanation}</p>
                         </Typography>
                       </FormLabel>
                     </Box>
@@ -251,15 +255,19 @@ function CardPage() {
                   >
                     <Box
                       sx={{
-                        backgroundColor: `${theme.palette.secondary.main}`,
+                        backgroundColor: `${theme.palette.primary.main}`,
                         height: "300px",
                         padding: "20px",
+                        overflow: "auto",
                       }}
                     >
                       <h2 style={{ margin: "0" }}>{card.question}</h2>
                       <FormLabel disabled>
-                        <Typography sx={{ color: theme.palette.text.primary }}>
-                          Incorrect! Correct Answer:
+                        <Typography
+                          sx={{ color: theme.palette.text.primary, mt: 2 }}
+                        >
+                          Incorrect!
+                          <p>{card.explanation}</p>
                         </Typography>
                       </FormLabel>
                     </Box>
@@ -273,17 +281,18 @@ function CardPage() {
                         }`,
                         overflow: "auto",
                         display: "flex",
-                        alignContent: "center",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column"
                       }}
                     >
-                      <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <CloseIcon
-                          sx={{ color: theme.palette.completion.poor }}
-                        />
-                        <Typography sx={{ ml: 2 }}>
+                        {/* <Typography sx={{ ml: 2 }}>
                           {feedback.correctAnswer}
-                        </Typography>
-                      </Box>
+                          </Typography> */}
+                          <CloseIcon
+                            sx={{ color: theme.palette.completion.poor }}
+                            />
+                        <p>Correct answer: {feedback.correctAnswer}</p>
                     </Box>
                   </Card>
                 </Grid>
