@@ -117,7 +117,7 @@ function IntermediateConcepts({ user, progress }) {
                                     <p>{concept.level}</p>
                                     <LinearProgress
                                         variant='determinate'
-                                        value={50}
+                                        value={concept.topicsPassed * 100}
                                         sx={{ height: 15 }}
                                         color='divider'
                                     />
