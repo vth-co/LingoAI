@@ -21,6 +21,7 @@ function DeckPage() {
   const history = useHistory();
   const { decks } = useSelector((state) => state.decks);
   const { conceptId, topicId } = useParams();
+  console.log("conceptId: ", conceptId, "topicId: ", topicId);
   const topic = useSelector((state) => state.topics[topicId]); // Fetch the topic using topicId
   const user = useSelector((state) => state.session.user);
   const [loading, setLoading] = useState(false); // Add loading state
@@ -40,6 +41,7 @@ function DeckPage() {
   const handleGenerateQuestions = async (e) => {
     e.preventDefault();
     setLoading(true); // Set loading to true before starting the process
+    console.log('topicId before: ', topicId);
     try {
       await dispatch(
         addQuestions(conceptFilter.concept_name, topic.topic_name, user.native_language, conceptFilter.level, topicId, user.uid)

@@ -48,19 +48,20 @@ function CardPage() {
 
     try {
       const checkAttempt = await dispatch(
-        modifyUserAttempt(
-          user.uid,
-          questionId,
-          attemptId,
-          selectedOption,
-          deckId
-        )
-      )
+          modifyUserAttempt(
+              user.uid,
+              questionId,
+              attemptId,
+              selectedOption,
+              deckId
+          )
+      );
+
       console.log("checkAttempt: ", checkAttempt);
-      // Set feedback based on the response
-      if (checkAttempt.message === "Answer is correct!") {
-        setFeedback({ cardIndex, isCorrect: true });
-      } else if (checkAttempt.message === "Answer is incorrect.") {
+
+      if (checkAttempt && checkAttempt.message === "Answer is correct!") {
+          setFeedback({ cardIndex, isCorrect: true });
+      } else if (checkAttempt && checkAttempt.message === "Answer is incorrect.") {
           setFeedback({
               cardIndex,
               isCorrect: false,
@@ -68,9 +69,10 @@ function CardPage() {
           });
       }
 
-    } catch (error) {
+  } catch (error) {
       console.error("Error modifying user attempt:", error);
-    }
+  }
+
   };
 
   return (
