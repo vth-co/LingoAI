@@ -11,6 +11,22 @@ const getDecksFromDB = async () => {
     }
 }
 
+//service to get user decks from DB
+const getUserDecksFromDB = async (uid) => {
+    try {
+        const userDocRef = doc(db, 'users', uid);
+        const userDoc = await getDoc(userDocRef);
+        if (!userDoc.exists()) {
+            throw new Error('User not found');
+        }
+        const userDecksCollectionRef = collection(userDocRef, 'decks');
+        const userDecksSnapshot = await getDocs(userDecksCollectionRef);
+        const userDecks = userDecksSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        return userDecks;
+    } catch (error) {
+        throw new Error('Error fetching user decks: ' + error.message);
+    }
+}
 const getDecksByTopicIdFromDB = async (topicId) => {
     try {
         const querySnapshot = await getDocs(query(collection(db, 'decks'), where('topic_id', '==', topicId)));
@@ -19,6 +35,49 @@ const getDecksByTopicIdFromDB = async (topicId) => {
         throw new Error('Error fetching decks: ' + error.message);
     }
 }
+
+//get attempt by deck id
+const getAttemptByDeckIdFromDB = async (deckId) => {
+    try {
+        // Get the deck document reference
+        const deckRef = doc(db, 'decks', deckId);
+        const deckDoc = await getDoc(deckRef);
+
+        if (!deckDoc.exists()) {
+            throw new Error('Deck not found');
+        }
+
+        // Grab the userId from the deck document
+        const userId = deckDoc.data().userId;
+
+        // Get the user document reference
+        const userDocRef = doc(db, 'users', userId);
+        const userDoc = await getDoc(userDocRef);
+
+        if (!userDoc.exists()) {
+            throw new Error('User not found');
+        }
+
+        // Reference to the 'attempts' subcollection within the user document
+        const userAttemptsCollectionRef = collection(userDocRef, 'attempts');
+        const userAttemptsSnapshot = await getDocs(userAttemptsCollectionRef);
+
+        // Filter attempts by deckId
+        const userAttempts = userAttemptsSnapshot.docs.filter(doc => doc.data().deckId === deckId);
+
+        // Return the first attempt found (if any)
+        if (userAttempts.length > 0) {
+            const firstAttempt = userAttempts[0].data();  // Get the data of the first attempt
+            return { id: userAttempts[0].id, ...firstAttempt }; // Or return additional data as needed
+        } else {
+            throw new Error('No attempts found for this deck.');
+        }
+
+    } catch (error) {
+        throw new Error('Error fetching attempt by deckId: ' + error.message);
+    }
+}
+
 
 //service to view a deck
 const getDeckFromDB = async (deckId) => {
@@ -32,6 +91,22 @@ const getDeckFromDB = async (deckId) => {
         }
     } catch (error) {
         throw new Error('Error fetching deck: ' + error.message);
+    }
+}
+
+const getUserDeckByIdFromDB = async (uid, deckId) => {
+    try {
+        const userDocRef = doc(db, 'users', uid);
+        const userDoc = await getDoc(userDocRef);
+        if (!userDoc.exists()) {
+            throw new Error('User not found');
+        }
+        const userDecksCollectionRef = collection(userDocRef, 'decks');
+        const userDecksSnapshot = await getDocs(userDecksCollectionRef);
+        const userDecks = userDecksSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        return userDecks.find(deck => deck.id === deckId);
+    } catch (error) {
+        throw new Error('Error fetching user deck: ' + error.message);
     }
 }
 
@@ -58,11 +133,14 @@ const createDeckInDB = async ({ userId, topic_id, createdAt, archived }) => {
             userId,
             level,
             topic_id,
+            attemptId: null,
             createdAt,
             archived
         });
-        const deck = { id: docRef.id, level, userId: userId, topic_id: topic_id, createdAt, archived };
+        const deck = { deck_name: docRef.id.slice(0, 4), id: docRef.id, level, userId: userId, topic_id: topic_id, createdAt, archived, attemptId: null };
         console.log('deck check: ', deck)
+        const userDecksCollectionRef = collection(doc(db, 'users', userId), 'decks');
+        await setDoc(doc(userDecksCollectionRef, docRef.id), deck);
         return deck;
     } catch (error) {
         throw new Error('Error creating deck: ' + error.message);
@@ -88,6 +166,7 @@ const addCardsToDeckInDB = async (deckId, userId, aiGeneratedRequestId) => {
         }
 
         const questionData = aiGeneratedRequestDoc.data().questionData;
+        console.log("questionData: ", questionData)
         const deckLevel = deckDoc.data().level;
         const deckTopicId = deckDoc.data().topic_id;
 
@@ -97,73 +176,38 @@ const addCardsToDeckInDB = async (deckId, userId, aiGeneratedRequestId) => {
             throw new Error('Topic not found');
         }
         const topicName = topicDoc.data().topic_name;
+        console.log("------: ", questionData.topic)
+        console.log("------: ", topicName)
+        console.log("------: ", questionData.level)
+        console.log("------: ", deckLevel)
 
         // Check if the question data matches the deck's topic and level
-        if (questionData.topic === topicName && questionData.level === deckLevel) {
+        if (questionData.topic === topicName) {
             deck.push(aiGeneratedRequestDoc.data());
         }
 
         // Update the deck with the new cards
         await setDoc(deckRef, { ...deckDoc.data(), cards: deck }, { merge: true });
-
+        console.log('deckdeckdeck',deck )
         return deck;
     } catch (error) {
         throw new Error('Error adding card to deck: ' + error.message);
     }
 };
 
-// const addCardsToDeckInDB = async (deckId, userId) => {
-//     try {
-//         const deck = [];
-//         const userRef = doc(db, 'users', userId);
-//         const deckRef = doc(db, 'decks', deckId);
-//         const deckDoc = await getDoc(deckRef);
-//         if (!deckDoc.exists()) {
-//             throw new Error('Deck not found');
-//         }
-
-//         const topicRef = doc(db, 'topics', deckDoc.data().topic_id);
-//         console.log('topicRef: ', topicRef);
-//         const topicDoc = await getDoc(topicRef);
-//         if (!topicDoc.exists()) {
-//             throw new Error('Topic not found');
-//         }
-//         const level = deckDoc.data().level;
-//         const topic_name = topicDoc.data().topic_name;
-//         const aiGeneratedRequestsRef = collection(userRef, "ai_generated_requests");
-//         //check ai_generated_id, then check topic/level
-//         console.log('topic_name: ', topic_name, 'level: ', level)
-//         const snapshot = await getDocs(aiGeneratedRequestsRef);
-//         console.log('snapshot: ', snapshot.docs);
-//         snapshot.docs.map(doc => {
-//             console.log('doc: ', doc.data());
-//             if (doc.data().questionData.topic === topic_name && doc.data().questionData.level === level) {
-//                 console.log('inside if statement: ', doc.data());
-//                 deck.push(doc.data());
-//             }
-//         })
-//         console.log('deck: ', deck);
-//         //we look for the deck in the db and add the deck
-
-//         await setDoc(deckRef, { userId: userId, cards: deck });
-//         return deck;
-//     } catch (error) {
-//         throw new Error('Error adding card to deck: ' + error.message);
-//     }
-// }
-
-//service to remove a card from a deck
-const removeCardFromDeckInDB = async () => {
-    return
-}
-
-//service to remove a deck
-const removeDeckFromDB = async () => {
-    return
+//service to view archived decks
+const getArchivedDecksFromDB = async () => {
+    try {
+        const querySnapshot = await getDocs(query(collection(db, 'decks'), where('archived', '==', true)));
+        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+        throw new Error('Error fetching archived decks: ' + error.message);
+    }
 }
 
 //service to archive a deck
 const archiveDeckInDB = async (deckId, uid) => {
+    console.log('archiveDeckInDB: ', deckId, uid)
     try {
         // Get the deck data
         const deckRef = doc(db, 'decks', deckId);
@@ -172,7 +216,7 @@ const archiveDeckInDB = async (deckId, uid) => {
         if (!deckDoc.exists()) {
             throw new Error('Deck not found');
         }
-
+        console.log('check if archived: ', deckDoc.data().archived)
         // Check if the deck is already archived
         if (deckDoc.data().archived) {
             return { success: false, message: 'Deck is already archived.' };
@@ -199,29 +243,22 @@ const archiveDeckInDB = async (deckId, uid) => {
 
         // Archive the deck if all cards are attempted
         await updateDoc(deckRef, { archived: true });
+        const updatedDeckDoc = await getDoc(deckRef);
 
+        if (!updatedDeckDoc.exists()) {
+            throw new Error('Deck not found');
+        }
+
+        const updatedDeckData = updatedDeckDoc.data();
         // Add the deck to the user's subcollection
-        const userDecksCollectionRef = collection(doc(db, 'users', uid), 'decks');
-        await setDoc(doc(userDecksCollectionRef, deckId), deckData);
+        const userDecksCollectionRef = collection(doc(db, 'users', uid), 'archived_decks');
+        await setDoc(doc(userDecksCollectionRef, deckId), updatedDeckData);
 
         return { success: true, message: 'Deck archived' };
     } catch (error) {
         return { success: false, message: 'Error archiving deck: ' + error.message };
     }
 };
-
-
-
-
-//service to view archived decks
-const getArchivedDecksFromDB = async () => {
-    try {
-        const querySnapshot = await getDocs(query(collection(db, 'decks'), where('archived', '==', true)));
-        return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    } catch (error) {
-        throw new Error('Error fetching archived decks: ' + error.message);
-    }
-}
 
 //service to view user archived decks
 const getUserArchivedDecksFromDB = async (uid) => {
@@ -232,7 +269,7 @@ const getUserArchivedDecksFromDB = async (uid) => {
         if (!userDoc.exists()) {
             throw new Error('User not found');
         }
-        const userDecksCollectionRef = collection(userDocRef, 'decks');
+        const userDecksCollectionRef = collection(userDocRef, 'archived_decks');
 
         const userDecksSnapshot = await getDocs(userDecksCollectionRef);
         const userDecks = userDecksSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -242,11 +279,60 @@ const getUserArchivedDecksFromDB = async (uid) => {
     }
 }
 
+//check if deck is in progress
+const checkDeckIsInProgressFromDB = async (deckId) => {
+    try {
+        // Get the deck document reference
+        const deckRef = doc(db, 'decks', deckId);
+        const deckDoc = await getDoc(deckRef);
+
+        if (!deckDoc.exists()) {
+            throw new Error('Deck not found');
+        }
+
+        const deckData = deckDoc.data();
+
+        // Check if the deck is archived
+        if (deckData.archived) {
+            throw new Error('Deck is archived');
+        }
+
+        // Check if the deck has any cards
+        const cards = deckData.cards;
+        if (cards.length === 0) {
+            throw new Error('Deck has no cards');
+        }
+
+        // Check if any card in the deck has been attempted
+        let isDeckInProgress = false;
+        for (const card of cards) {
+            const cardQuestions = card.questionData.jsonData;
+            for (const question of cardQuestions) {
+                if (question.isAttempted) {
+                    isDeckInProgress = true;
+                    break;
+                }
+            }
+            if (isDeckInProgress) break;
+        }
+
+        // Determine the deck status based on the card attempts
+        if (isDeckInProgress) {
+            return { message: 'Deck is in progress' };
+        } else {
+            return { message: 'Deck is brand new' };
+        }
+    } catch (error) {
+        throw new Error('Error fetching deck: ' + error.message);
+    }
+};
+
 
 module.exports = {
     getDecksFromDB, getDecksByTopicIdFromDB,
     createDeckInDB, addCardsToDeckInDB,
-    removeCardFromDeckInDB, removeDeckFromDB,
     archiveDeckInDB, getArchivedDecksFromDB,
-    getUserArchivedDecksFromDB, getDeckFromDB
+    getUserArchivedDecksFromDB, getDeckFromDB,
+    getUserDecksFromDB, getAttemptByDeckIdFromDB,
+    checkDeckIsInProgressFromDB, getUserDeckByIdFromDB
 };
