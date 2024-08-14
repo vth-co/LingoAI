@@ -27,9 +27,9 @@ function HomePage() {
 
   let proficiencyCount = 0;
 
-  if (user.level === "Beginner") proficiencyCount = 0;
-  if (user.level === "Intermediate") proficiencyCount = 1;
-  if (user.level === "Advanced") proficiencyCount = 2;
+  if (user?.badges?.length === 1) proficiencyCount = 1;
+  if (user?.badges?.length === 2) proficiencyCount = 2;
+  if (user?.badges?.length === 3) proficiencyCount = 3;
 
   let proficiencyPercentage = (proficiencyCount / 3) * 100;
 
@@ -216,9 +216,8 @@ function HomePage() {
                 style={{
                   width: "25%",
                   borderRadius: "3.5px",
-                  boxShadow: `0 0 2.5px ${
-                    theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                  }`,
+                  boxShadow: `0 0 2.5px ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                    }`,
                 }}
               />
             )}
@@ -230,9 +229,8 @@ function HomePage() {
                 style={{
                   width: "25%",
                   borderRadius: "3.5px",
-                  boxShadow: `0 0 2.5px ${
-                    theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                  }`,
+                  boxShadow: `0 0 2.5px ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                    }`,
                 }}
               />
             )}
@@ -244,9 +242,8 @@ function HomePage() {
                 style={{
                   width: "25%",
                   borderRadius: "3.5px",
-                  boxShadow: `0 0 2.5px ${
-                    theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                  }`,
+                  boxShadow: `0 0 2.5px ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                    }`,
                 }}
               />
             )}
@@ -295,9 +292,8 @@ function HomePage() {
               color="primary"
               sx={{
                 borderRadius: "3px",
-                border: `1.5px solid ${
-                  theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                }`,
+                border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                  }`,
               }}
             >
               Start Learning Now
