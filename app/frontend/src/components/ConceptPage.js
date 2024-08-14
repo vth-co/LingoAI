@@ -12,7 +12,7 @@ function ConceptPage() {
   const user = useSelector((state) => state.session.user)
   const progress = useSelector((state) => state.users.progress);
   // const concepts = Object.values(useSelector((state) => state.concepts.concepts));
-  const concepts = useSelector((state) => state.concepts)
+  const concepts = Object.values(useSelector((state) => state.concepts));
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
 

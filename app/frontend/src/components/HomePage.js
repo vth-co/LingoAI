@@ -9,8 +9,6 @@ function HomePage() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
   const progress = useSelector((state) => state.users.progress);
-  // console.log("USER", user);
-  // console.log("PROGRESS", progress);
 
   useEffect(() => {
     dispatch(fetchUserProgress(user.uid))
@@ -19,7 +17,7 @@ function HomePage() {
   const data = [
     {
       left: 'Current English Proficiency Level:',
-      right: `${user.current_level}`
+      right: `${user.level}`
     },
     {
       left: 'Proficiency Level Progress:',
@@ -31,7 +29,7 @@ function HomePage() {
     },
     {
       left: 'Current Concept:',
-      right: `${user.current_level} - Basic Nouns`
+      right: `${user.level} - Basic Nouns`
     },
     {
       left: 'Concept Progress:',
