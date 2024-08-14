@@ -26,7 +26,7 @@ function DeckPage() {
   const [loading, setLoading] = useState(false); // Add loading state
   const concepts = Object.values(useSelector((state) => state.concepts));
   const conceptFilter = concepts.find(concept => conceptId === concept.id)
-  
+
   console.log('decks', decks)
   useEffect(() => {
     if (user && topicId) {
@@ -58,14 +58,14 @@ function DeckPage() {
     try {
       // Assume you have the user ID available in the context
       const userId = user.uid; // You need to implement this based on your authentication logic
-  
+
       // Create a new attempt
       const result = await dispatch(startUserAttempt(userId, deckId));
       const newAttemptId = result.payload; // Get the new attempt ID from the action payload
-  
+
       // Update the deck status to indicate that it's in progress
       // await updateDeckStatus(deckId, newAttemptId);
-  
+
       console.log('Attempt started successfully:', newAttemptId);
     } catch (error) {
       console.error('Error starting attempt:', error);
@@ -76,11 +76,11 @@ function DeckPage() {
   const getAllDecks = () => {
     return decks.filter(deck => !deck.attemptId && !deck.isArchived) // Include non-archived decks
   };
-  
+
   const getInProgressDecks = () => {
     return decks.filter(deck => deck.attemptId && !deck.archived);
   };
-  
+
   const getArchivedDecks = () => {
     return decks.filter(deck => deck.archived);
   };
@@ -106,16 +106,21 @@ function DeckPage() {
           {/* Check if topic is loaded before trying to access topic_name */}
           <h1>{topic ? topic.topic_name : "Loading topic..."}</h1>
           <Container>
-            <Box px={30}>
+            <Box px={30}
+              sx={{
+                display: "flex",
+                justifyContent: "center"
+              }}>
               <Button
                 color="primary"
                 onClick={handleGenerateQuestions}
                 variant="contained"
-                fullWidth
-                size="large"
-                sx={{ height: "150px" }}
+
+              // fullWidth
+              // size="large"
+              // sx={{ height: "150px" }}
               >
-                Add New Deck
+                Generate New Deck
               </Button>
             </Box>
             <Box display="flex" flexDirection="row" width="100%" mt={2}>
@@ -138,9 +143,8 @@ function DeckPage() {
                           }}
                           onClick={() => handleStartAttempt(deck.id)} // Start user attempt when clicking the deck
                         >
-                          <Typography variant="h6">{`Deck #${
-                            index + 1
-                          }`}</Typography>
+                          <Typography variant="h6">{`Deck #${index + 1
+                            }`}</Typography>
                           <Typography variant="body1">
                             {deck.deckName}
                           </Typography>{" "}
@@ -172,9 +176,8 @@ function DeckPage() {
                             height: "175px",
                           }}
                         >
-                          <Typography variant="h6">{`Deck #${
-                            index + 1
-                          }`}</Typography>
+                          <Typography variant="h6">{`Deck #${index + 1
+                            }`}</Typography>
                           <Typography variant="body1">
                             {deck.deckName}
                           </Typography>{" "}
@@ -205,9 +208,8 @@ function DeckPage() {
                             height: "175px",
                           }}
                         >
-                          <Typography variant="h6">{`Deck #${
-                            index + 1
-                          }`}</Typography>
+                          <Typography variant="h6">{`Deck #${index + 1
+                            }`}</Typography>
                           <Typography variant="body1">
                             {deck.deckName}
                           </Typography>{" "}
