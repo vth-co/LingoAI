@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Box, Button, Container, Grid, LinearProgress } from '@mui/material'
 import { NavLink } from "react-router-dom";
-import { fetchConcepts } from '../store/concepts';
+import { fetchUserConcepts } from '../store/concepts';
 import { fetchUserProgress } from '../store/users';
 import { useTheme } from '@emotion/react';
 import CheckIcon from '@mui/icons-material/Check';
 import LockIcon from '@mui/icons-material/Lock';
 
-function IntermediateConcepts({ user, progress }) {
+function IntermediateConcepts({ user, concepts }) {
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(true);
     const theme = useTheme();
@@ -16,8 +16,8 @@ function IntermediateConcepts({ user, progress }) {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            await dispatch(fetchConcepts("Intermediate"));
-            await dispatch(fetchUserProgress(user.uid));
+            await dispatch(fetchUserConcepts(user.uid));
+            // await dispatch(fetchUserProgress(user.uid))
             setLoading(false);
         };
 
@@ -36,7 +36,7 @@ function IntermediateConcepts({ user, progress }) {
     // console.log("concepts", combinedConcepts);
     // const sortedConcepts = combinedConcepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name));
 
-    const currentConcepts = progress?.[0].concepts.filter(concept =>
+    const currentConcepts = concepts?.filter(concept =>
         concept.level === "Intermediate"
     ).sort((a, b) => b.concept_name.localeCompare(a.concept_name));
 
