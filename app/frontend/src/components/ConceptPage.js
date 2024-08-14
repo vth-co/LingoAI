@@ -8,6 +8,7 @@ import { fetchUserProgress } from '../store/users';
 import { useTheme } from '@emotion/react';
 import LockIcon from '@mui/icons-material/Lock';
 import CheckIcon from '@mui/icons-material/Check';
+import BeginnerConcepts from './BeginnerConcepts';
 
 function ConceptPage() {
   const dispatch = useDispatch()
@@ -32,12 +33,12 @@ function ConceptPage() {
     const fetchData = async () => {
       setLoading(true);
       await dispatch(fetchConcepts(user.level));
-      await dispatch(fetchUserProgress(user.uid))
+      await dispatch(fetchUserProgress(user.uid));
       setLoading(false);
     };
 
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, user.level, user.uid]);
 
   const combinedConcepts = concepts.map(concept => {
     const progressData = progress?.[0].concepts.find(p => p.id === concept.id);
@@ -48,17 +49,18 @@ function ConceptPage() {
     };
   });
 
+  console.log("concepts", combinedConcepts);
   const sortedConcepts = combinedConcepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name));
-  console.log("combined concepts", sortedConcepts);
 
   const currentConcepts = progress?.[0].concepts.filter(concept =>
-    concept.level == user.level
+    concept.level === user.level
   );
 
   let conceptCount = 0;
 
   currentConcepts?.map(concept => {
     if (concept.status === true) conceptCount++
+    return conceptCount
   })
 
   let conceptPercentage = (conceptCount / currentConcepts?.length) * 100
@@ -140,7 +142,7 @@ function ConceptPage() {
                       }}>
 
                       <h3>{concept.concept_name}</h3>
-                      {concept.status === true &&
+                      {concept.progress === true &&
                         <CheckIcon sx={{
                           ml: 1,
                           color: `${theme.palette.completion.good}`,
@@ -256,25 +258,7 @@ function ConceptPage() {
             </Box>
             <Collapse in={showBeginner}>
               <Box>
-                <Box
-                  sx={{
-                    display: "grid",
-                    justifyContent: "center"
-                  }}
-                >
-                  <Typography>Pass all the concepts to get your Lingo.ai Beginner Champion Badge.</Typography>
-                  <Box>
-                    <LinearProgress
-                      variant='determinate'
-                      value={50}
-                      sx={{
-                        height: 25,
-                      }}
-                      color='secondary'
-                    />
-                  </Box>
-                </Box>
-                <p>xx</p>
+                <BeginnerConcepts />
               </Box>
             </Collapse>
           </Box>
