@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import { useParams , useLocation} from "react-router-dom/cjs/react-router-dom.min";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOneDeck } from "../../store/decks";
 import { fetchUserAttempt, modifyUserAttempt } from "../../store/attempt";
@@ -23,18 +23,19 @@ function CardPage() {
   const dispatch = useDispatch();
   const theme = useTheme();
   const { deckId } = useParams();
+  const location = useLocation();
   const user = useSelector((state) => state.session.user);
   const deck = useSelector((state) => state.decks.selectedDeck);
   const cards = deck?.cards?.[0]?.questionData?.jsonData || [];
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [feedback, setFeedback] = useState({});
-  const attemptId = useSelector((state) => state.userAttempts);
-
+  //const attemptId = useSelector((state) => state.userAttempts);
+  const { attemptId } = location.state || {};
+  console.log("attemptId: ", attemptId);
 
   useEffect(() => {
     dispatch(fetchOneDeck(deckId));
-    dispatch(fetchUserAttempt(deckId))
-  }, [dispatch, deckId]);
+  }, [dispatch, deckId, attemptId]);
 
   const handleAnswerChange = async (cardIndex, optionIndex, questionId) => {
     const selectedOption = cards[cardIndex].options[optionIndex];
@@ -49,23 +50,24 @@ function CardPage() {
       const checkAttempt = await dispatch(
         modifyUserAttempt(
           user.uid,
-          attemptId,
-          deckId,
           questionId,
-          selectedOption
+          attemptId,
+          selectedOption,
+          deckId
         )
-      ).unwrap();
-
+      )
+      console.log("checkAttempt: ", checkAttempt);
       // Set feedback based on the response
       if (checkAttempt.message === "Answer is correct!") {
         setFeedback({ cardIndex, isCorrect: true });
-      } else {
-        setFeedback({
-          cardIndex,
-          isCorrect: false,
-          correctAnswer: checkAttempt.correctAnswer,
-        });
+      } else if (checkAttempt.message === "Answer is incorrect.") {
+          setFeedback({
+              cardIndex,
+              isCorrect: false,
+              correctAnswer: checkAttempt.correctAnswer,
+          });
       }
+
     } catch (error) {
       console.error("Error modifying user attempt:", error);
     }

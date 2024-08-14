@@ -13,7 +13,7 @@ import {
 import { addQuestions } from "../../store/questions";
 import { fetchOneTopic } from "../../store/topics";
 import { NavLink, useHistory } from "react-router-dom";
-import { fetchUserAttempt, startUserAttempt } from "../../store/attempt";
+import { createUserAttempt, fetchUserAttempt, startUserAttempt } from "../../store/attempt";
 import { fetchUserConcepts } from "../../store/concepts";
 
 function DeckPage() {
@@ -26,8 +26,7 @@ function DeckPage() {
   const [loading, setLoading] = useState(false); // Add loading state
   const concepts = Object.values(useSelector((state) => state.concepts));
   const conceptFilter = concepts.find(concept => conceptId === concept.id)
-  
-  console.log('decks', decks)
+
   useEffect(() => {
     if (user && topicId) {
       setLoading(true);
@@ -58,29 +57,38 @@ function DeckPage() {
     try {
       // Assume you have the user ID available in the context
       const userId = user.uid; // You need to implement this based on your authentication logic
-  
+
       // Create a new attempt
-      const result = await dispatch(startUserAttempt(userId, deckId));
+      const result = await dispatch(createUserAttempt(userId, deckId));
       const newAttemptId = result.payload; // Get the new attempt ID from the action payload
-  
+      history.push({
+        pathname: `/decks/${deckId}`,
+        state: { attemptId: newAttemptId }
+    });
       // Update the deck status to indicate that it's in progress
       // await updateDeckStatus(deckId, newAttemptId);
-  
+
       console.log('Attempt started successfully:', newAttemptId);
     } catch (error) {
       console.error('Error starting attempt:', error);
     }
   };
 
+  const handleResumeAttempt = (deckId, attemptId) => {
+    history.push({
+        pathname: `/decks/${deckId}`,
+        state: { attemptId }  // Pass the existing attemptId to the next page
+    });
+};
 
   const getAllDecks = () => {
     return decks.filter(deck => !deck.attemptId && !deck.isArchived) // Include non-archived decks
   };
-  
+
   const getInProgressDecks = () => {
     return decks.filter(deck => deck.attemptId && !deck.archived);
   };
-  
+
   const getArchivedDecks = () => {
     return decks.filter(deck => deck.archived);
   };
@@ -113,7 +121,7 @@ function DeckPage() {
                 variant="contained"
                 fullWidth
                 size="large"
-                sx={{ height: "150px" }}
+                sx={{ height: "50px" }}
               >
                 Add New Deck
               </Button>
@@ -128,25 +136,17 @@ function DeckPage() {
                   <Grid container spacing={2}>
                     {getAllDecks().map((deck, index) => (
                       <Grid item key={deck.id} xs={12} sm={6} md={4}>
-                        <Button
-                          component={NavLink}
-                          to={`/decks/${deck.id}`}
-                          variant="contained"
-                          color="primary"
-                          sx={{
-                            height: "175px",
-                          }}
-                          onClick={() => handleStartAttempt(deck.id)} // Start user attempt when clicking the deck
-                        >
-                          <Typography variant="h6">{`Deck #${
-                            index + 1
-                          }`}</Typography>
-                          <Typography variant="body1">
-                            {deck.deckName}
-                          </Typography>{" "}
-                          {/* Update with your deck field */}
-                        </Button>
+                          <Button
+                              variant="contained"
+                              color="primary"
+                              sx={{ height: "175px" }}
+                              onClick={() => handleStartAttempt(deck.id)} // This will handle navigation after starting the attempt
+                          >
+                              <Typography variant="h6">{`Deck #${index + 1}`}</Typography>
+                              <Typography variant="body1">{deck.deckName}</Typography>
+                          </Button>
                       </Grid>
+
                     ))}
                   </Grid>
                 ) : (
@@ -163,24 +163,17 @@ function DeckPage() {
                   <Grid container spacing={2}>
                     {getInProgressDecks().map((deck, index) => (
                       <Grid item key={deck.id} xs={12} sm={6} md={4}>
-                        <Button
-                          component={NavLink}
-                          to={`/decks/${deck.id}`}
-                          variant="contained"
-                          color="primary"
-                          sx={{
-                            height: "175px",
-                          }}
-                        >
-                          <Typography variant="h6">{`Deck #${
-                            index + 1
-                          }`}</Typography>
-                          <Typography variant="body1">
-                            {deck.deckName}
-                          </Typography>{" "}
-                          {/* Update with your deck field */}
-                        </Button>
+                          <Button
+                              variant="contained"
+                              color="primary"
+                              sx={{ height: "175px" }}
+                              onClick={() => handleResumeAttempt(deck.id, deck.attemptId)}  // Pass the attemptId
+                          >
+                              <Typography variant="h6">{`Deck #${index + 1}`}</Typography>
+                              <Typography variant="body1">{deck.deckName}</Typography>
+                          </Button>
                       </Grid>
+
                     ))}
                   </Grid>
                 ) : (
@@ -206,11 +199,11 @@ function DeckPage() {
                           }}
                         >
                           <Typography variant="h6">{`Deck #${
-                            index + 1
+                            deck.deck_name
                           }`}</Typography>
-                          <Typography variant="body1">
+                          {/* <Typography variant="body1">
                             {deck.deckName}
-                          </Typography>{" "}
+                          </Typography>{" "} */}
                           {/* Update with your deck field */}
                         </Button>
                       </Grid>

@@ -82,7 +82,12 @@ const AddUserAttemptToDB = async (attemptData, id) => {
 }
 
 const checkAnswerInDB = async (userId, id, attemptId, answer, deckId) => {
+    console.log('userId: ', userId, 'attemptId: ', attemptId, 'id: ', id, 'answer: ', answer, 'deckId: ', deckId);
     try {
+        if (!attemptId) {
+            throw new Error('Attempt ID is required.');
+        }
+
         const userDocRef = doc(db, 'users', userId);
         const attemptDocRef = doc(userDocRef, 'attempts', attemptId);
         const attemptDoc = await getDoc(attemptDocRef);
@@ -98,7 +103,11 @@ const checkAnswerInDB = async (userId, id, attemptId, answer, deckId) => {
         }
 
         const deckData = deckDoc.data();
-        //const attemptData = attemptDoc.data();
+
+        // Ensure that cards and jsonData exist and are structured as expected
+        if (!deckData.cards || !Array.isArray(deckData.cards) || !deckData.cards[0].questionData || !Array.isArray(deckData.cards[0].questionData.jsonData)) {
+            throw new Error('Invalid data structure: jsonData is not an array or cards are not structured correctly');
+        }
 
         // Find the specific question in the cards array
         const questionIndex = deckData.cards[0].questionData.jsonData.findIndex(q => q.id === id);
@@ -112,6 +121,8 @@ const checkAnswerInDB = async (userId, id, attemptId, answer, deckId) => {
         if (checkIfAttempted === true) {
             throw new Error('Question already attempted');
         }
+
+        let feedbackMessage;
 
         if (answer === correctAnswer) {
             // Mark the question as attempted
@@ -127,28 +138,34 @@ const checkAnswerInDB = async (userId, id, attemptId, answer, deckId) => {
             const updatedAttemptDoc = await getDoc(attemptDocRef);
             const updatedAttemptData = updatedAttemptDoc.data();
 
-             // Determine if the user is passing based on passes count
-             const isPassing = updatedAttemptData.passes >= 3;
+            // Determine if the user is passing based on passes count
+            const isPassing = updatedAttemptData.passes >= 3;
 
             // if passes >= 3, call checkTopicProgression service
-            console.log('deck data', updatedAttemptData)
+            console.log('deck data', updatedAttemptData);
             if (isPassing) {
+                feedbackMessage = 'You passed this deck!';
                 await checkTopicProgression(deckData.userId, deckData.cards[0].questionData.topic_id, isPassing);
                 await archiveDeckInDB(deckId, deckData.userId);
             }
 
-            return { message: 'Answer is correct!' };
+            // return { message: 'Answer is correct!' };
+            feedbackMessage = 'Answer is correct!';
         } else {
             deckData.cards[0].questionData.jsonData[questionIndex].isAttempted = true;
             await updateDoc(deckDocRef, {
                 cards: deckData.cards,  // Update the entire cards array
             });
-            return { message: 'Answer is incorrect.', correctAnswer };
+            // return { message: 'Answer is incorrect.', correctAnswer };
+            feedbackMessage = 'Answer is incorrect.';
         }
+
+        return { message: feedbackMessage, correctAnswer };
     } catch (error) {
         throw new Error('Error checking answer: ' + error.message);
     }
 };
+
 
 
 
