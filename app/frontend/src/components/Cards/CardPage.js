@@ -103,7 +103,7 @@ function CardPage() {
                       backgroundColor: `${theme.palette.primary.main}`,
                       height: "300px",
                       padding: "20px",
-                      overflow: "hidden",
+                      overflow: "auto",
                     }}
                   >
                     <h2 style={{ margin: "0" }}>{card.question}</h2>
