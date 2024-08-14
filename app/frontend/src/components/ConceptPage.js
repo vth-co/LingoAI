@@ -114,7 +114,7 @@ function ConceptPage() {
             <LinearProgress
               variant="determinate"
               value={conceptPercentage}
-              sx={{ height: 25, width: '100%' }}
+              sx={{ height: 25, width: '100%', borderRadius: '3px' }}
               color='secondary'
             />
             <Box
@@ -185,8 +185,8 @@ function ConceptPage() {
                     <LinearProgress
                       variant="determinate"
                       value={concept.topicsPassed * 100}
-                      sx={{ height: 25, width: '100%' }}
-                      color='secondary'
+                      sx={{ height: 25, width: '100%', borderRadius: '3px' }}
+                      color='divider'
                     />
                     <Box
                       sx={{
@@ -244,7 +244,7 @@ function ConceptPage() {
                     <LinearProgress
                       variant="determinate"
                       value={0}
-                      sx={{ height: 25, width: '100%' }}
+                      sx={{ height: 25, width: '100%', borderRadius: '3px' }}
                       color='text'
                     />
                     <Box

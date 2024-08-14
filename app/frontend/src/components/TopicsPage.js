@@ -3,7 +3,7 @@ import {
   Button,
   Container,
   Grid,
-  LinearProgress,
+  LinearProgress, Typography
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,6 +31,8 @@ function TopicsPage() {
   const currentConcept = progress?.[0]?.concepts?.find(concept =>
     conceptId === concept.id
   );
+
+  console.log("CC", currentConcept);
 
   const currConcept = concepts.find(concept => conceptId === concept.id);
 
@@ -70,21 +72,49 @@ function TopicsPage() {
           </p>
           {currentConcept?.status === true ? (<p>Congratulations! You've completed this concept.</p>) : (<p>Pass all the topics to unlock the next concept.</p>)}
         </Box>
-        <Box px={50}>
+        {/* <Box px={50}>
           <LinearProgress
             variant="determinate"
             value={currentConcept?.topics_passed_fraction * 100}
             sx={{ height: 25 }}
-          // color='divider'
           />
+        </Box> */}
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%',
+          }}
+        >
+          <Box sx={{ position: 'relative', display: 'inline-flex', width: '75%', margin: 'auto' }}>
+            <LinearProgress
+              variant="determinate"
+              value={currentConcept?.topicsPassed * 100}
+              sx={{ height: 25, width: '100%', borderRadius: '3px' }}
+            />
+            <Box
+              sx={{
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                position: 'absolute',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography fontSize="small" color="textSecondary">{`${Math.round(currentConcept?.topicsPassed * 100)}%`}</Typography>
+            </Box>
+          </Box>
         </Box>
       </Box>
 
       <Grid container spacing={10} justifyContent='center' py={5}>
         {combinedTopics?.map(topic => (
           <Grid item key={topic.id}>
-            <Button component={NavLink} 
-             to={`/concepts/${conceptId}/topics/${topic.id}/decks`}
+            <Button component={NavLink}
+              to={`/concepts/${conceptId}/topics/${topic.id}/decks`}
               sx={{
                 backgroundColor: `${theme.palette.primary.main}`,
                 color: `${theme.palette.text.main}`,
@@ -113,16 +143,32 @@ function TopicsPage() {
                 </Box>
                 <Box
                   sx={{
-                    height: "80px"
+                    height: "50px"
                   }}>
                   {topic.description ? (<p>{topic.description}</p>) : (<p>&nbsp;</p>)}
                 </Box>
-                <LinearProgress
-                  variant='determinate'
-                  value={(topic.passes / 3) * 100}
-                  sx={{ height: 15 }}
-                  color='secondary'
-                />
+                <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%', margin: 'auto' }}>
+                  <LinearProgress
+                    variant="determinate"
+                    value={(topic.passes / 3) * 100}
+                    sx={{ height: 25, width: '100%', borderRadius: '3px' }}
+                    color='secondary'
+                  />
+                  <Box
+                    sx={{
+                      top: 0,
+                      left: 0,
+                      bottom: 0,
+                      right: 0,
+                      position: 'absolute',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Typography fontSize="small" color="textSecondary">{`${Math.round((topic.passes / 3) * 100)}%`}</Typography>
+                  </Box>
+                </Box>
               </Box>
             </Button>
           </Grid>

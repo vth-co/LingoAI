@@ -69,7 +69,7 @@ function HomePage() {
             <LinearProgress
               variant="determinate"
               value={proficiencyPercentage}
-              sx={{ height: 25, width: '100%' }}
+              sx={{ height: 25, width: '100%', borderRadius: '3px' }}
             />
             <Box
               sx={{
@@ -115,7 +115,7 @@ function HomePage() {
             <LinearProgress
               variant="determinate"
               value={conceptPercentage}
-              sx={{ height: 25, width: '100%' }}
+              sx={{ height: 25, width: '100%', borderRadius: '3px' }}
               color='secondary'
             />
             <Box
