@@ -49,7 +49,7 @@ export const fetchUserAttempt = (deckId) => async (dispatch) => {
 //       const newAttemptId = await AddUserAttemptToDB(attemptData, userId); // API call
 
 //       dispatch(addUserAttempt(newAttemptId));
-      
+
 //       // Return the new attempt ID
 //       return { payload: newAttemptId };
 //   } catch (error) {
@@ -87,11 +87,12 @@ export const createUserAttempt = (userId, deckId) => async (dispatch) => {
   }
 }
 
-  
+
   export const modifyUserAttempt = (userId, id, attemptId, answer, deckId) => async (dispatch) => {
     try {
       const checkAttempt = await checkAnswerInDB(userId, id, attemptId, answer, deckId); // API call
       dispatch(updateUserAttempt(attemptId, checkAttempt));
+      return checkAttempt;
     } catch (error) {
       console.error("Error updating user attempt:", error);
     }
