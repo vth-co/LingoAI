@@ -16,6 +16,7 @@ import { fetchSingleUser } from './store/users'
 import { authenticate } from './store/session'
 import DeckPage from './components/Decks/DeckPage'
 import CardPage from './components/Cards/CardPage'
+import { LinearProgress } from '@mui/material'
 
 function App({ locale, setLocale }) {
   const [loaded, setLoaded] = useState(false)
@@ -40,7 +41,7 @@ function App({ locale, setLocale }) {
 
 
   if (!loaded) {
-    return <div>Loading...</div> // or any other loading indicator
+    return <LinearProgress /> // or any other loading indicator
   }
 
   return (

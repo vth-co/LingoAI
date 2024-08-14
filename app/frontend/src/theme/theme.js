@@ -38,17 +38,17 @@ export const darkTheme = createTheme({
       contrastText: "#f1e9e9",
     },
     secondary: {
-      main: "#305048",
+      main: "#768f7d",
       contrastText: "#f1e9e9",
     },
     divider: {
-      main: "#485575",
+      main: "#63c0b6",
     },
     text: {
       main: '#f1e9e9',
       secondary: 'rgba(241, 233, 233, 0.6)',
       disabled: 'rgba(241, 233, 233, 0.38)',
-      hint: '#8a97b7',
+      hint: '#719492',
     },
 
     background: {

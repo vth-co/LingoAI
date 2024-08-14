@@ -53,6 +53,7 @@ const SignUpForm = ({ locale, setLocale }) => {
       console.log("Signed up successfully");
       history.push("/home");
     } catch (error) {
+      console.log("SIGNUP", email, password, username, first_name, last_name, locale, level);
       console.error("Error signing up:", error.message);
     }
   };

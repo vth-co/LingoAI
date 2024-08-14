@@ -42,7 +42,7 @@ export const fetchSingleUser = (uid) => async (dispatch) => {
 export const fetchUserProgress = (uid) => async (dispatch) => {
     try {
         const response = await fetch(`/api/users/${uid}/progress`);
-        console.log("THUNK", uid);
+
         if (response.ok) {
             const progress = await response.json();
             dispatch(loadUserProgress(uid, progress));
@@ -50,7 +50,7 @@ export const fetchUserProgress = (uid) => async (dispatch) => {
             console.error("Response not OK");
         }
     } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching user progress:', error);
     }
 };
 
@@ -70,7 +70,8 @@ export const fetchUsers = () => async (dispatch) => {
 };
 
 // Initial State
-const initialState = {};
+const initialState = {
+};
 
 // Reducer
 const usersReducer = (state = initialState, action) => {
@@ -83,9 +84,7 @@ const usersReducer = (state = initialState, action) => {
             return newState;
         }
         case LOAD_USER_PROGRESS: {
-            console.log("USER ACTION", action.payload);
-            const { uid, progress } = action.payload
-            console.log("PAYLOAD", uid, progress)
+            const { progress } = action.payload
             return {
                 ...state,
                 progress

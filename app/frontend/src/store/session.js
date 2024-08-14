@@ -6,6 +6,7 @@ const {
 } = require("firebase/auth");
 const { doc, setDoc } = require("firebase/firestore");
 const { auth, db } = require("../firebase/firebaseConfig");
+const { initializeUserProgress } = require('../services/userService');
 
 export const SET_USER = () => "session/SET_USER";
 
@@ -36,50 +37,52 @@ export const login = (email, password) => async (dispatch) => {
 
 export const signUp =
   (email, password, username, first_name, last_name, locale, level) =>
-  async (dispatch) => {
-    try {
-      // Create user with Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const userId = userCredential.user.uid;
+    async (dispatch) => {
+      try {
+        // Create user with Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const userId = userCredential.user.uid;
 
-      // Update user profile with additional data
-      // await user.updateProfile({
-      //     displayName: username,
-      // });
+        // Update user profile with additional data
+        // await user.updateProfile({
+        //     displayName: username,
+        // });
 
-      const userRef = doc(db, "users", userId);
-      await setDoc(userRef, {
-        email,
-        username,
-        first_name,
-        last_name,
-        native_language: locale,
-        level,
-      });
-
-      // Set the user in Redux state
-      dispatch(
-        setUser({
-          // uid: user.uid,
+        const userRef = doc(db, "users", userId);
+        await setDoc(userRef, {
           email,
           username,
           first_name,
           last_name,
           native_language: locale,
-          level,
-        })
-      );
+          level
+        });
 
-      // return user;
-    } catch (error) {
-      console.error("Error during sign up:", error);
-      throw error;
-    }
-  };
+        await initializeUserProgress(userId);
+
+        // Set the user in Redux state
+        dispatch(
+          setUser({
+            // uid: user.uid,
+            email,
+            username,
+            first_name,
+            last_name,
+            native_language: locale,
+            level
+          })
+        );
+
+        // return user;
+      } catch (error) {
+        console.error("Error during sign up:", error);
+        throw error;
+      }
+    };
 
 export const logout = () => async (dispatch) => {
   try {

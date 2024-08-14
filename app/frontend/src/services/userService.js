@@ -155,8 +155,8 @@ const initializeUserProgress = async (uid, level = null) => {
 
             await setDoc(conceptDocRef, {
                 status: existingConcept ? existingConcept.status : false,
-                concept_name: concept.concept_name || '',
-                level: concept.level || '',
+                concept_name: concept.concept_name,
+                level: concept.level,
                 topics: updatedTopics,
                 topicsPassed: topicsPassedDecimal // New field to track passed topics
             }, { merge: true });

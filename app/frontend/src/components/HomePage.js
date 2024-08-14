@@ -3,50 +3,108 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Box, Button, Container, Grid, LinearProgress, Link, Typography, Tooltip } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import { fetchUserProgress } from '../store/users';
+import { useTheme } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 
 function HomePage() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
-  const progress = useSelector((state) => state.users.progress);
+  const progressState = useSelector((state) => state.users.progress);
+  const progress = progressState && Object.values(progressState)
+  const theme = useTheme();
+  console.log("UID", user.uid);
 
   useEffect(() => {
-    dispatch(fetchUserProgress(user.uid))
-  }, [dispatch]);
+    if (user.uid) dispatch(fetchUserProgress(user.uid))
+  }, [dispatch, user.uid]);
+
+  let proficiencyCount = 0;
+
+  if (user.level === "Beginner") proficiencyCount = 1;
+  if (user.level === "Intermediate") proficiencyCount = 2;
+  if (user.level === "Advanced") proficiencyCount = 3;
+
+  let proficiencyPercentage = (proficiencyCount / 3) * 100
+
+  const currentConcepts = progress?.[0].concepts.filter(concept =>
+    concept.level === user.level
+  );
+
+  let conceptCount = 0;
+
+  currentConcepts?.map(concept => {
+    if (concept.status === true) conceptCount++
+    return conceptCount
+  })
+
+  console.log("USER", progress);
+
+  let conceptPercentage = (conceptCount / currentConcepts?.length) * 100
 
   const data = [
     {
-      left: 'Current English Proficiency Level:',
+      left: 'Current English Proficiency Level',
       right: `${user.level}`
     },
     {
-      left: 'Proficiency Level Progress:',
+      left: (<>
+        <Box display="flex" alignItems="center">
+          Proficiency Level Progress
+          <Tooltip
+            title={
+              <Typography>
+                Unlock the next proficiency level by completing concepts for the current level.
+              </Typography>
+            }
+            arrow
+          >
+            <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+          </Tooltip>:
+        </Box>
+      </>),
+      right:
+        <LinearProgress
+          variant="determinate"
+          value={proficiencyPercentage}
+          sx={{ height: 25 }}
+        />
+
+    },
+    // {
+    //   left: 'Current Concept:',
+    //   right: `${user.current_level} - Basic Nouns`
+    // },
+    {
+      left: (<>
+        <Box display="flex" alignItems="center">
+          Concept Progress
+          <Tooltip
+            title={
+              <Typography>
+                Progress toward mastering your concepts for this level by completing topics.
+              </Typography>
+            }
+            arrow
+          >
+            <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+          </Tooltip>:
+        </Box>
+      </>),
       right: <LinearProgress
         variant="determinate"
-        value={50}
+        value={conceptPercentage}
         sx={{ height: 25 }}
+        color='secondary'
       />
     },
-    {
-      left: 'Current Concept:',
-      right: `${user.level} - Basic Nouns`
-    },
-    {
-      left: 'Concept Progress:',
-      right: <LinearProgress
-        variant="determinate"
-        value={50}
-        sx={{ height: 25 }}
-      />
-    },
-    {
-      left: 'Topics Progress:',
-      right: <LinearProgress
-        variant="determinate"
-        value={50}
-        sx={{ height: 25 }}
-      />
-    },
+    // {
+    //   left: 'Topics Progress:',
+    //   right: <LinearProgress
+    //     variant="determinate"
+    //     value={50}
+    //     sx={{ height: 25 }}
+    //   />
+    // },
     {
       left: (
         <>
@@ -55,7 +113,7 @@ function HomePage() {
             <Tooltip
               title={
                 <Typography>
-                  Earn a Lingo.ai Champion badge for each level you complete.
+                  Earn a Lingo.ai Champion Badge for each level you complete.
                 </Typography>
               }
               arrow
@@ -66,8 +124,11 @@ function HomePage() {
         </>
       ),
       right: <img src="/assets/badges/beginner-badge.png"
+        alt="Lingo.ai Beginner Champion Badge"
         style={{
-          width: "25%"
+          width: "25%",
+          borderRadius: "3.5px",
+          boxShadow: `0 0 2.5px ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
         }}
       />
     },
