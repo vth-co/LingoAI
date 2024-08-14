@@ -4,7 +4,6 @@ import { Box, Button, Container, Grid, LinearProgress, Link, Typography, Tooltip
 import InfoIcon from "@mui/icons-material/Info";
 import { fetchUserProgress } from '../store/users';
 import { useTheme } from '@mui/material/styles';
-import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -60,11 +59,34 @@ function HomePage() {
         </Box>
       </>),
       right:
-        <LinearProgress
-          variant="determinate"
-          value={proficiencyPercentage}
-          sx={{ height: 25 }}
-        />
+        // <LinearProgress
+        //   variant="determinate"
+        //   value={proficiencyPercentage}
+        //   sx={{ height: 25 }}
+        // />
+        (
+          <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%' }}>
+            <LinearProgress
+              variant="determinate"
+              value={proficiencyPercentage}
+              sx={{ height: 25, width: '100%', borderRadius: '3px' }}
+            />
+            <Box
+              sx={{
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                position: 'absolute',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography fontSize="small" fontWeight="bold" color="textSecondary">{`${Math.round(proficiencyPercentage)}%`}</Typography>
+            </Box>
+          </Box>
+        )
 
     },
     // {
@@ -87,12 +109,37 @@ function HomePage() {
           </Tooltip>:
         </Box>
       </>),
-      right: <LinearProgress
-        variant="determinate"
-        value={conceptPercentage}
-        sx={{ height: 25 }}
-        color='secondary'
-      />
+      right:
+        (
+          <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%' }}>
+            <LinearProgress
+              variant="determinate"
+              value={conceptPercentage}
+              sx={{ height: 25, width: '100%', borderRadius: '3px' }}
+              color='secondary'
+            />
+            <Box
+              sx={{
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                position: 'absolute',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography fontSize="small" fontWeight="bold" color="textSecondary">{`${Math.round(conceptPercentage)}%`}</Typography>
+            </Box>
+          </Box>
+        )
+      // <LinearProgress
+      //   variant="determinate"
+      //   value={conceptPercentage}
+      //   sx={{ height: 25 }}
+      //   color='secondary'
+      // />
     },
     // {
     //   left: 'Topics Progress:',
@@ -194,14 +241,19 @@ function HomePage() {
       <Box>
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
           <h1>Welcome, {user.username}!</h1>
+          <Link href="/concepts">
             <Button
               variant="contained"
               color="primary"
-              component={NavLink}
-              to='/concepts'
+              sx={{
+                borderRadius: "3px",
+                border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                  }`,
+              }}
             >
               Start Learning Now
             </Button>
+          </Link>
           <h2 style={{ padding: "16px 0px", }}>Your Latest Lingo.ai Progress</h2>
         </Box>
         {user.badges?.length === 3 &&
