@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box, Button, Container, Grid, LinearProgress, Collapse, IconButton, Divider, Typography } from '@mui/material'
+import { Box, Button, Container, Grid, LinearProgress, Collapse, IconButton, Divider } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { NavLink } from "react-router-dom";
 import { fetchUserConcepts } from '../store/concepts';
@@ -116,7 +116,7 @@ function ConceptPage() {
 
       <Grid container justifyContent='center' py={5} spacing={5}>
         {currentConcepts?.map(concept => (
-          concept.progress === true || concept.concept_name === "Vocabulary" ? (
+          concept.status === true || concept.concept_name === "Vocabulary" ? (
             <Grid item key={concept.id}>
               <Button component={NavLink} to={`/concepts/${concept.id}`}
                 sx={{
@@ -157,7 +157,7 @@ function ConceptPage() {
                   <p>{concept.level}</p>
                   <LinearProgress
                     variant='determinate'
-                    value={(concept.topicsPassed / concept.topics.length) * 100}
+                    value={concept.topicsPassed * 100}
                     sx={{ height: 15 }}
                     color='divider'
                   />

@@ -6,6 +6,7 @@ import { fetchConcepts } from '../store/concepts';
 import { fetchUserProgress } from '../store/users';
 import { useTheme } from '@emotion/react';
 import CheckIcon from '@mui/icons-material/Check';
+import LockIcon from '@mui/icons-material/Lock';
 
 function IntermediateConcepts({ user, progress }) {
     const dispatch = useDispatch()
@@ -36,8 +37,8 @@ function IntermediateConcepts({ user, progress }) {
     // const sortedConcepts = combinedConcepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name));
 
     const currentConcepts = progress?.[0].concepts.filter(concept =>
-        concept.level === user.level
-    );
+        concept.level === "Intermediate"
+    ).sort((a, b) => b.concept_name.localeCompare(a.concept_name));
 
     let conceptCount = 0;
 
@@ -75,54 +76,99 @@ function IntermediateConcepts({ user, progress }) {
 
             <Grid container justifyContent='center' py={5} spacing={5}>
                 {currentConcepts?.map(concept => (
-                    <Grid item key={concept.id}>
-                        <Button component={NavLink} to={`/concepts/${concept.id}`}
-                            sx={{
-                                backgroundColor: `${theme.palette.secondary.main}`,
-                                color: `${theme.palette.secondary.contrastText}`,
-                            }}>
-                            <Box display='flex' flexDirection='column'
+                    concept.status === true || concept.concept_name === "Vocabulary" ? (
+                        <Grid item key={concept.id}>
+                            <Button component={NavLink} to={`/concepts/${concept.id}`}
                                 sx={{
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    alignContent: "center",
-                                    padding: "10px 20px",
-                                    width: "400px",
-                                    height: "200px",
+                                    backgroundColor: `${theme.palette.secondary.main}`,
+                                    color: `${theme.palette.secondary.contrastText}`,
                                 }}>
-                                <Box
+                                <Box display='flex' flexDirection='column'
                                     sx={{
                                         display: "flex",
-                                        alignItems: "start",
-                                        height: "100px"
+                                        flexDirection: "column",
+                                        alignContent: "center",
+                                        padding: "10px 20px",
+                                        width: "400px",
+                                        height: "200px",
                                     }}>
                                     <Box
                                         sx={{
-                                            width: "fit-content",
                                             display: "flex",
-                                            alignItems: "center"
+                                            alignItems: "start",
+                                            height: "100px"
                                         }}>
+                                        <Box
+                                            sx={{
+                                                width: "fit-content",
+                                                display: "flex",
+                                                alignItems: "center"
+                                            }}>
 
-                                        <h3>{concept.concept_name}</h3>
-                                        {concept.progress === true &&
-                                            <CheckIcon sx={{
-                                                ml: 1,
-                                                color: `${theme.palette.completion.good}`,
-                                            }} />
-                                        }
+                                            <h3>{concept.concept_name}</h3>
+                                            {concept.progress === true &&
+                                                <CheckIcon sx={{
+                                                    ml: 1,
+                                                    color: `${theme.palette.completion.good}`,
+                                                }} />
+                                            }
+                                        </Box>
                                     </Box>
+                                    <p>{concept.level}</p>
+                                    <LinearProgress
+                                        variant='determinate'
+                                        value={concept.topicsPassed * 100}
+                                        sx={{ height: 15 }}
+                                        color='divider'
+                                    />
                                 </Box>
-                                <p>{concept.level}</p>
-                                <LinearProgress
-                                    variant='determinate'
-                                    value={50}
-                                    sx={{ height: 15 }}
-                                    color='divider'
-                                />
-                            </Box>
-                        </Button>
-                    </Grid>
-
+                            </Button>
+                        </Grid>
+                    ) : (
+                        <Grid item key={concept.id}>
+                            <Button sx={{
+                                textAlign: "left",
+                                // backgroundColor: `${theme.palette.text.disabled}`,
+                                color: `${theme.palette.text.disabled}`,
+                                "&:hover": {
+                                    cursor: "default",
+                                },
+                            }}>
+                                <Box display='flex' flexDirection='column'
+                                    sx={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignContent: "center",
+                                        padding: "10px 20px",
+                                        width: "400px",
+                                        height: "200px"
+                                    }}>
+                                    <Box
+                                        sx={{
+                                            height: "100px"
+                                        }}>
+                                        <h3>{concept.concept_name}</h3>
+                                    </Box>
+                                    <p>{concept.level}</p>
+                                    <LinearProgress
+                                        variant='determinate'
+                                        value={0}
+                                        sx={{
+                                            height: 15
+                                        }}
+                                        color="text"
+                                    />
+                                </Box>
+                                <LockIcon sx={{
+                                    position: 'absolute',
+                                    top: '50%',
+                                    left: '50%',
+                                    transform: 'translate(-50%, -50%)',
+                                    color: `${theme.palette.text.secondary}`,
+                                }} />
+                            </Button>
+                        </Grid>
+                    )
                 ))}
             </Grid>
         </Container >
