@@ -30,7 +30,8 @@ function CardPage() {
   const [feedback, setFeedback] = useState({});
   const attemptId = useSelector((state) => state.userAttempts);
   const topicName = deck?.cards?.[0]?.questionData?.topic
-
+  const topicLevel = deck?.level
+  console.log("DECK", deck);
   useEffect(() => {
     dispatch(fetchOneDeck(deckId));
     dispatch(fetchUserAttempt(deckId))
@@ -73,7 +74,8 @@ function CardPage() {
 
   return (
     <>
-      <h1 style={{ textAlign: "center" }}>{topicName}</h1>
+      <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topicName}</h1>
+      <h3 style={{ textAlign: "center", marginTop: 0 }}>{topicLevel}</h3>
       <Container
         sx={{
           display: "flex",

@@ -61,6 +61,10 @@ function TopicsPage() {
     }
   })
 
+  if (loading) {
+    return <LinearProgress />;
+  }
+
   return (
     <Container>
       <Box>

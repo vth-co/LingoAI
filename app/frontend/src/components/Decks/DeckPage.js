@@ -9,6 +9,7 @@ import {
   Button,
   Grid,
   CircularProgress,
+  LinearProgress
 } from "@mui/material";
 import { addQuestions } from "../../store/questions";
 import { fetchOneTopic } from "../../store/topics";
@@ -28,6 +29,7 @@ function DeckPage() {
   const concepts = Object.values(useSelector((state) => state.concepts));
   const conceptFilter = concepts.find(concept => conceptId === concept.id)
   const theme = useTheme()
+  console.log("CONCEPTS", conceptFilter);
 
   console.log('decks', decks)
   useEffect(() => {
@@ -106,7 +108,8 @@ function DeckPage() {
       ) : (
         <>
           {/* Check if topic is loaded before trying to access topic_name */}
-          <h1>{topic ? topic.topic_name : "Loading topic..."}</h1>
+          <h1 style={{ marginBottom: 0 }}>{topic ? topic.topic_name : "Loading topic..."}</h1>
+          <h3 style={{ marginTop: 0 }}>{conceptFilter?.level}</h3>
           <Container sx={{
             display: "grid",
             justifyContent: "center"
