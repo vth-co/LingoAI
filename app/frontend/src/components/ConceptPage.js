@@ -15,8 +15,8 @@ function ConceptPage() {
   const dispatch = useDispatch()
   const user = useSelector((state) => state.session.user)
   const concepts = Object.values(useSelector((state) => state.concepts));
-  const progressState = useSelector((state) => state.users.progress);
-  const progress = progressState && Object.values(progressState)
+  // const progressState = useSelector((state) => state.users.progress);
+  // const progress = progressState && Object.values(progressState)
   // const concepts = Object.values(useSelector((state) => state.concepts.concepts));
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
@@ -36,7 +36,8 @@ function ConceptPage() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await dispatch(fetchUserConcepts(user.uid));
+
+      await dispatch(fetchUserConcepts(user?.uid));
       // await dispatch(fetchUserProgress(user.uid))
       setLoading(false);
     };

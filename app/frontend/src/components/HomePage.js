@@ -4,7 +4,6 @@ import { Box, Button, Container, Grid, LinearProgress, Link, Typography, Tooltip
 import InfoIcon from "@mui/icons-material/Info";
 import { fetchUserProgress } from '../store/users';
 import { useTheme } from '@mui/material/styles';
-import { NavLink } from 'react-router-dom/cjs/react-router-dom.min';
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -194,14 +193,14 @@ function HomePage() {
       <Box>
         <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center">
           <h1>Welcome, {user.username}!</h1>
+          <Link href="/concepts">
             <Button
               variant="contained"
               color="primary"
-              component={NavLink}
-              to='/concepts'
             >
               Start Learning Now
             </Button>
+          </Link>
           <h2 style={{ padding: "16px 0px", }}>Your Latest Lingo.ai Progress</h2>
         </Box>
         {user.badges?.length === 3 &&
