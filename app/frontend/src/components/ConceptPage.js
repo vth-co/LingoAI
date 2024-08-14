@@ -155,7 +155,7 @@ function ConceptPage() {
                   <p>{concept.level}</p>
                   <LinearProgress
                     variant='determinate'
-                    value={(concept.topicsPassed / concept.topics.length) * 100}
+                    value={concept.topicsPassed * 100}
                     sx={{ height: 15 }}
                     color='divider'
                   />

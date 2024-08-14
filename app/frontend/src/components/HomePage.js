@@ -37,7 +37,7 @@ function HomePage() {
     return conceptCount
   })
 
-  console.log("USER", progress);
+  console.log("USER", user);
 
   let conceptPercentage = (conceptCount / currentConcepts?.length) * 100
 
@@ -81,7 +81,7 @@ function HomePage() {
           <Tooltip
             title={
               <Typography>
-                Progress toward mastering your concepts for this level by completing topics.
+                Progress toward mastering your concepts for the current level by completing all the topics.
               </Typography>
             }
             arrow
@@ -123,39 +123,70 @@ function HomePage() {
           </Box>
         </>
       ),
-      right: <img src="/assets/badges/beginner-badge.png"
-        alt="Lingo.ai Beginner Champion Badge"
-        style={{
-          width: "25%",
-          borderRadius: "3.5px",
-          boxShadow: `0 0 2.5px ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
-        }}
-      />
+      right: (
+        <>
+          <Box
+            sx={{
+              display: "flex",
+              columnGap: "20px"
+            }}>
+            {user.badges.includes("Bronze") &&
+              <img src="/assets/badges/beginner-badge.png"
+                alt="Lingo.ai Beginner Champion Badge"
+                style={{
+                  width: "25%",
+                  borderRadius: "3.5px",
+                  boxShadow: `0 0 2.5px ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
+                }}
+              />}
+
+            {user.badges.includes("Silver") &&
+              <img src="/assets/badges/intermediate-badge.png"
+                alt="Lingo.ai Intermediate Champion Badge"
+                style={{
+                  width: "25%",
+                  borderRadius: "3.5px",
+                  boxShadow: `0 0 2.5px ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
+                }}
+              />}
+
+            {user.badges.includes("Gold") &&
+              <img src="/assets/badges/advanced-badge.png"
+                alt="Lingo.ai Advanced Champion Badge"
+                style={{
+                  width: "25%",
+                  borderRadius: "3.5px",
+                  boxShadow: `0 0 2.5px ${theme.palette.mode === 'light' ? '#160e0e' : '#f1e9e9'}`,
+                }}
+              />}
+          </Box>
+        </>
+      )
     },
   ]
 
-  if (user.level === 'Advanced') {
-    data.splice(5, 0, {
-      left: (
-        <>
-          <Box display="flex" alignItems="center">
-            Supplementary Learning
-            <Tooltip
-              title={
-                <Typography>
-                  Available level(s) to reinforce your knowledge. Completing these will earn you the corresponding badges, if you haven't already.
-                </Typography>
-              }
-              arrow
-            >
-              <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
-            </Tooltip>:
-          </Box>
-        </>
-      ),
-      right: 'Beginner • Intermediate'
-    });
-  }
+  // if (user.level === 'Advanced') {
+  //   data.splice(5, 0, {
+  //     left: (
+  //       <>
+  //         <Box display="flex" alignItems="center">
+  //           Supplementary Learning
+  //           <Tooltip
+  //             title={
+  //               <Typography>
+  //                 Available level(s) to reinforce your knowledge. Completing these will earn you the corresponding badges, if you haven't already.
+  //               </Typography>
+  //             }
+  //             arrow
+  //           >
+  //             <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+  //           </Tooltip>:
+  //         </Box>
+  //       </>
+  //     ),
+  //     right: 'Beginner • Intermediate'
+  //   });
+  // }
 
   return (
     <Container>
