@@ -8,7 +8,8 @@ import { fetchUserProgress } from '../store/users';
 import { useTheme } from '@emotion/react';
 import LockIcon from '@mui/icons-material/Lock';
 import CheckIcon from '@mui/icons-material/Check';
-import BeginnerConcepts from './BeginnerConcepts';
+import BeginnerConcepts from './ConceptsPage-Beginner';
+import IntermediateConcepts from './ConceptsPage-Intermediate';
 
 function ConceptPage() {
   const dispatch = useDispatch()
@@ -49,7 +50,7 @@ function ConceptPage() {
     };
   });
 
-  console.log("concepts", combinedConcepts);
+  console.log("concepts", progress);
   const sortedConcepts = combinedConcepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name));
 
   const currentConcepts = progress?.[0].concepts.filter(concept =>
@@ -225,25 +226,7 @@ function ConceptPage() {
                 </Box>
                 <Collapse in={showIntermediate}>
                   <Box>
-                    <Box
-                      sx={{
-                        display: "grid",
-                        justifyContent: "center"
-                      }}
-                    >
-                      <Typography>Pass all the concepts to get your Lingo.ai Intermediate Champion Badge.</Typography>
-                      <Box>
-                        <LinearProgress
-                          variant='determinate'
-                          value={50}
-                          sx={{
-                            height: 25,
-                          }}
-                          color='secondary'
-                        />
-                      </Box>
-                    </Box>
-                    <p>xx</p>
+                    <IntermediateConcepts user={user} progress={progress} concepts={concepts} />
                   </Box>
                 </Collapse>
               </>
@@ -258,29 +241,13 @@ function ConceptPage() {
             </Box>
             <Collapse in={showBeginner}>
               <Box>
-                <BeginnerConcepts />
+                <BeginnerConcepts user={user} progress={progress} concepts={concepts} />
               </Box>
             </Collapse>
           </Box>
         </>
       }
 
-      {/* <Grid container spacing={10} justifyContent='center' py={5}>
-        {concepts.map(concept => (
-          <Grid item key={concept.id}>
-            <Button component={NavLink} to={`/concepts/${concept.id}`}>
-              <Box display='flex' flexDirection='column' width="200px">
-                <h3>{concept.concept_name}</h3> <p>{concept.level}</p>{' '}
-                <LinearProgress
-                  variant='determinate'
-                  value={50}
-                  sx={{ height: 15 }}
-                />
-              </Box>
-            </Button>
-          </Grid>
-        ))}
-      </Grid> */}
     </Container >
   )
 }
