@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { Box, Button, Container, Grid, LinearProgress, Collapse, IconButton, Divider } from '@mui/material'
+import { Box, Button, Container, Grid, LinearProgress, Collapse, IconButton, Divider, Typography } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { NavLink } from "react-router-dom";
 import { fetchUserConcepts } from '../store/concepts';
@@ -103,18 +103,37 @@ function ConceptPage() {
               : (<p>Pass all the concepts to get your Lingo.ai Advanced Champion Badge.</p>)
           )}
         </Box>
-        <Box px={50}>
-          <LinearProgress
-            variant='determinate'
-            value={conceptPercentage}
-            sx={{
-              height: 25,
-            }}
-            color='secondary'
-          />
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            width: '100%',
+          }}
+        >
+          <Box sx={{ position: 'relative', display: 'inline-flex', width: '75%', margin: 'auto' }}>
+            <LinearProgress
+              variant="determinate"
+              value={conceptPercentage}
+              sx={{ height: 25, width: '100%' }}
+              color='secondary'
+            />
+            <Box
+              sx={{
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                position: 'absolute',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography fontSize="small" color="textSecondary">{`${Math.round(conceptPercentage)}%`}</Typography>
+            </Box>
+          </Box>
         </Box>
       </Box>
-
       <Grid container justifyContent='center' py={5} spacing={5}>
         {currentConcepts?.map(concept => (
           concept.status === true || concept.concept_name === "Vocabulary" ? (
@@ -156,12 +175,34 @@ function ConceptPage() {
                     </Box>
                   </Box>
                   <p>{concept.level}</p>
-                  <LinearProgress
+                  {/* <LinearProgress
                     variant='determinate'
                     value={concept.topicsPassed * 100}
                     sx={{ height: 15 }}
                     color='divider'
-                  />
+                  /> */}
+                  <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%', margin: 'auto' }}>
+                    <LinearProgress
+                      variant="determinate"
+                      value={concept.topicsPassed * 100}
+                      sx={{ height: 25, width: '100%' }}
+                      color='secondary'
+                    />
+                    <Box
+                      sx={{
+                        top: 0,
+                        left: 0,
+                        bottom: 0,
+                        right: 0,
+                        position: 'absolute',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <Typography fontSize="small" color="textSecondary">{`${Math.round(concept.topicsPassed * 100)}%`}</Typography>
+                    </Box>
+                  </Box>
                 </Box>
               </Button>
             </Grid>
@@ -191,14 +232,36 @@ function ConceptPage() {
                     <h3>{concept.concept_name}</h3>
                   </Box>
                   <p>{concept.level}</p>
-                  <LinearProgress
+                  {/* <LinearProgress
                     variant='determinate'
                     value={0}
                     sx={{
                       height: 15
                     }}
                     color="text"
-                  />
+                  /> */}
+                  <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%', margin: 'auto' }}>
+                    <LinearProgress
+                      variant="determinate"
+                      value={0}
+                      sx={{ height: 25, width: '100%' }}
+                      color='text'
+                    />
+                    <Box
+                      sx={{
+                        top: 0,
+                        left: 0,
+                        bottom: 0,
+                        right: 0,
+                        position: 'absolute',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+
+                    </Box>
+                  </Box>
                 </Box>
                 <LockIcon sx={{
                   position: 'absolute',
@@ -211,7 +274,8 @@ function ConceptPage() {
             </Grid>
           )))}
       </Grid>
-      {(user?.level === "Intermediate" || user?.level === "Advanced") &&
+      {
+        (user?.level === "Intermediate" || user?.level === "Advanced") &&
         <>
           <Divider />
           <Box>
