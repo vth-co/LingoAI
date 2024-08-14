@@ -20,4 +20,7 @@ router.put('/update/:deckId', archiveDeck);
 
 router.get('/:deckId/attempt', getAttemptbyDeck);
 
+
+module.exports = router;
+
 module.exports = router

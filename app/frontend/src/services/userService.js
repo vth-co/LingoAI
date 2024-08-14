@@ -1,7 +1,7 @@
 const { db } = require('../firebase/firebaseConfig');
 const { collection, addDoc, getDocs, updateDoc, getDoc, doc, query, where, setDoc } = require('firebase/firestore');
 const { getConceptsByLevel, getTopicsByConceptId } = require('./conceptService');
-
+const { checkTopicProgression } = require('./topicService');
 // Service to add a user
 const addUserToDB = async ({ uid, email, username, first_name, last_name, native_language, level, badges = [] }) => {
 
@@ -164,36 +164,18 @@ const initializeUserProgress = async (uid, level = null) => {
         throw new Error('Error initializing user progress: ' + error.message);
     }
 }
-
-
-// Service to update user progress
 const updateUserProgressFromDB = async (uid, topic_id) => {
     try {
         const userProgressRef = doc(db, 'progress', uid);
         const userDocRef = doc(db, 'users', uid);
         const userDoc = await getDoc(userDocRef);
+
         if (!userDoc.exists()) {
             throw new Error('User not found');
         }
 
         const conceptsCollectionRef = collection(userProgressRef, 'concepts');
         const conceptsSnapshot = await getDocs(conceptsCollectionRef);
-
-        // Query to find the concept that contains the given topic_id
-        const conceptQuery = query(conceptsCollectionRef, where('topics', 'array-contains', { id: topic_id }));
-        const conceptSnapshot = await getDocs(conceptQuery);
-
-        if (conceptSnapshot.empty) {
-            throw new Error('Concept for the given topic not found');
-        }
-
-        let conceptDoc = conceptSnapshot.docs[0]; // Assuming topic_id is unique, so we take the first (and only) result
-        let conceptData = conceptDoc.data();
-
-        // Check if the concept is already passed
-        if (conceptData.topicsPassed === 1.0) {
-            throw new Error('This concept is already passed!');
-        }
 
         let allConceptsPassed = true;
         let currentLevelPassed = true;  // This tracks if all concepts at the current level are passed
@@ -247,6 +229,9 @@ const updateUserProgressFromDB = async (uid, topic_id) => {
             }
         }
 
+        // Call checkTopicProgression after updating the topics
+        await checkTopicProgression(uid, topic_id, currentLevelPassed, currentLevel);
+
         const badges = userDoc.data().badges || [];
 
         // Badge assignment logic based on completed levels
@@ -283,6 +268,126 @@ const updateUserProgressFromDB = async (uid, topic_id) => {
         console.error('Error updating user progress:', error);
     }
 };
+
+
+
+// Service to update user progress
+// const updateUserProgressFromDB = async (uid, topic_id) => {
+//     try {
+//         const userProgressRef = doc(db, 'progress', uid);
+//         const userDocRef = doc(db, 'users', uid);
+//         const userDoc = await getDoc(userDocRef);
+//         if (!userDoc.exists()) {
+//             throw new Error('User not found');
+//         }
+
+//         const conceptsCollectionRef = collection(userProgressRef, 'concepts');
+//         const conceptsSnapshot = await getDocs(conceptsCollectionRef);
+
+//         // Query to find the concept that contains the given topic_id
+//         const conceptQuery = query(conceptsCollectionRef, where('topics', 'array-contains', { id: topic_id }));
+//         const conceptSnapshot = await getDocs(conceptQuery);
+
+//         if (conceptSnapshot.empty) {
+//             throw new Error('Concept for the given topic not found');
+//         }
+
+//         let conceptDoc = conceptSnapshot.docs[0]; // Assuming topic_id is unique, so we take the first (and only) result
+//         let conceptData = conceptDoc.data();
+
+//         // Check if the concept is already passed
+//         if (conceptData.topicsPassed === 1.0) {
+//             throw new Error('This concept is already passed!');
+//         }
+
+//         let allConceptsPassed = true;
+//         let currentLevelPassed = true;  // This tracks if all concepts at the current level are passed
+//         const currentLevel = userDoc.data().level;
+
+//         // Iterate through each concept to find the matching topic_id
+//         for (const conceptDoc of conceptsSnapshot.docs) {
+//             const conceptData = conceptDoc.data();
+//             let topicsUpdated = false;
+//             let topicsPassedCount = 0;
+
+//             const updatedTopics = conceptData.topics.map(topic => {
+//                 if (topic.status) {
+//                     topicsPassedCount++;
+//                 }
+
+//                 if (topic.id === topic_id && topic.passes >= 3 && !topic.status) {
+//                     console.log("User has passed this topic.");
+//                     topic.status = true;
+//                     topicsUpdated = true;
+//                     topicsPassedCount++;
+//                 }
+//                 return topic;
+//             });
+
+//             const topicsPassedDecimal = conceptData.topics.length > 0
+//                 ? parseFloat((topicsPassedCount / conceptData.topics.length).toFixed(1))
+//                 : 0.0;
+
+//             // Update if any changes detected
+//             if (topicsUpdated || topicsPassedDecimal !== conceptData.topicsPassed) {
+//                 await updateDoc(conceptDoc.ref, {
+//                     topics: updatedTopics,
+//                     topicsPassed: topicsPassedDecimal
+//                 });
+//                 console.log("Updated concept with topicsPassed:", topicsPassedDecimal);
+//             }
+
+//             const conceptPassed = updatedTopics.every(topic => topic.status);
+//             if (conceptPassed && conceptData.status !== true) {
+//                 await updateDoc(conceptDoc.ref, { status: true });
+//                 console.log("Concept status updated successfully in Firestore");
+//             }
+
+//             // Track if all concepts are passed
+//             allConceptsPassed = allConceptsPassed && conceptPassed;
+
+//             // Specifically check if the current level's concepts are all passed
+//             if (conceptData.level === currentLevel) {
+//                 currentLevelPassed = currentLevelPassed && conceptPassed;
+//             }
+//         }
+
+//         const badges = userDoc.data().badges || [];
+
+//         // Badge assignment logic based on completed levels
+//         if (currentLevel === "Beginner" && currentLevelPassed && !badges.includes('Bronze')) {
+//             badges.push('Bronze');
+//             await updateDoc(userDocRef, { badges });
+//             console.log("Bronze badge assigned");
+//         }
+
+//         if (currentLevel === "Intermediate" && currentLevelPassed && !badges.includes('Silver')) {
+//             badges.push('Silver');
+//             await updateDoc(userDocRef, { badges });
+//             console.log("Silver badge assigned");
+//         }
+
+//         if (currentLevel === "Advanced" && currentLevelPassed && !badges.includes('Gold')) {
+//             badges.push('Gold');
+//             await updateDoc(userDocRef, { badges });
+//             console.log("Gold badge assigned");
+//         }
+
+//         // Level up logic only if all concepts of the current level are passed
+//         const levels = ["Beginner", "Intermediate", "Advanced"];
+//         const new_level = levels[Math.min(levels.indexOf(currentLevel) + 1, levels.length - 1)];
+
+//         if (new_level !== currentLevel && currentLevelPassed) {
+//             console.log("New level:", new_level);
+//             await updateDoc(userDocRef, { level: new_level });
+//             await initializeUserProgress(uid, new_level);
+//         }
+
+//         console.log('User progress updated successfully');
+//     } catch (error) {
+//         console.error('Error updating user progress:', error);
+//     }
+// };
 
 
 

@@ -31,6 +31,8 @@ function DeckPage() {
   const decksFilter = decks?.filter((deck) => topicId === deck.topic_id);
   const theme = useTheme();
 
+  console.log("topic id", topicId)
+
   useEffect(() => {
     if (user && topicId) {
       setLoading(true);

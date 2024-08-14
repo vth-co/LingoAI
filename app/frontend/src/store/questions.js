@@ -24,7 +24,7 @@ const add = (question) => ({
 export const addQuestions =
   (concept_name, topic_name, user_native_language, concept_level, topicId, userId) => async (dispatch) => {
 
-  
+
     try {
       let questionData = await generateQuestionsByAI(
         concept_name,

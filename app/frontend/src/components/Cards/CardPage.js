@@ -14,7 +14,10 @@ import React, { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
-import { useParams , useLocation} from "react-router-dom/cjs/react-router-dom.min";
+import {
+  useParams,
+  useLocation,
+} from "react-router-dom/cjs/react-router-dom.min";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchOneDeck } from "../../store/decks";
 import { fetchUserAttempt, modifyUserAttempt } from "../../store/attempt";
@@ -27,7 +30,7 @@ function CardPage() {
   const user = useSelector((state) => state.session.user);
   const deck = useSelector((state) => state.decks.selectedDeck);
   const cards = deck?.cards?.[0]?.questionData?.jsonData || [];
-  const attempt = useSelector((state) => state.attempts)
+  const attempt = useSelector((state) => state.attempts);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [feedback, setFeedback] = useState({});
   //const attemptId = useSelector((state) => state.userAttempts);
@@ -35,12 +38,14 @@ function CardPage() {
   const topicName = deck?.cards?.[0]?.questionData?.topic;
   const topicLevel = deck?.level;
 
+  console.log('attempt id', attemptId)
+
   useEffect(() => {
     dispatch(fetchOneDeck(deckId));
   }, [dispatch, deckId, attemptId]);
 
   const handleAnswerChange = async (cardIndex, optionIndex, questionId) => {
-    const selectedOption = cards[cardIndex].options[optionIndex]
+    const selectedOption = cards[cardIndex].options[optionIndex];
     try {
       // Update local state
       setSelectedAnswers((prevAnswers) => ({
@@ -48,7 +53,6 @@ function CardPage() {
         [cardIndex]: optionIndex,
       }));
 
-  
       const checkAttempt = await dispatch(
         modifyUserAttempt(
           user.uid,
@@ -57,24 +61,27 @@ function CardPage() {
           selectedOption,
           deckId
         )
-      )
-      console.log("checkAttempt: ", checkAttempt);
-      // Set feedback based on the response
-      if (checkAttempt.message === "Answer is correct!") {
-        setFeedback({ cardIndex, isCorrect: true });
-      } else if (checkAttempt.message === "Answer is incorrect.") {
-          setFeedback({
-              cardIndex,
-              isCorrect: false,
-              correctAnswer: checkAttempt.correctAnswer,
-          });
-      }
+      );
 
+      console.log("checkAttempt: ", checkAttempt);
+
+      if (checkAttempt && checkAttempt.message === "Answer is correct!") {
+        setFeedback({ cardIndex, isCorrect: true });
+      } else if (
+        checkAttempt &&
+        checkAttempt.message === "Answer is incorrect."
+      ) {
+        setFeedback({
+          cardIndex,
+          isCorrect: false,
+          correctAnswer: checkAttempt.correctAnswer,
+        });
+      }
     } catch (error) {
       console.error("Error modifying user attempt:", error);
     }
   };
-  
+
   return (
     <>
       <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topicName}</h1>
@@ -99,8 +106,9 @@ function CardPage() {
                     width: "300px",
                     height: "450px",
                     borderRadius: "3px",
-                    border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                      }`,
+                    border: `1.5px solid ${
+                      theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                    }`,
                   }}
                 >
                   <Box
@@ -115,15 +123,15 @@ function CardPage() {
                   </Box>
                   <Box
                     sx={{
-
                       backgroundColor: `${theme.palette.background.main}`,
                       height: "150px",
                       padding: "10px",
-                      borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                        }`,
+                      borderTop: `1.5px solid ${
+                        theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                      }`,
                       overflow: "auto",
                       display: "flex",
-                      alignContent: "center"
+                      alignContent: "center",
                     }}
                   >
                     <FormControl>
@@ -139,14 +147,22 @@ function CardPage() {
                           alignItems: "center",
                           height: "100%",
                         }}
-                        onChange={(e) => handleAnswerChange(cardIndex, parseInt(e.target.value), card.id)}
+                        onChange={(e) =>
+                          handleAnswerChange(
+                            cardIndex,
+                            parseInt(e.target.value),
+                            card.id
+                          )
+                        }
                       >
                         {card.options.map((option, optionIndex) => (
                           <FormControlLabel
                             key={optionIndex}
                             value={optionIndex} // Set the index as the value
                             control={
-                              <Radio sx={{ color: theme.palette.primary.main }} />
+                              <Radio
+                                sx={{ color: theme.palette.primary.main }}
+                              />
                             }
                             label={option}
                             sx={{
@@ -175,8 +191,9 @@ function CardPage() {
                       width: "300px",
                       height: "450px",
                       borderRadius: "3px",
-                      border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                        }`,
+                      border: `1.5px solid ${
+                        theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                      }`,
                     }}
                   >
                     <Box
@@ -198,15 +215,18 @@ function CardPage() {
                         backgroundColor: `${theme.palette.background.main}`,
                         height: "150px",
                         padding: "10px",
-                        borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                          }`,
+                        borderTop: `1.5px solid ${
+                          theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                        }`,
                         overflow: "auto",
                         display: "flex",
-                        alignContent: "center"
+                        alignContent: "center",
                       }}
                     >
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <CheckIcon sx={{ color: theme.palette.completion.good }} />
+                        <CheckIcon
+                          sx={{ color: theme.palette.completion.good }}
+                        />
                         <Typography sx={{ ml: 2 }}>{card.answer}</Typography>
                       </Box>
                     </Box>
@@ -224,8 +244,9 @@ function CardPage() {
                       width: "300px",
                       height: "450px",
                       borderRadius: "3px",
-                      border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                        }`,
+                      border: `1.5px solid ${
+                        theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                      }`,
                     }}
                   >
                     <Box
@@ -247,16 +268,21 @@ function CardPage() {
                         backgroundColor: `${theme.palette.background.main}`,
                         height: "150px",
                         padding: "10px",
-                        borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                          }`,
+                        borderTop: `1.5px solid ${
+                          theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                        }`,
                         overflow: "auto",
                         display: "flex",
-                        alignContent: "center"
+                        alignContent: "center",
                       }}
                     >
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <CloseIcon sx={{ color: theme.palette.completion.poor }} />
-                        <Typography sx={{ ml: 2 }}>{feedback.correctAnswer}</Typography>
+                        <CloseIcon
+                          sx={{ color: theme.palette.completion.poor }}
+                        />
+                        <Typography sx={{ ml: 2 }}>
+                          {feedback.correctAnswer}
+                        </Typography>
                       </Box>
                     </Box>
                   </Card>
