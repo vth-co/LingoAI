@@ -29,7 +29,7 @@ function CardPage() {
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [feedback, setFeedback] = useState({});
   const attemptId = useSelector((state) => state.userAttempts);
-
+  const topicName = deck?.cards?.[0]?.questionData?.topic
 
   useEffect(() => {
     dispatch(fetchOneDeck(deckId));
@@ -72,173 +72,196 @@ function CardPage() {
   };
 
   return (
-    <Container
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        height: "100vh",
-        p: 2,
-      }}
-    >
-      <Grid container spacing={2}>
-        {cards.map((card, cardIndex) => (
-          <React.Fragment key={card.id}>
-            {/* QUESTION CARD */}
-            <Grid item xs={12} md={4}>
-              <Card
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  width: "325px",
-                  height: "450px",
-                  borderRadius: "3px",
-                  border: `1.5px solid ${
-                    theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                  }`,
-                }}
-              >
-                <Box
+    <>
+      <h1 style={{ textAlign: "center" }}>{topicName}</h1>
+      <Container
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          height: "100vh",
+          p: 2,
+        }}
+      >
+        <Grid container spacing={2}>
+          {cards.map((card, cardIndex) => (
+            <React.Fragment key={card.id}>
+              {/* QUESTION CARD */}
+              <Grid item xs={12} md={4}>
+                <Card
                   sx={{
-                    backgroundColor: `${theme.palette.primary.main}`,
-                    height: "300px",
-                    padding: "20px",
-                    overflow: "auto",
+                    display: "flex",
+                    flexDirection: "column",
+                    width: "300px",
+                    height: "450px",
+                    borderRadius: "3px",
+                    border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                      }`,
                   }}
                 >
-                  <h2>{card.question}</h2>
-                </Box>
-                <Box
-                  sx={{
-                    backgroundColor: `${theme.palette.background.main}`,
-                    padding: "20px",
-                    borderTop: `1.5px solid ${
-                      theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                    }`,
-                  }}
-                >
-                  <FormControl sx={{ width: "100%", overflow: "auto" }}>
-                    <RadioGroup
-                      row
-                      aria-labelledby="demo-row-radio-buttons-group-label"
-                      name="row-radio-buttons-group"
-                      sx={{ paddingTop: "15px" }}
-                      onChange={(e) => handleAnswerChange(cardIndex, parseInt(e.target.value), card.id)}
+                  <Box
+                    sx={{
+                      backgroundColor: `${theme.palette.primary.main}`,
+                      height: "300px",
+                      padding: "20px",
+                      overflow: "hidden",
+                    }}
+                  >
+                    <h2 style={{ margin: "0" }}>{card.question}</h2>
+                  </Box>
+                  <Box
+                    sx={{
+
+                      backgroundColor: `${theme.palette.background.main}`,
+                      height: "150px",
+                      padding: "10px",
+                      borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                        }`,
+                      overflow: "auto",
+                      display: "flex",
+                      alignContent: "center"
+                    }}
+                  >
+                    <FormControl>
+                      <RadioGroup
+                        row
+                        aria-labelledby="demo-row-radio-buttons-group-label"
+                        name="row-radio-buttons-group"
+                        sx={{
+                          display: "grid",
+                          gridTemplateColumns: "repeat(2, 1fr)", // Two columns layout
+                          gridAutoFlow: "row",
+                          gap: "10px",
+                          alignItems: "center",
+                          height: "100%",
+                        }}
+                        onChange={(e) => handleAnswerChange(cardIndex, parseInt(e.target.value), card.id)}
+                      >
+                        {card.options.map((option, optionIndex) => (
+                          <FormControlLabel
+                            key={optionIndex}
+                            value={optionIndex} // Set the index as the value
+                            control={
+                              <Radio sx={{ color: theme.palette.primary.main }} />
+                            }
+                            label={option}
+                            sx={{
+                              margin: 0,
+                              width: "100%", // Ensure each label takes the full width of the grid cell
+                              display: "flex",
+                              alignItems: "center", // Vertically centers content within each grid cell
+                              justifyContent: "flex-start",
+                              height: "100%",
+                            }}
+                          />
+                        ))}
+                      </RadioGroup>
+                    </FormControl>
+                  </Box>
+                </Card>
+              </Grid>
+
+              {/* CORRECT ANSWER */}
+              {feedback.cardIndex === cardIndex && feedback.isCorrect && (
+                <Grid item xs={12} md={4}>
+                  <Card
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "300px",
+                      height: "450px",
+                      borderRadius: "3px",
+                      border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                        }`,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        backgroundColor: `${theme.palette.secondary.main}`,
+                        height: "300px",
+                        padding: "20px",
+                      }}
                     >
-                      {card.options.map((option, optionIndex) => (
-                        <FormControlLabel
-                          key={optionIndex}
-                          value={optionIndex} // Set the index as the value
-                          control={
-                            <Radio sx={{ color: theme.palette.primary.main }} />
-                          }
-                          label={option}
-                        />
-                      ))}
-                    </RadioGroup>
-                  </FormControl>
-                </Box>
-              </Card>
-            </Grid>
-
-            {/* CORRECT ANSWER */}
-            {feedback.cardIndex === cardIndex && feedback.isCorrect && (
-              <Grid item xs={12} md={4}>
-                <Card
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "325px",
-                    height: "450px",
-                    borderRadius: "3px",
-                    border: `1.5px solid ${
-                      theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                    }`,
-                  }}
-                >
-                  <Box
-                    sx={{
-                      backgroundColor: `${theme.palette.secondary.main}`,
-                      height: "300px",
-                      padding: "20px",
-                    }}
-                  >
-                    <h2>{card.question}</h2>
-                    <FormLabel disabled>
-                      <Typography sx={{ color: theme.palette.text.primary }}>
-                        Correct!
-                      </Typography>
-                    </FormLabel>
-                  </Box>
-                  <Box
-                    sx={{
-                      backgroundColor: `${theme.palette.background.main}`,
-                      padding: "20px",
-                      height: "150px",
-                      borderTop: `1.5px solid ${
-                        theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                      }`,
-                    }}
-                  >
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <CheckIcon sx={{ color: theme.palette.completion.good }} />
-                      <Typography sx={{ ml: 2 }}>{card.answer}</Typography>
+                      <h2 style={{ margin: "0" }}>{card.question}</h2>
+                      <FormLabel disabled>
+                        <Typography sx={{ color: theme.palette.text.primary }}>
+                          Correct!
+                        </Typography>
+                      </FormLabel>
                     </Box>
-                  </Box>
-                </Card>
-              </Grid>
-            )}
-
-            {/* INCORRECT ANSWER */}
-            {feedback.cardIndex === cardIndex && !feedback.isCorrect && (
-              <Grid item xs={12} md={4}>
-                <Card
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    width: "325px",
-                    height: "450px",
-                    borderRadius: "3px",
-                    border: `1.5px solid ${
-                      theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                    }`,
-                  }}
-                >
-                  <Box
-                    sx={{
-                      backgroundColor: `${theme.palette.secondary.main}`,
-                      height: "300px",
-                      padding: "20px",
-                    }}
-                  >
-                    <h2>{card.question}</h2>
-                    <FormLabel disabled>
-                      <Typography sx={{ color: theme.palette.text.primary }}>
-                        Incorrect! Correct Answer:
-                      </Typography>
-                    </FormLabel>
-                  </Box>
-                  <Box
-                    sx={{
-                      backgroundColor: `${theme.palette.background.main}`,
-                      padding: "20px",
-                      height: "150px",
-                      borderTop: `1.5px solid ${
-                        theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                      }`,
-                    }}
-                  >
-                    <Box sx={{ display: "flex", alignItems: "center" }}>
-                      <CloseIcon sx={{ color: theme.palette.completion.poor }} />
-                      <Typography sx={{ ml: 2 }}>{feedback.correctAnswer}</Typography>
+                    <Box
+                      sx={{
+                        backgroundColor: `${theme.palette.background.main}`,
+                        height: "150px",
+                        padding: "10px",
+                        borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                          }`,
+                        overflow: "auto",
+                        display: "flex",
+                        alignContent: "center"
+                      }}
+                    >
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <CheckIcon sx={{ color: theme.palette.completion.good }} />
+                        <Typography sx={{ ml: 2 }}>{card.answer}</Typography>
+                      </Box>
                     </Box>
-                  </Box>
-                </Card>
-              </Grid>
-            )}
-          </React.Fragment>
-        ))}
-      </Grid>
-    </Container>
+                  </Card>
+                </Grid>
+              )}
+
+              {/* INCORRECT ANSWER */}
+              {feedback.cardIndex === cardIndex && !feedback.isCorrect && (
+                <Grid item xs={12} md={4}>
+                  <Card
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      width: "300px",
+                      height: "450px",
+                      borderRadius: "3px",
+                      border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                        }`,
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        backgroundColor: `${theme.palette.secondary.main}`,
+                        height: "300px",
+                        padding: "20px",
+                      }}
+                    >
+                      <h2 style={{ margin: "0" }}>{card.question}</h2>
+                      <FormLabel disabled>
+                        <Typography sx={{ color: theme.palette.text.primary }}>
+                          Incorrect! Correct Answer:
+                        </Typography>
+                      </FormLabel>
+                    </Box>
+                    <Box
+                      sx={{
+                        backgroundColor: `${theme.palette.background.main}`,
+                        height: "150px",
+                        padding: "10px",
+                        borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                          }`,
+                        overflow: "auto",
+                        display: "flex",
+                        alignContent: "center"
+                      }}
+                    >
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <CloseIcon sx={{ color: theme.palette.completion.poor }} />
+                        <Typography sx={{ ml: 2 }}>{feedback.correctAnswer}</Typography>
+                      </Box>
+                    </Box>
+                  </Card>
+                </Grid>
+              )}
+            </React.Fragment>
+          ))}
+        </Grid>
+      </Container>
+    </>
   );
 }
 

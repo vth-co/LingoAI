@@ -59,11 +59,34 @@ function HomePage() {
         </Box>
       </>),
       right:
-        <LinearProgress
-          variant="determinate"
-          value={proficiencyPercentage}
-          sx={{ height: 25 }}
-        />
+        // <LinearProgress
+        //   variant="determinate"
+        //   value={proficiencyPercentage}
+        //   sx={{ height: 25 }}
+        // />
+        (
+          <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%' }}>
+            <LinearProgress
+              variant="determinate"
+              value={proficiencyPercentage}
+              sx={{ height: 25, width: '100%' }}
+            />
+            <Box
+              sx={{
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                position: 'absolute',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography fontSize="small" color="textSecondary">{`${Math.round(proficiencyPercentage)}%`}</Typography>
+            </Box>
+          </Box>
+        )
 
     },
     // {
@@ -86,12 +109,37 @@ function HomePage() {
           </Tooltip>:
         </Box>
       </>),
-      right: <LinearProgress
-        variant="determinate"
-        value={conceptPercentage}
-        sx={{ height: 25 }}
-        color='secondary'
-      />
+      right:
+        (
+          <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%' }}>
+            <LinearProgress
+              variant="determinate"
+              value={conceptPercentage}
+              sx={{ height: 25, width: '100%' }}
+              color='secondary'
+            />
+            <Box
+              sx={{
+                top: 0,
+                left: 0,
+                bottom: 0,
+                right: 0,
+                position: 'absolute',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography fontSize="small" color="textSecondary">{`${Math.round(conceptPercentage)}%`}</Typography>
+            </Box>
+          </Box>
+        )
+      // <LinearProgress
+      //   variant="determinate"
+      //   value={conceptPercentage}
+      //   sx={{ height: 25 }}
+      //   color='secondary'
+      // />
     },
     // {
     //   left: 'Topics Progress:',
@@ -197,6 +245,11 @@ function HomePage() {
             <Button
               variant="contained"
               color="primary"
+              sx={{
+                borderRadius: "3px",
+                border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                  }`,
+              }}
             >
               Start Learning Now
             </Button>

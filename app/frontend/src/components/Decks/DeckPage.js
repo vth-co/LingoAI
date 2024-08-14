@@ -15,6 +15,7 @@ import { fetchOneTopic } from "../../store/topics";
 import { NavLink, useHistory } from "react-router-dom";
 import { fetchUserAttempt, startUserAttempt } from "../../store/attempt";
 import { fetchUserConcepts } from "../../store/concepts";
+import { useTheme } from "@mui/material/styles";
 
 function DeckPage() {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ function DeckPage() {
   const [loading, setLoading] = useState(false); // Add loading state
   const concepts = Object.values(useSelector((state) => state.concepts));
   const conceptFilter = concepts.find(concept => conceptId === concept.id)
+  const theme = useTheme()
 
   console.log('decks', decks)
   useEffect(() => {
@@ -105,8 +107,11 @@ function DeckPage() {
         <>
           {/* Check if topic is loaded before trying to access topic_name */}
           <h1>{topic ? topic.topic_name : "Loading topic..."}</h1>
-          <Container>
-            <Box px={30}
+          <Container sx={{
+            display: "grid",
+            justifyContent: "center"
+          }}>
+            <Box px={50}
               sx={{
                 display: "flex",
                 justifyContent: "center"
@@ -116,19 +121,24 @@ function DeckPage() {
                 onClick={handleGenerateQuestions}
                 variant="contained"
 
-              // fullWidth
-              // size="large"
-              // sx={{ height: "150px" }}
+
+                // fullWidth
+                // size="large"
+                sx={{
+                  borderRadius: "3px",
+                  border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                    }`,
+                }}
               >
                 Generate New Deck
               </Button>
             </Box>
-            <Box display="flex" flexDirection="row" width="100%" mt={2}>
+            <Box display="flex" flexDirection="row" width="100%" mt={2} columnGap="20px">
               {/* New Column */}
               <Box flex={1} p={2}>
-                <Typography variant="h5" mb={2}>
+                <h2>
                   New
-                </Typography>
+                </h2>
                 {getAllDecks().length > 0 ? (
                   <Grid container spacing={2}>
                     {getAllDecks().map((deck, index) => (
@@ -139,12 +149,16 @@ function DeckPage() {
                           variant="contained"
                           color="primary"
                           sx={{
-                            height: "175px",
+                            width: "150px",
+                            height: "225px",
+                            borderRadius: "3px",
+                            border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                              }`,
                           }}
                           onClick={() => handleStartAttempt(deck.id)} // Start user attempt when clicking the deck
                         >
-                          <Typography variant="h6">{`Deck #${index + 1
-                            }`}</Typography>
+                          <h3>{`Deck #${index + 1
+                            }`}</h3>
                           <Typography variant="body1">
                             {deck.deckName}
                           </Typography>{" "}
@@ -160,9 +174,9 @@ function DeckPage() {
 
               {/* Placeholder for other columns */}
               <Box flex={1} p={2}>
-                <Typography variant="h5" mb={2}>
+                <h2>
                   In Progress
-                </Typography>
+                </h2>
                 {getInProgressDecks().length > 0 ? (
                   <Grid container spacing={2}>
                     {getInProgressDecks().map((deck, index) => (
@@ -171,13 +185,17 @@ function DeckPage() {
                           component={NavLink}
                           to={`/decks/${deck.id}`}
                           variant="contained"
-                          color="primary"
+                          color="secondary"
                           sx={{
-                            height: "175px",
+                            width: "150px",
+                            height: "225px",
+                            borderRadius: "3px",
+                            border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                              }`,
                           }}
                         >
-                          <Typography variant="h6">{`Deck #${index + 1
-                            }`}</Typography>
+                          <h3>{`Deck #${index + 1
+                            }`}</h3>
                           <Typography variant="body1">
                             {deck.deckName}
                           </Typography>{" "}
@@ -190,11 +208,12 @@ function DeckPage() {
                   <Typography>No decks available</Typography>
                 )}
               </Box>
-
-              <Box flex={1} p={2}>
-                <Typography variant="h5" mb={2}>
+            </Box>
+            <Box>
+              <Box flex={1} p={2} paddingTop="20px">
+                <h2>
                   Archived Decks
-                </Typography>
+                </h2>
                 {getArchivedDecks().length > 0 ? (
                   <Grid container spacing={2}>
                     {getArchivedDecks().map((deck, index) => (
@@ -203,13 +222,17 @@ function DeckPage() {
                           component={NavLink}
                           to={`/decks/${deck.id}`}
                           variant="contained"
-                          color="primary"
+                          color="divider"
                           sx={{
-                            height: "175px",
+                            width: "150px",
+                            height: "225px",
+                            borderRadius: "3px",
+                            border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                              }`,
                           }}
                         >
-                          <Typography variant="h6">{`Deck #${index + 1
-                            }`}</Typography>
+                          <h3>{`Deck #${index + 1
+                            }`}</h3>
                           <Typography variant="body1">
                             {deck.deckName}
                           </Typography>{" "}
