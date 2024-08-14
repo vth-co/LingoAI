@@ -83,7 +83,7 @@ function HomePage() {
                 justifyContent: 'center',
               }}
             >
-              <Typography fontSize="small" color="textSecondary">{`${Math.round(proficiencyPercentage)}%`}</Typography>
+              <Typography fontSize="small" fontWeight="bold" color="textSecondary">{`${Math.round(proficiencyPercentage)}%`}</Typography>
             </Box>
           </Box>
         )
@@ -130,7 +130,7 @@ function HomePage() {
                 justifyContent: 'center',
               }}
             >
-              <Typography fontSize="small" color="textSecondary">{`${Math.round(conceptPercentage)}%`}</Typography>
+              <Typography fontSize="small" fontWeight="bold" color="textSecondary">{`${Math.round(conceptPercentage)}%`}</Typography>
             </Box>
           </Box>
         )

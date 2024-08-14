@@ -53,7 +53,7 @@ function TopicsPage() {
   }, [dispatch, userId]);
 
   const combinedTopics = currentConcept?.topics?.map(topic => {
-    const progressData = currConcept.topics.find(p => topic.id === p.id)
+    const progressData = currConcept?.topics?.find(p => topic.id === p.id)
     return {
       ...topic,
       topic_name: progressData?.topic_name,
@@ -104,7 +104,7 @@ function TopicsPage() {
                 justifyContent: 'center',
               }}
             >
-              <Typography fontSize="small" color="textSecondary">{`${Math.round(currentConcept?.topicsPassed * 100)}%`}</Typography>
+              <Typography fontSize="small" fontWeight="bold" color="textSecondary">{`${Math.round(currentConcept?.topicsPassed * 100)}%`}</Typography>
             </Box>
           </Box>
         </Box>
@@ -136,10 +136,10 @@ function TopicsPage() {
                     height: "80px"
                   }}>
                   <h3>{topic.topic_name}</h3>
-                  {topic.passes === 3 && <CheckIcon sx={{
+                  {/* {topic.passes === 3 && <CheckIcon sx={{
                     ml: 1,
                     color: `${theme.palette.completion.good}`,
-                  }} />}
+                  }} />} */}
                 </Box>
                 <Box
                   sx={{
@@ -166,7 +166,7 @@ function TopicsPage() {
                       justifyContent: 'center',
                     }}
                   >
-                    <Typography fontSize="small" color="textSecondary">{`${Math.round((topic.passes / 3) * 100)}%`}</Typography>
+                    <Typography fontSize="small" fontWeight="bold" color="textSecondary">{`${Math.round((topic.passes / 3) * 100)}%`}</Typography>
                   </Box>
                 </Box>
               </Box>

@@ -7,7 +7,7 @@ import { fetchUserConcepts } from '../store/concepts';
 // import { fetchUserProgress } from '../store/users';
 import { useTheme } from '@emotion/react';
 import LockIcon from '@mui/icons-material/Lock';
-import CheckIcon from '@mui/icons-material/Check';
+// import CheckIcon from '@mui/icons-material/Check';
 import BeginnerConcepts from './ConceptsPage-Beginner';
 import IntermediateConcepts from './ConceptsPage-Intermediate';
 
@@ -129,7 +129,7 @@ function ConceptPage() {
                 justifyContent: 'center',
               }}
             >
-              <Typography fontSize="small" color="textSecondary">{`${Math.round(conceptPercentage)}%`}</Typography>
+              <Typography fontSize="small" fontWeight="bold" color="textSecondary">{`${Math.round(conceptPercentage)}%`}</Typography>
             </Box>
           </Box>
         </Box>
@@ -149,7 +149,7 @@ function ConceptPage() {
                     flexDirection: "column",
                     alignContent: "center",
                     padding: "10px 20px",
-                    width: "400px",
+                    width: "250px",
                     height: "200px",
                   }}>
                   <Box
@@ -166,12 +166,12 @@ function ConceptPage() {
                       }}>
 
                       <h3>{concept.concept_name}</h3>
-                      {concept.progress === true &&
+                      {/* {concept.progress === true &&
                         <CheckIcon sx={{
                           ml: 1,
                           color: `${theme.palette.completion.good}`,
                         }} />
-                      }
+                      } */}
                     </Box>
                   </Box>
                   <p>{concept.level}</p>
@@ -200,7 +200,7 @@ function ConceptPage() {
                         justifyContent: 'center',
                       }}
                     >
-                      <Typography fontSize="small" color="textSecondary">{`${Math.round(concept.topicsPassed * 100)}%`}</Typography>
+                      <Typography fontSize="small" fontWeight="bold" color="textSecondary">{`${Math.round(concept.topicsPassed * 100)}%`}</Typography>
                     </Box>
                   </Box>
                 </Box>
@@ -222,7 +222,7 @@ function ConceptPage() {
                     flexDirection: "column",
                     alignContent: "center",
                     padding: "10px 20px",
-                    width: "400px",
+                    width: "250px",
                     height: "200px"
                   }}>
                   <Box
