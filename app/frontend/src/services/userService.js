@@ -142,10 +142,10 @@ const initializeUserProgress = async (uid, level = null) => {
                 return existingTopic
                     ? existingTopic // Preserve existing topic progress
                     : {
-                        id: topic.id,
-                        topic_name: topic.topic_name,
-                        conceptId: topic.concept_id,
-                        topic_description: topic.description,
+                        id: topic.id || '',
+                        topic_name: topic.topic_name || '',
+                        conceptId: topic.concept_id || '',
+                        topic_description: topic.description || '',
                         status: false,
                         passes: 0
                     };

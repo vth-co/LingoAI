@@ -32,6 +32,8 @@ function TopicsPage() {
     conceptId === concept.id
   );
 
+  console.log("PG", progress);
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);

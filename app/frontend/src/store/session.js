@@ -36,7 +36,7 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 export const signUp =
-  (email, password, username, first_name, last_name, locale, level, badges) =>
+  (email, password, username, first_name, last_name, locale, level) =>
     async (dispatch) => {
       try {
         // Create user with Firebase Authentication
@@ -59,8 +59,7 @@ export const signUp =
           first_name,
           last_name,
           native_language: locale,
-          level,
-          badges
+          level
         });
 
         await initializeUserProgress(userId);
@@ -74,8 +73,7 @@ export const signUp =
             first_name,
             last_name,
             native_language: locale,
-            level,
-            badges
+            level
           })
         );
 

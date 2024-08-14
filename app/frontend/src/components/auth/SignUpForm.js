@@ -22,7 +22,6 @@ const SignUpForm = ({ locale, setLocale }) => {
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [level, setLevel] = useState("");
-  const [badges, setBadges] = useState([])
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -49,12 +48,12 @@ const SignUpForm = ({ locale, setLocale }) => {
     e.preventDefault();
     try {
       await dispatch(
-        signUp(email, password, username, first_name, last_name, locale, level, badges)
+        signUp(email, password, username, first_name, last_name, locale, level)
       );
       console.log("Signed up successfully");
       history.push("/home");
     } catch (error) {
-      console.log("SIGNUP", email, password, username, first_name, last_name, locale, level, badges);
+      console.log("SIGNUP", email, password, username, first_name, last_name, locale, level);
       console.error("Error signing up:", error.message);
     }
   };

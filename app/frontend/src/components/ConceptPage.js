@@ -16,12 +16,13 @@ function ConceptPage() {
   const user = useSelector((state) => state.session.user)
   const progressState = useSelector((state) => state.users.progress);
   const progress = progressState && Object.values(progressState)
-  const concepts = Object.values(useSelector((state) => state.concepts.concepts));
+  // const concepts = Object.values(useSelector((state) => state.concepts.concepts));
   const [loading, setLoading] = useState(true);
   const theme = useTheme();
   const [showBeginner, setShowBeginner] = useState(false);
   const [showIntermediate, setShowIntermediate] = useState(false);
 
+  console.log("PROGRESS", progress);
   const handleBeginnerToggle = () => {
     setShowBeginner(!showBeginner);
   };
@@ -41,21 +42,20 @@ function ConceptPage() {
     fetchData();
   }, [dispatch, user.level, user.uid]);
 
-  const combinedConcepts = concepts.map(concept => {
-    const progressData = progress?.[0].concepts.find(p => p.id === concept.id);
+  // const combinedConcepts = concepts.map(concept => {
+  //   const progressData = progress?.[0].concepts.find(p => p.id === concept.id);
 
-    return {
-      ...concept,
-      progress: progressData?.status
-    };
-  });
+  //   return {
+  //     ...concept,
+  //     progress: progressData?.status
+  //   };
+  // });
 
-  console.log("concepts", progress);
-  const sortedConcepts = combinedConcepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name));
+  // const sortedConcepts = combinedConcepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name));
 
   const currentConcepts = progress?.[0].concepts.filter(concept =>
     concept.level === user.level
-  );
+  ).sort((a, b) => b.concept_name.localeCompare(a.concept_name));
 
   let conceptCount = 0;
 
@@ -65,6 +65,7 @@ function ConceptPage() {
   })
 
   let conceptPercentage = (conceptCount / currentConcepts?.length) * 100
+
 
   if (loading) {
     return <LinearProgress />;
@@ -112,7 +113,7 @@ function ConceptPage() {
       </Box>
 
       <Grid container justifyContent='center' py={5} spacing={5}>
-        {sortedConcepts?.map(concept => (
+        {currentConcepts?.map(concept => (
           concept.progress === true || concept.concept_name === "Vocabulary" ? (
             <Grid item key={concept.id}>
               <Button component={NavLink} to={`/concepts/${concept.id}`}
@@ -154,7 +155,7 @@ function ConceptPage() {
                   <p>{concept.level}</p>
                   <LinearProgress
                     variant='determinate'
-                    value={50}
+                    value={(concept.topicsPassed / concept.topics.length) * 100}
                     sx={{ height: 15 }}
                     color='divider'
                   />
@@ -226,7 +227,7 @@ function ConceptPage() {
                 </Box>
                 <Collapse in={showIntermediate}>
                   <Box>
-                    <IntermediateConcepts user={user} progress={progress} concepts={concepts} />
+                    <IntermediateConcepts user={user} progress={progress} />
                   </Box>
                 </Collapse>
               </>
@@ -241,7 +242,7 @@ function ConceptPage() {
             </Box>
             <Collapse in={showBeginner}>
               <Box>
-                <BeginnerConcepts user={user} progress={progress} concepts={concepts} />
+                <BeginnerConcepts user={user} progress={progress} />
               </Box>
             </Collapse>
           </Box>
