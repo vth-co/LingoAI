@@ -4,7 +4,7 @@ import { addCardsToDeckInDB, createDeckInDB } from "../services/deckService";
 const { db } = require("../firebase/firebaseConfig");
 const { collection, getDoc, doc, getDocs } = require("firebase/firestore");
 // const { generateQuestionsByAI } = require("../models/aiModel");
-const { generateQuestionsByAI } = require("../models/aiModel2");
+const { generateQuestionsByAI } = require("../models/aiModel3");
 
 export const LOAD_QUESTIONS = () => "questions/LOAD_QUESTIONS";
 export const ADD_QUESTION = () => "questions/ADD_QUESTION";
@@ -22,8 +22,6 @@ const add = (question) => ({
 
 export const addQuestions =
   (concept_name, topic_name, user_native_language, concept_level, topicId, userId) => async (dispatch) => {
-
-  
     try {
       let questionData = await generateQuestionsByAI(
         concept_name,
@@ -85,4 +83,4 @@ const questionsReducer = (state = initialState, action) => {
   }
 };
 
-export default  questionsReducer;
+export default questionsReducer;
