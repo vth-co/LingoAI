@@ -64,7 +64,7 @@ function TopicsPage() {
   if (loading) {
     return <LinearProgress />;
   }
-  console.log(combinedTopics)
+
   return (
     <Container>
       <Box>
@@ -116,7 +116,7 @@ function TopicsPage() {
 
       <Grid container spacing={10} justifyContent='center' py={5}>
         {combinedTopics?.map(topic => {
-          const topicPercentage = Math.round((topic.passes / combinedTopics.length) * 100)
+          const topicPercentage = Math.round((topic.passes / 3) * 100)
 
           return (
 
@@ -160,7 +160,7 @@ function TopicsPage() {
                     <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%', margin: 'auto' }}>
                       <LinearProgress
                         variant="determinate"
-                        value={topicPercentage}
+                        value={topicPercentage > 100 ? 100 : topicPercentage}
                         sx={{ height: 25, width: '100%', borderRadius: '3px' }}
                         color='secondary'
                       />
@@ -177,7 +177,8 @@ function TopicsPage() {
                         }}
                       >
                         <Typography fontSize="small" fontWeight="bold" color="textSecondary">
-                          {`${topicPercentage}%`}
+                          {" "}
+                          {topicPercentage > 100 ? "100%" : `${topicPercentage}%`}
                         </Typography>
                       </Box>
                     </Box>
