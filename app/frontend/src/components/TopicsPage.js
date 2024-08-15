@@ -115,68 +115,80 @@ function TopicsPage() {
       </Box>
 
       <Grid container spacing={10} justifyContent='center' py={5}>
-        {combinedTopics?.map(topic => (
-          <Grid item key={topic.id}>
-            <Button component={NavLink}
-              to={`/concepts/${conceptId}/topics/${topic.id}/decks`}
-              sx={{
-                backgroundColor: `${theme.palette.primary.main}`,
-                color: `${theme.palette.text.main}`,
-              }}>
-              <Box display='flex' flexDirection='column'
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignContent: "center",
-                  padding: "0px 20px",
-                  width: "400px",
-                  height: "200px"
-                }}>
-                <Box
+        {combinedTopics?.map(topic => {
+          const topicPercentage = Math.round((topic.passes / 3) * 100)
+
+          return (
+
+            <>
+
+              <Grid item key={topic.id}>
+                <Button component={NavLink}
+                  to={`/concepts/${conceptId}/topics/${topic.id}/decks`}
                   sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    alignSelf: "start",
-                    height: "80px"
+                    backgroundColor: `${theme.palette.primary.main}`,
+                    color: `${theme.palette.text.main}`,
                   }}>
-                  <h3>{topic.topic_name}</h3>
-                  {/* {topic.passes === 3 && <CheckIcon sx={{
+                  <Box display='flex' flexDirection='column'
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignContent: "center",
+                      padding: "0px 20px",
+                      width: "400px",
+                      height: "200px"
+                    }}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        alignSelf: "start",
+                        height: "80px"
+                      }}>
+                      <h3>{topic.topic_name}</h3>
+                      {/* {topic.passes === 3 && <CheckIcon sx={{
                     ml: 1,
                     color: `${theme.palette.completion.good}`,
                   }} />} */}
-                </Box>
-                <Box
-                  sx={{
-                    height: "50px"
-                  }}>
-                  {topic.description ? (<p>{topic.description}</p>) : (<p>&nbsp;</p>)}
-                </Box>
-                <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%', margin: 'auto' }}>
-                  <LinearProgress
-                    variant="determinate"
-                    value={(topic.passes / 3) * 100}
-                    sx={{ height: 25, width: '100%', borderRadius: '3px' }}
-                    color='secondary'
-                  />
-                  <Box
-                    sx={{
-                      top: 0,
-                      left: 0,
-                      bottom: 0,
-                      right: 0,
-                      position: 'absolute',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <Typography fontSize="small" fontWeight="bold" color="textSecondary">{`${Math.round((topic.passes / 3) * 100)}%`}</Typography>
+                    </Box>
+                    <Box
+                      sx={{
+                        height: "50px"
+                      }}>
+                      {topic.description ? (<p>{topic.description}</p>) : (<p>&nbsp;</p>)}
+                    </Box>
+                    <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%', margin: 'auto' }}>
+                      <LinearProgress
+                        variant="determinate"
+                        value={topicPercentage > 100 ? 100 : topicPercentage}
+                        sx={{ height: 25, width: '100%', borderRadius: '3px' }}
+                        color='secondary'
+                      />
+                      <Box
+                        sx={{
+                          top: 0,
+                          left: 0,
+                          bottom: 0,
+                          right: 0,
+                          position: 'absolute',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Typography fontSize="small" fontWeight="bold" color="textSecondary">
+                          {" "}
+                          {topicPercentage > 100 ? "100%" : `${topicPercentage}%`}
+                        </Typography>
+                      </Box>
+                    </Box>
                   </Box>
-                </Box>
-              </Box>
-            </Button>
-          </Grid>
-        ))}
+                </Button>
+              </Grid>
+            </>
+          )
+        })}
+
       </Grid>
 
     </Container>
