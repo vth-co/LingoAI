@@ -53,6 +53,8 @@ function IntermediateConcepts({ user, concepts }) {
         return <LinearProgress />;
     }
 
+    let previousConceptPassed = true;
+
     return (
         <Container>
             <Box>
@@ -95,14 +97,22 @@ function IntermediateConcepts({ user, concepts }) {
             </Box>
 
             <Grid container justifyContent='center' py={5} spacing={5}>
-                {currentConcepts?.map(concept => (
-                    concept.status === true || concept.concept_name === "Vocabulary" ? (
+                {currentConcepts?.map(concept => {
+                    const isConceptUnlocked = previousConceptPassed || concept.concept_name === "Vocabulary";
+                    previousConceptPassed = concept.status
+
+                    return (
                         <Grid item key={concept.id}>
-                            <Button component={NavLink} to={`/concepts/${concept.id}`}
+                            <Button
+                                component={NavLink}
+                                to={isConceptUnlocked ? `/concepts/${concept.id}` : "#"}
                                 sx={{
-                                    backgroundColor: `${theme.palette.secondary.main}`,
-                                    color: `${theme.palette.secondary.contrastText}`,
-                                }}>
+                                    backgroundColor: isConceptUnlocked ? `${theme.palette.secondary.main}` : `${theme.palette.text.disabled}`,
+                                    color: isConceptUnlocked ? `${theme.palette.secondary.contrastText}` : `${theme.palette.text.disabled}`,
+                                    cursor: isConceptUnlocked ? 'pointer' : 'default'
+                                }}
+                                disabled={!isConceptUnlocked}
+                            >
                                 <Box display='flex' flexDirection='column'
                                     sx={{
                                         display: "flex",
@@ -126,12 +136,6 @@ function IntermediateConcepts({ user, concepts }) {
                                             }}>
 
                                             <h3>{concept.concept_name}</h3>
-                                            {/* {concept.progress === true &&
-                                                <CheckIcon sx={{
-                                                    ml: 1,
-                                                    color: `${theme.palette.completion.good}`,
-                                                }} />
-                                            } */}
                                         </Box>
                                     </Box>
                                     <p>{concept.level}</p>
@@ -158,68 +162,19 @@ function IntermediateConcepts({ user, concepts }) {
                                         </Box>
                                     </Box>
                                 </Box>
-                            </Button>
-                        </Grid>
-                    ) : (
-                        <Grid item key={concept.id}>
-                            <Button sx={{
-                                textAlign: "left",
-                                // backgroundColor: `${theme.palette.text.disabled}`,
-                                color: `${theme.palette.text.disabled}`,
-                                "&:hover": {
-                                    cursor: "default",
-                                },
-                            }}>
-                                <Box display='flex' flexDirection='column'
-                                    sx={{
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        alignContent: "center",
-                                        padding: "10px 20px",
-                                        width: "250px",
-                                        height: "200px"
-                                    }}>
-                                    <Box
-                                        sx={{
-                                            height: "100px"
-                                        }}>
-                                        <h3>{concept.concept_name}</h3>
-                                    </Box>
-                                    <p>{concept.level}</p>
-                                    <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%', margin: 'auto' }}>
-                                        <LinearProgress
-                                            variant="determinate"
-                                            value={0}
-                                            sx={{ height: 25, width: '100%', borderRadius: '3px' }}
-                                            color='text'
-                                        />
-                                        <Box
-                                            sx={{
-                                                top: 0,
-                                                left: 0,
-                                                bottom: 0,
-                                                right: 0,
-                                                position: 'absolute',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                justifyContent: 'center',
-                                            }}
-                                        >
-
-                                        </Box>
-                                    </Box>
-                                </Box>
-                                <LockIcon sx={{
-                                    position: 'absolute',
-                                    top: '50%',
-                                    left: '50%',
-                                    transform: 'translate(-50%, -50%)',
-                                    color: `${theme.palette.text.secondary}`,
-                                }} />
+                                {!isConceptUnlocked && (
+                                    <LockIcon sx={{
+                                        position: 'absolute',
+                                        top: '50%',
+                                        left: '50%',
+                                        transform: 'translate(-50%, -50%)',
+                                        color: `${theme.palette.text.secondary}`,
+                                    }} />
+                                )}
                             </Button>
                         </Grid>
                     )
-                ))}
+                })}
             </Grid>
         </Container >
     )
