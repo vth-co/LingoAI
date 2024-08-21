@@ -14,7 +14,7 @@ const DemoUser = () => {
   const handleClick = (e) => {
     e.preventDefault();
 
-    const credential = "Demo-lition@gmail.com";
+    const credential = "plzwork1232@email.com";
     const password = "password";
 
     dispatch(login({ credential, password }));

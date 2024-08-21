@@ -17,7 +17,7 @@ const LoginForm = () => {
   const handleDemoClick = async (e) => {
     e.preventDefault();
 
-    const credential = "demo@aa.io";
+    const credential = "plzwork1232@email.com";
     const password = "password";
 
     await dispatch(login(credential, password));

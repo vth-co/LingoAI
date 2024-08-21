@@ -106,9 +106,8 @@ function CardPage() {
                     width: "300px",
                     height: "450px",
                     borderRadius: "3px",
-                    border: `1.5px solid ${
-                      theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                    }`,
+                    border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                      }`,
                   }}
                 >
                   <Box
@@ -126,9 +125,8 @@ function CardPage() {
                       backgroundColor: `${theme.palette.background.main}`,
                       height: "150px",
                       padding: "10px",
-                      borderTop: `1.5px solid ${
-                        theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                      }`,
+                      borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                        }`,
                       overflow: "auto",
                       display: "flex",
                       alignContent: "center",
@@ -141,11 +139,14 @@ function CardPage() {
                         name="row-radio-buttons-group"
                         sx={{
                           display: "grid",
-                          gridTemplateColumns: "repeat(2, 1fr)", // Two columns layout
+                          // gridTemplateColumns: "repeat(2, 1fr)",
                           gridAutoFlow: "row",
-                          gap: "10px",
+                          // gap: "5px",
                           alignItems: "center",
-                          height: "100%",
+                          width: "fit-content",
+                          height: "fit-content",
+                          overflow: "auto",
+                          padding: "5px",
                         }}
                         onChange={(e) =>
                           handleAnswerChange(
@@ -161,13 +162,14 @@ function CardPage() {
                             value={optionIndex} // Set the index as the value
                             control={
                               <Radio
-                                sx={{ color: theme.palette.primary.main }}
+                                sx={{ color: theme.palette.primary.main, width: "30px", height: "30px" }}
                               />
                             }
                             label={option}
                             sx={{
                               margin: 0,
-                              width: "100%", // Ensure each label takes the full width of the grid cell
+                              width: "100%",
+                              // maxWidth: "130px",
                               display: "flex",
                               alignItems: "center", // Vertically centers content within each grid cell
                               justifyContent: "flex-start",
@@ -191,9 +193,8 @@ function CardPage() {
                       width: "300px",
                       height: "450px",
                       borderRadius: "3px",
-                      border: `1.5px solid ${
-                        theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                      }`,
+                      border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                        }`,
                     }}
                   >
                     <Box
@@ -219,9 +220,8 @@ function CardPage() {
                         backgroundColor: `${theme.palette.background.main}`,
                         height: "150px",
                         padding: "10px",
-                        borderTop: `1.5px solid ${
-                          theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                        }`,
+                        borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                          }`,
                         overflow: "auto",
                         display: "flex",
                         alignContent: "center",
@@ -248,9 +248,8 @@ function CardPage() {
                       width: "300px",
                       height: "450px",
                       borderRadius: "3px",
-                      border: `1.5px solid ${
-                        theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                      }`,
+                      border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                        }`,
                     }}
                   >
                     <Box
@@ -276,9 +275,8 @@ function CardPage() {
                         backgroundColor: `${theme.palette.background.main}`,
                         height: "150px",
                         padding: "10px",
-                        borderTop: `1.5px solid ${
-                          theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                        }`,
+                        borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                          }`,
                         overflow: "auto",
                         display: "flex",
                         alignItems: "center",
@@ -286,13 +284,13 @@ function CardPage() {
                         flexDirection: "column"
                       }}
                     >
-                        {/* <Typography sx={{ ml: 2 }}>
+                      {/* <Typography sx={{ ml: 2 }}>
                           {feedback.correctAnswer}
                           </Typography> */}
-                          <CloseIcon
-                            sx={{ color: theme.palette.completion.poor }}
-                            />
-                        <p>Correct answer: {feedback.correctAnswer}</p>
+                      <CloseIcon
+                        sx={{ color: theme.palette.completion.poor }}
+                      />
+                      <p>Correct answer: {feedback.correctAnswer}</p>
                     </Box>
                   </Card>
                 </Grid>
