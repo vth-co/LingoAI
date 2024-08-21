@@ -3,9 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Box, Button, Container, Grid, LinearProgress, Typography } from '@mui/material'
 import { NavLink } from "react-router-dom";
 import { fetchUserConcepts } from '../store/concepts';
-import { fetchUserProgress } from '../store/users';
 import { useTheme } from '@emotion/react';
-// import CheckIcon from '@mui/icons-material/Check';
 import LockIcon from '@mui/icons-material/Lock';
 
 function IntermediateConcepts({ user, concepts }) {
@@ -17,24 +15,11 @@ function IntermediateConcepts({ user, concepts }) {
         const fetchData = async () => {
             setLoading(true);
             await dispatch(fetchUserConcepts(user.uid));
-            // await dispatch(fetchUserProgress(user.uid))
             setLoading(false);
         };
 
         fetchData();
     }, [dispatch, user.uid]);
-
-    // const combinedConcepts = concepts.map(concept => {
-    //     const progressData = progress?.[0].concepts.find(p => p.id === concept.id);
-
-    //     return {
-    //         ...concept,
-    //         progress: progressData?.status
-    //     };
-    // });
-
-    // console.log("concepts", combinedConcepts);
-    // const sortedConcepts = combinedConcepts.sort((a, b) => b.concept_name.localeCompare(a.concept_name));
 
     const currentConcepts = concepts?.filter(concept =>
         concept.level === "Intermediate"

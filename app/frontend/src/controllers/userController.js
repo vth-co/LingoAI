@@ -17,8 +17,6 @@ const {
 } = require("../services/attemptService");
 
 const getUsers = async (req, res) => {
-  console.log("get users route is hit");
-  console.log("req.body: ", req.body);
   try {
     const users = await getUsersFromDB();
     res.status(200).json(users);
@@ -44,7 +42,6 @@ const updateUserById = async (req, res) => {
 
 // Get a user by user id from DB
 const getUserById = async (req, res) => {
-  console.log("get user by id route is hit");
   const { id } = req.params;
   try {
     const user = await getUserByIdFromDB(id);
@@ -69,7 +66,6 @@ const getUserProgress = async (req, res) => {
 
 const updateUserProgress = async (req, res) => {
   const { id } = req.params;
-  console.log("update user progress route is hit", id);
   try {
     await updateUserProgressFromDB(id);
     const progress = await getProgressFromDB(id);
@@ -86,7 +82,6 @@ const updateUserProgress = async (req, res) => {
 // View user attempts
 const getUserAttempts = async (req, res) => {
   const { id } = req.params;
-  console.log("uid: ", id);
   try {
     const attempts = await getUserAttemptsFromDB(id);
     res.status(200).json(attempts);
@@ -100,7 +95,6 @@ const getUserAttempts = async (req, res) => {
 //view user attempt by id
 const getUserAttemptById = async (req, res) => {
   const { userId, attemptId } = req.params;
-  console.log("userId: ", userId, "attemptId: ", attemptId);
   try {
     const attempt = await getUserAttemptByIDFromDB(userId, attemptId);
     res.status(200).json({ userId, attempt });
@@ -113,7 +107,6 @@ const getUserAttemptById = async (req, res) => {
 const checkUserAttempt = async (req, res) => {
   //use this route to check if user attempt's score is 80% or greater than total questions
   const { userId, attemptId } = req.params;
-  console.log("userId: ", userId, "attemptId: ", attemptId);
   try {
     const checkAttempt = await checkAttemptInDB(userId, attemptId);
     res.status(200).json({ message: "User attempt checked", checkAttempt });
@@ -133,7 +126,6 @@ const addUserAttempt = async (req, res) => {
     totalQuestions = 3,
     createdAt = new Date().toISOString(),
   } = req.body;
-  console.log("id: ", id);
   try {
     const attemptData = { deckId, passes, totalQuestions, createdAt };
     const newAttemptId = await AddUserAttemptToDB(attemptData, id);
@@ -148,18 +140,7 @@ const addUserAttempt = async (req, res) => {
 const updateUserAttempt = async (req, res) => {
   const { userId, attemptId } = req.params;
   const { deckId, id, answer } = req.body;
-  console.log(
-    "userId: ",
-    userId,
-    "attemptId: ",
-    attemptId,
-    "deckId: ",
-    deckId,
-    "id: ",
-    id, //index of the answer they selected
-    "answer: ",
-    answer
-  );
+ 
   try {
     const checkAttempt = await checkAnswerInDB(
       userId,

@@ -15,7 +15,6 @@ function WelcomePage({ setLocale }) {
           <Typography align="center" mt="50px" variant="h5">Already a User?</Typography>
           <Box component={NavLink} to='/login'>
             <InfiniteScroll />
-            {/* {" Log in"} */}
           </Box>
         </Container>
     </Box>

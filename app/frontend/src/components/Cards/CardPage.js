@@ -39,7 +39,6 @@ function CardPage() {
   const topicName = deck?.cards?.[0]?.questionData?.topic;
   const topicLevel = deck?.level;
 
-  console.log("cards", cards);
 
   useEffect(() => {
     dispatch(fetchOneDeck(deckId));
@@ -63,8 +62,6 @@ function CardPage() {
           deckId
         )
       );
-
-      console.log("checkAttempt: ", checkAttempt);
 
       if (checkAttempt && checkAttempt.message === "Answer is correct!") {
         setFeedback({ cardIndex, isCorrect: true });

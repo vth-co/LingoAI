@@ -9,7 +9,6 @@ const getUserAttemptsFromDB = async (uid) => {
     try {
         const userRef = doc(db, 'users', uid);
         const userAttemptsRef = collection(userRef, 'attempts');
-        console.log('userAttemptsRef: ', userAttemptsRef);
         const userAttemptsSnapshot = await getDocs(userAttemptsRef);
         const userAttempts = userAttemptsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
         return userAttempts;
@@ -34,17 +33,12 @@ const getUserAttemptByIDFromDB = async (uid, attemptId) => {
 }
 
 const checkAttemptInDB = async (userId, attemptId) => {
-    console.log('userId: ', userId, 'attemptId: ', attemptId);
-    console.log('hit here')
     try {
         const userRef = doc(db, 'users', userId);
         const attemptDocRef = doc(userRef, 'attempts', attemptId);
-        //console.log('attemptDocRef: ', attemptDocRef);
         const attemptDoc = await getDoc(attemptDocRef);
-        console.log('attemptDoc: ', attemptDoc);
         if (attemptDoc.exists()) {
             const attemptData = attemptDoc.data();
-            console.log('Attempt data:', attemptData);
 
             const { passes, totalQuestions } = attemptData;
             const percentagePassed = (passes / totalQuestions) * 100;
@@ -69,11 +63,9 @@ const AddUserAttemptToDB = async (attemptData, id) => {
     try {
         //attempt data = grab json data from frontend, its passed thru this and if it matches
         //with correct answer, add +1 to pass count for this attempt
-        console.log('attemptData: ', attemptData);
         const userDocRef = doc(db, 'users', id);
         const userAttemptsRef = collection(userDocRef, 'attempts')
         const docRef = await addDoc(userAttemptsRef, attemptData);
-        console.log('Document written with ID: ', docRef.id);
 
         return docRef.id;
     } catch (error) {
@@ -82,7 +74,6 @@ const AddUserAttemptToDB = async (attemptData, id) => {
 }
 
 const checkAnswerInDB = async (userId, id, attemptId, answer, deckId) => {
-    console.log('userId: ', userId, 'attemptId: ', attemptId, 'id: ', id, 'answer: ', answer, 'deckId: ', deckId);
     try {
         if (!attemptId) {
             throw new Error('Attempt ID is required.');
@@ -142,7 +133,6 @@ const checkAnswerInDB = async (userId, id, attemptId, answer, deckId) => {
             const isPassing = updatedAttemptData.passes >= 3;
 
             // if passes >= 3, call checkTopicProgression service
-            console.log('deck data', updatedAttemptData);
             if (isPassing) {
                 feedbackMessage = 'You passed this deck!';
                 await checkTopicProgression(deckData.userId, deckData.cards[0].questionData.topic_id, isPassing);
@@ -174,7 +164,6 @@ const updateUserAttemptInDB = async (uid, attemptId, updateData) => {
     try {
         const attemptDocRef = doc(db, 'users', uid, 'attempts', attemptId);
         await updateDoc(attemptDocRef, updateData);
-        console.log('Attempt updated:', attemptId);
     } catch (error) {
         throw new Error('Error updating user attempt: ' + error.message);
     }
@@ -187,7 +176,6 @@ const endUserAttemptInDB = async (uid, attemptId) => {
         const userDocRef = doc(db, 'users', uid);
         const attemptDocRef = doc(userDocRef, 'attempts', attemptId);
         await updateDoc(attemptDocRef, { status: 'ended', endTime: new Date() });
-        console.log('User attempt ended');
     } catch (error) {
         throw new Error('Error ending user attempt: ' + error.message);
     }
