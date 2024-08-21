@@ -34,6 +34,7 @@ const StyledMenu = styled((props) => (
     minWidth: 180,
     color:
       theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+    backgroundColor: `${theme.palette.background.default}`,
     // boxShadow:
     //   "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
     boxShadow: `
@@ -102,7 +103,7 @@ const NavBar = () => {
             alignItems: "center",
             padding: "10px",
             borderRadius: "5px",
-            backgroundColor: "#a8716f",
+            backgroundColor: `${theme.palette.primary.main}`,
             border: `1.5px solid ${theme.palette.mode === 'light' ? '#160e0e' : '#bababa'}`,
             "&:hover": {
               cursor: "pointer",
