@@ -1,7 +1,15 @@
 import { checkDeckIsInProgressFromDB } from "../services/deckService";
 
 const { db } = require("../firebase/firebaseConfig");
-const { collection, getDocs, doc, updateDoc, setDoc, getDoc, FieldValue } = require("firebase/firestore");
+const {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+  setDoc,
+  getDoc,
+  FieldValue,
+} = require("firebase/firestore");
 
 // Action Types
 export const LOAD_DECKS = "concepts/LOAD_DECKS";
@@ -18,29 +26,26 @@ const loadOneDeck = (deck) => ({
   deck,
 });
 
-
 // Thunk Actions
 export const fetchDecks = (userId, topicId) => async (dispatch) => {
   try {
-
-    const userDocRef = doc(db, 'users', userId);
+    const userDocRef = doc(db, "users", userId);
     const userDoc = await getDoc(userDocRef);
     if (!userDoc.exists()) {
-        throw new Error('User not found');
+      throw new Error("User not found");
     }
-    const userDecksCollectionRef = collection(userDocRef, 'decks');
+    const userDecksCollectionRef = collection(userDocRef, "decks");
     const userDecksSnapshot = await getDocs(userDecksCollectionRef);
-    const userDecks = userDecksSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const userDecks = userDecksSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
 
     dispatch(loadDecks(userDecks));
   } catch (error) {
     console.error("Error fetching decks:", error);
   }
 };
-
-
-
-
 
 export const fetchOneDeck = (deckId) => async (dispatch) => {
   try {
@@ -60,34 +65,34 @@ export const fetchOneDeck = (deckId) => async (dispatch) => {
 
 export const updateDeckStatus = async (deckId, attemptId) => {
   try {
-    const deckRef = doc(db, 'decks', deckId);
+    const deckRef = doc(db, "decks", deckId);
     await updateDoc(deckRef, {
       status: "in_progress",
-      currentAttemptId: attemptId
+      currentAttemptId: attemptId,
     });
-    console.log('Deck status updated to in_progress');
+    console.log("Deck status updated to in_progress");
   } catch (error) {
-    throw new Error('Error updating deck status: ' + error.message);
+    throw new Error("Error updating deck status: " + error.message);
   }
 };
 
+export const createAttemptIfNotExists =
+  (deckId, attemptId) => async (dispatch, getState) => {
+    if (!attemptId) {
+      console.error("Invalid attemptId:", attemptId);
+      throw new Error("Attempt ID is undefined or invalid.");
+    }
 
-export const createAttemptIfNotExists = (deckId, attemptId) => async (dispatch, getState) => {
-  if (!attemptId) {
-    console.error("Invalid attemptId:", attemptId);
-    throw new Error("Attempt ID is undefined or invalid.");
-  }
+    const docRef = doc(db, "decks", deckId);
 
-  const docRef = doc(db, "decks", deckId);
-
-  try {
-    await setDoc(docRef, { attemptId }, { merge: true });
-    console.log("Attempt ID set successfully in deck:", deckId);
-  } catch (error) {
-    console.error("Error setting attempt ID:", error);
-    throw error;
-  }
-};
+    try {
+      await setDoc(docRef, { attemptId }, { merge: true });
+      console.log("Attempt ID set successfully in deck:", deckId);
+    } catch (error) {
+      console.error("Error setting attempt ID:", error);
+      throw error;
+    }
+  };
 
 export const updateAttemptId = (deckId, attemptId) => async (dispatch) => {
   try {

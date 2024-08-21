@@ -9,7 +9,7 @@ export const LOAD_TOPICS_BY_CONCEPT = "concepts/LOAD_TOPICS_BY_CONCEPT";
 // Action Creators
 const loadConcepts = (concepts) => ({
   type: LOAD_CONCEPTS,
-  concepts
+  concepts,
 });
 
 const loadOneConcept = (concept) => ({
@@ -42,19 +42,18 @@ const loadConceptTopics = (conceptId, topics) => ({
 
 export const fetchUserConcepts = (userId) => async (dispatch) => {
   try {
-
     const progressDocRef = doc(db, "progress", userId);
 
-    const conceptRef = collection(progressDocRef, 'concepts');
+    const conceptRef = collection(progressDocRef, "concepts");
 
     const conceptDoc = await getDocs(conceptRef);
 
     const concepts = conceptDoc.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
-    }))
+    }));
 
-    console.log("concept ", concepts)
+    console.log("concept ", concepts);
 
     dispatch(loadConcepts(concepts));
   } catch (error) {
@@ -119,7 +118,7 @@ const conceptsReducer = (state = initialState, action) => {
     //     concepts: filteredConcepts,
     //   };
     case LOAD_CONCEPTS: {
-      console.log("ACTION", action)
+      console.log("ACTION", action);
       const newState = { ...state };
       action.concepts.forEach((concept) => {
         newState[concept.id] = concept;
