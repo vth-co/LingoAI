@@ -93,7 +93,7 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
             if (picked_topic === "nouns") {
                 prompt = role + ` there are 3 levels :beginner, intermediate, advanced. create 3 unique fill-in-the-blank questions for the topic ${vocabulary_nouns_content[level]} suitable for ${level} learners.
                 Each question should have 4 answer options in the following format:
-                - Option in English (Translation in ${native_language})
+                Option in English (Translation in ${native_language})
 
                 For example:
                 Question: The weather is very __ today.

@@ -21,7 +21,7 @@ export const lightTheme = createTheme({
       hint: "rgb(138, 151, 183)",
     },
     background: {
-      main: "#f5f5f5",
+      default: "#f5f5f5",
     },
     completion: {
       good: "#4caf50",
