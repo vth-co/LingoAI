@@ -90,7 +90,8 @@ function CardPage() {
         sx={{
           display: "grid",
           justifyContent: "space-evenly",
-          height: "100vh",
+          minHeight: "100vh",
+          paddingBottom: "100px",
           p: 2,
         }}
       >
@@ -290,7 +291,7 @@ function CardPage() {
                       <CloseIcon
                         sx={{ color: theme.palette.completion.poor }}
                       />
-                      <p>Correct answer: {feedback.correctAnswer}</p>
+                      <p><span style={{ fontWeight: "bold" }}>Correct answer:</span> {feedback.correctAnswer}</p>
                     </Box>
                   </Card>
                 </Grid>
