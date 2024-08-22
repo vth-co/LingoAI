@@ -286,7 +286,7 @@ function DeckPage() {
                     ))}
                   </Grid>
                 ) : (
-                  <Typography>You currently do not have any archived decks (completed decks).</Typography>
+                  <Typography>You currently do not have any archived decks.</Typography>
                 )}
               </Box>
             </Box>
