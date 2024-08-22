@@ -5,7 +5,7 @@ const { db } = require("../firebase/firebaseConfig");
 const { collection, getDoc, doc, getDocs } = require("firebase/firestore");
 // const { generateQuestionsByAI } = require("../models/aiModel");
 // const { generateQuestionsByAI } = require("../models/aiModel2");
-const { generateQuestionsByAI } = require("../models/aiModel3");
+const { generateQuestionsByAI } = require("../models/aiModel");
 
 export const LOAD_QUESTIONS = () => "questions/LOAD_QUESTIONS";
 export const ADD_QUESTION = () => "questions/ADD_QUESTION";
@@ -20,11 +20,16 @@ const add = (question) => ({
   question,
 });
 
-
 export const addQuestions =
-  (concept_name, topic_name, user_native_language, concept_level, topicId, userId) => async (dispatch) => {
-
-
+  (
+    concept_name,
+    topic_name,
+    user_native_language,
+    concept_level,
+    topicId,
+    userId
+  ) =>
+  async (dispatch) => {
     try {
       let questionData = await generateQuestionsByAI(
         concept_name,
@@ -51,7 +56,6 @@ export const addQuestions =
         });
         console.log("Created questions successfully:", question_from_ai);
 
-
         // Create a new deck in the database
         const deck = await createDeckInDB({
           userId,
@@ -63,7 +67,11 @@ export const addQuestions =
         console.log("Deck created successfully:", deck);
 
         // Add the generated questions as cards to the deck
-        const cardsAdded = await addCardsToDeckInDB(deck.id, userId, question_from_ai);
+        const cardsAdded = await addCardsToDeckInDB(
+          deck.id,
+          userId,
+          question_from_ai
+        );
 
         console.log("Cards added to deck successfully:", cardsAdded);
 
@@ -86,4 +94,4 @@ const questionsReducer = (state = initialState, action) => {
   }
 };
 
-export default  questionsReducer;
+export default questionsReducer;

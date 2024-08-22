@@ -9,6 +9,7 @@ import {
   FormLabel,
   Grid,
   Card,
+  Button,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
@@ -38,7 +39,6 @@ function CardPage() {
   const topicName = deck?.cards?.[0]?.questionData?.topic;
   const topicLevel = deck?.level;
 
-  console.log("cards", cards);
 
   useEffect(() => {
     dispatch(fetchOneDeck(deckId));
@@ -62,8 +62,6 @@ function CardPage() {
           deckId
         )
       );
-
-      console.log("checkAttempt: ", checkAttempt);
 
       if (checkAttempt && checkAttempt.message === "Answer is correct!") {
         setFeedback({ cardIndex, isCorrect: true });

@@ -11,7 +11,6 @@ import { useParams } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import { fetchUserProgress } from '../store/users';
 import { useTheme } from "@emotion/react";
-import CheckIcon from '@mui/icons-material/Check';
 import { fetchTopicsThroughProgress } from "../store/topics";
 import { fetchUserConcepts } from "../store/concepts";
 
@@ -32,16 +31,12 @@ function TopicsPage() {
     conceptId === concept.id
   );
 
-  console.log("CC", currentConcept);
-
   const currConcept = concepts.find(concept => conceptId === concept.id);
 
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      // await dispatch(fetchOneConcept(conceptId));
-      // await dispatch(fetchTopicsByConcept(conceptId));
       await dispatch(fetchUserProgress(userId))
       await dispatch(fetchTopicsThroughProgress(userId))
       await dispatch(fetchUserConcepts(userId))
