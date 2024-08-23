@@ -84,6 +84,7 @@ function CardPage() {
     <>
       <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topicName}</h1>
       <h3 style={{ textAlign: "center", marginTop: 0 }}>{topicLevel}</h3>
+      <p style={{ textAlign: "center" }}>Each card contains four options. Select your answer to check if it is correct.</p>
       <Container
         sx={{
           display: "grid",
@@ -117,7 +118,16 @@ function CardPage() {
                       overflow: "auto",
                     }}
                   >
-                    <h2 style={{ margin: "0" }}>{card.question}</h2>
+                    {/* <h2 style={{ margin: "0" }}>{card.question}</h2> */}
+                    <h2
+                      style={{ margin: "0" }}
+                      dangerouslySetInnerHTML={{
+                        __html: card.question.split('\n')
+                          .map(line => `<p style="margin: 0; padding: 0; margin-bottom: 10px;">${line}</p>`)
+                          .join('')
+                      }}>
+                    </h2>
+
                   </Box>
                   <Box
                     sx={{
@@ -173,6 +183,8 @@ function CardPage() {
                               alignItems: "center", // Vertically centers content within each grid cell
                               justifyContent: "flex-start",
                               height: "100%",
+                              gap: "10px",
+
                             }}
                           />
                         ))}

@@ -192,13 +192,13 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
 
                     Question:
 
-                    Select the most suitable answer for the blank.
+                    Fill in the blank.
 
-                    Person A: Do you have any siblings?
+                    <p>Person A: Do you have any siblings?</p>\n
 
-                    Person B: Yes, I have a brother. _______________
+                    <p>Person B: Yes, I have a brother. [ __________ ]</p>\n
 
-                    Person A: That’s nice! How old is he?
+                    <p>Person A: That’s nice! How old is he?</p>\n
 
                     Options:
 
@@ -225,11 +225,11 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
                 For example:
 
                     Question:
-                    Select the most suitable answer for the blank.
+                    Fill in the blank.
 
-                    Person A: What do you do every morning?
+                    <p>Person A: What do you do every morning?</p>\n
 
-                    Person B: I wake up at 7 AM and then I _______________.
+                    <p>Person B: I wake up at 7 AM and then I [ __________ ].</p>\n
 
                     Options:
                      watch TV
@@ -240,33 +240,27 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
 
             }
             else if (picked_topic === "shopping") {
-                prompt = role + `there're 3 levels Beginner, Intermediate, Advanced.Create 3 questions, each question is a short conversation between 2 people about the topic:${everyday_situations_shopping_question[level]}.
-                each question includes question with Select the most suitable answer for the blank on the top, 4 options in english, answer and explaination test ${level} learner to select the most suitable response or request for the conversation.
+                prompt = role + `there're 3 levels Beginner, Intermediate, Advanced. Create 3 questions, each question is a short conversation between 2 people about the topic: ${everyday_situations_shopping_question[level]}.
+                Each question includes: Select the most suitable answer for the blank on the top, 4 options in English, Answer and explanation to test ${level} learner to select the most suitable response or request for the conversation.
                 For example:
+                Question:
+                Fill in the blank:
+                <p>Shopper: Hi, can you help me?</p>\n
+                <p>Shop Assistant: Of course! What are you looking for?</p>\n
+                <p>Shopper: I am looking for a blue jacket.</p>\n
+                <p>Shop Assistant: We have some blue jackets over here. Would you like to see them?</p>\n
+                <p>Shopper: [ __________ ]</p>\n
+                <p>Shop Assistant: That jacket is $55.</p>
 
-                    Question:
-                    Select the most suitable answer for the blank.
+                Options:
 
-                    Shopper: Hi, can you help me?
+                How much is this one?
 
-                    Shop Assistant: Of course! What are you looking for?
+                What color is it?
 
-                    Shopper: I am looking for a blue jacket.
-
-                    Shop Assistant: We have some blue jackets over here. Would you like to see them?
-
-                    Shopper: Yes, please. __________________________
-
-                    Shop Assistant: That jacket is $55.
-
-                    Options:
-
-                     How much is this one?
-
-                     What color is it?
-
-                     How tall is it?
-                     Where is the fitting room?
+                How tall is it?
+                
+                Where is the fitting room?
 
                 ensure answer and explaination in ${native_language} using this` + jsonschema
 
