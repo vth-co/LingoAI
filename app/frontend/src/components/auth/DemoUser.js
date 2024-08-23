@@ -1,7 +1,7 @@
 import React from "react";
-import * as sessionActions from "../../../store/session";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
+import { login } from "../../store/session";
 
 const DemoUser = () => {
   const dispatch = useDispatch();
@@ -14,10 +14,10 @@ const DemoUser = () => {
   const handleClick = (e) => {
     e.preventDefault();
 
-    const credential = "Demo-lition@gmail.com";
+    const credential = "plzwork1232@email.com";
     const password = "password";
 
-    dispatch(sessionActions.login({ credential, password }));
+    dispatch(login({ credential, password }));
   };
   return (
     <button

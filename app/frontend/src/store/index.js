@@ -1,27 +1,32 @@
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import session from './session'
-import concepts from './concepts'
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { thunk } from 'redux-thunk';
+import sessionReducer from './session';
+import usersReducer from './users';
+import conceptsReducer from './concepts';
+import topicsReducer from './topics';
+import questionsReducer from './questions';
+import decksReducer from './decks';
+import userAttemptsReducer from './attempt';
 
+// Import your reducers
+
+
+// Combine reducers
 const rootReducer = combineReducers({
-  session,
-  concepts
+    session: sessionReducer,
+    users: usersReducer,
+    concepts: conceptsReducer,
+    topics: topicsReducer,
+    questions: questionsReducer,
+    decks: decksReducer,
+    attempts: userAttemptsReducer
+    // cards: cardsReducer,
 });
 
+// Create and configure the store with middleware
+const store = createStore(
+    rootReducer,
+    applyMiddleware(thunk)
+);
 
-let enhancer;
-
-if (process.env.NODE_ENV === 'production') {
-  enhancer = applyMiddleware(thunk);
-} else {
-  const logger = require('redux-logger').default;
-  const composeEnhancers =
-    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-  enhancer = composeEnhancers(applyMiddleware(thunk, logger));
-}
-
-const configureStore = (preloadedState) => {
-  return createStore(rootReducer, preloadedState, enhancer);
-};
-
-export default configureStore;
+export default store;

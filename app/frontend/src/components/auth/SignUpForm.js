@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login, signUp } from "../../store/session";
 import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router-dom";
 import {
@@ -14,6 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
+import { login, signUp } from "../../store/session";
 
 const SignUpForm = ({ locale, setLocale }) => {
   const [email, setEmail] = useState("");
@@ -37,10 +37,10 @@ const SignUpForm = ({ locale, setLocale }) => {
   const handleDemoClick = async (e) => {
     e.preventDefault();
 
-    const credential = "Demo-lition@gmail.com";
+    const credential = "plzwork1232@email.com";
     const password = "password";
 
-    await dispatch(login(credential, password ));
+    await dispatch(login(credential, password));
 
   };
 
@@ -53,6 +53,7 @@ const SignUpForm = ({ locale, setLocale }) => {
       console.log("Signed up successfully");
       history.push("/home");
     } catch (error) {
+      console.log("SIGNUP", email, password, username, first_name, last_name, locale, level);
       console.error("Error signing up:", error.message);
     }
   };
@@ -108,17 +109,17 @@ const SignUpForm = ({ locale, setLocale }) => {
           mb="10px"
         >
           <Typography
-          variant="h1"
-          m={2}
-          sx={{
-            // color: "primary.main",
-            fontSize: "2rem",
-            textAlign: "center",
-            fontWeight: "bold",
-          }}
-        >
-          Create your Account
-        </Typography>
+            variant="h1"
+            m={2}
+            sx={{
+              // color: "primary.main",
+              fontSize: "2rem",
+              textAlign: "center",
+              fontWeight: "bold",
+            }}
+          >
+            Create your Account
+          </Typography>
         </Box>
 
         <Box display="flex" flexDirection="row" p={1}>
@@ -255,7 +256,7 @@ const SignUpForm = ({ locale, setLocale }) => {
           >
             <MenuItem value="Beginner">1: Beginner</MenuItem>
             <MenuItem value="Intermediate">2: Intermediate</MenuItem>
-            <MenuItem value="advance">3: Advance</MenuItem>
+            <MenuItem value="Advanced">3: Advanced</MenuItem>
           </Select>
           <Button
             variant="contained"
@@ -273,8 +274,8 @@ const SignUpForm = ({ locale, setLocale }) => {
             borderRadius: 100,
             mt: 1,
           }}>
-          Demo
-        </Button>
+            Demo
+          </Button>
         </Box>
       </Container>
     </form>

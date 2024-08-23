@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "../../store/session";
 import { FormattedMessage } from "react-intl";
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import { login } from "../../store/session";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -17,7 +17,7 @@ const LoginForm = () => {
   const handleDemoClick = async (e) => {
     e.preventDefault();
 
-    const credential = "Demo-lition@gmail.com";
+    const credential = "plzwork1232@email.com";
     const password = "password";
 
     await dispatch(login(credential, password));

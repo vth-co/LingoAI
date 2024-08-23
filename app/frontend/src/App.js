@@ -5,24 +5,28 @@ import LoginForm from './components/auth/LoginForm'
 import SignUpForm from './components/auth/SignUpForm'
 import NavBar from './components/NavBar'
 import ProtectedRoute from './components/auth/ProtectedRoute'
-import { authenticate } from './store/session'
 import { auth } from './firebase/firebaseConfig'
 import HomePage from './components/HomePage'
 import WelcomePage from './components/WelcomePage'
 import ConceptPage from './components/ConceptPage'
 import TopicsPage from './components/TopicsPage'
 import MainPage from './components/MainPage'
-import Footer from './components/Footer'
+import { fetchSingleUser } from './store/users'
+import { authenticate } from './store/session'
+import DeckPage from './components/Decks/DeckPage'
+import CardPage from './components/Cards/CardPage'
+import { LinearProgress } from '@mui/material'
 
 function App({ locale, setLocale }) {
   const [loaded, setLoaded] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
   const dispatch = useDispatch()
-
+  
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async user => {
       if (user) {
         await dispatch(authenticate()) // Make sure this properly sets the user
+        await dispatch(fetchSingleUser(user.uid))
         setCurrentUser(user)
       } else {
         setCurrentUser(null)
@@ -36,7 +40,7 @@ function App({ locale, setLocale }) {
 
 
   if (!loaded) {
-    return <div>Loading...</div> // or any other loading indicator
+    return <LinearProgress /> // or any other loading indicator
   }
 
   return (
@@ -52,21 +56,30 @@ function App({ locale, setLocale }) {
         <Route path='/sign-up'>
           {currentUser ? <Redirect to='/' /> : <SignUpForm setLocale={setLocale} locale={locale} />}
         </Route>
-        <Route path='/topics'>
+        <Route path='/concepts/:conceptId/topics/:topicId/decks'>
+          {currentUser ? <DeckPage /> : <WelcomePage setLocale={setLocale} />}
+        </Route>
+        <Route path='/concepts/:conceptId'>
           {currentUser ? <TopicsPage /> : <WelcomePage setLocale={setLocale} />}
         </Route>
+        {/* <Route path='/topics/:topicId'>
+          {currentUser ? <MainPage /> : <WelcomePage setLocale={setLocale} />}
+        </Route> */}
         <Route path='/concepts'>
           {currentUser ? <ConceptPage /> : <WelcomePage setLocale={setLocale} />}
         </Route>
         <Route path='/main'>
           {currentUser ? <MainPage /> : <WelcomePage setLocale={setLocale} />}
         </Route>
+        <Route path='/decks/:deckId'>
+          <CardPage />
+        </Route>
         {/* Ensure your ProtectedRoute component is redirecting correctly */}
         <ProtectedRoute path='/'>
           {currentUser ? <HomePage /> : <Redirect to='/login' />}
         </ProtectedRoute>
       </Switch>
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
