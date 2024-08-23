@@ -9,7 +9,7 @@ import {
   Button,
   Grid,
   CircularProgress,
-  LinearProgress
+  Tooltip
 } from "@mui/material";
 import { addQuestions } from "../../store/questions";
 import { fetchOneTopic } from "../../store/topics";
@@ -17,6 +17,7 @@ import { NavLink, useHistory } from "react-router-dom";
 import { createUserAttempt } from "../../store/attempt";
 import { fetchUserConcepts } from "../../store/concepts";
 import { useTheme } from "@mui/material/styles";
+import InfoIcon from "@mui/icons-material/Info";
 
 function DeckPage() {
   const dispatch = useDispatch();
@@ -147,9 +148,21 @@ function DeckPage() {
             <Box display="flex" flexDirection="row" width="100%" mt={2} columnGap="20px">
               {/* New Column */}
               <Box flex={1} p={2}>
-                <h2>
-                  New
-                </h2>
+
+                <Box display="flex" alignItems="center">
+                  <h2>New</h2>
+                  <Tooltip
+                    title={
+                      <Typography>
+                        Newly generated decks with zero attempts
+                      </Typography>
+                    }
+                    arrow
+                  >
+                    <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+                  </Tooltip>
+                </Box>
+
                 {getAllDecks().length > 0 ? (
                   <Grid container spacing={2}>
                     {getAllDecks().map((deck, index) => (
@@ -179,14 +192,24 @@ function DeckPage() {
                     ))}
                   </Grid>
                 ) : (
-                  <Typography>You currently do not have any new decks (decks with zero attempts).</Typography>
+                  <Typography>You currently do not have any new decks.</Typography>
                 )}
               </Box>
 
               <Box flex={1} p={2}>
-                <h2>
-                  In Progress
-                </h2>
+                <Box display="flex" alignItems="center">
+                  <h2>In Progress</h2>
+                  <Tooltip
+                    title={
+                      <Typography>
+                        Previously generated decks with at least one attempt
+                      </Typography>
+                    }
+                    arrow
+                  >
+                    <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+                  </Tooltip>
+                </Box>
                 {getInProgressDecks().length > 0 ? (
                   <Grid container spacing={2}>
                     {getInProgressDecks().map((deck, index) => (
@@ -218,15 +241,25 @@ function DeckPage() {
                     ))}
                   </Grid>
                 ) : (
-                  <Typography>You currently do not have any decks in progress (decks with at least one attempt).</Typography>
+                  <Typography>You currently do not have any decks in progress.</Typography>
                 )}
               </Box>
             </Box>
             <Box>
               <Box flex={1} p={2} paddingTop="20px">
-                <h2>
-                  Archived Decks
-                </h2>
+                <Box display="flex" alignItems="center">
+                  <h2>Archived</h2>
+                  <Tooltip
+                    title={
+                      <Typography>
+                        Completed decks
+                      </Typography>
+                    }
+                    arrow
+                  >
+                    <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+                  </Tooltip>
+                </Box>
                 {getArchivedDecks().length > 0 ? (
                   <Grid container spacing={2}>
                     {getArchivedDecks().map((deck, index) => (
@@ -253,7 +286,7 @@ function DeckPage() {
                     ))}
                   </Grid>
                 ) : (
-                  <Typography>You currently do not have any archived decks (completed decks).</Typography>
+                  <Typography>You currently do not have any archived decks.</Typography>
                 )}
               </Box>
             </Box>
