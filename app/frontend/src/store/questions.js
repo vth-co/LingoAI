@@ -3,12 +3,10 @@ import { addCardsToDeckInDB, createDeckInDB } from "../services/deckService";
 
 const { db } = require("../firebase/firebaseConfig");
 const { collection, getDoc, doc, getDocs } = require("firebase/firestore");
-// const { generateQuestionsByAI } = require("../models/aiModel");
-// const { generateQuestionsByAI } = require("../models/aiModel2");
 const { generateQuestionsByAI } = require("../models/aiModel");
 
-export const LOAD_QUESTIONS = () => "questions/LOAD_QUESTIONS";
-export const ADD_QUESTION = () => "questions/ADD_QUESTION";
+export const LOAD_QUESTIONS = "questions/LOAD_QUESTIONS";
+export const ADD_QUESTION = "questions/ADD_QUESTION";
 
 const load = (questions) => ({
   type: LOAD_QUESTIONS,

@@ -8,7 +8,7 @@ const { doc, setDoc } = require("firebase/firestore");
 const { auth, db } = require("../firebase/firebaseConfig");
 const { initializeUserProgress } = require("../services/userService");
 
-export const SET_USER = () => "session/SET_USER";
+export const SET_USER = "session/SET_USER";
 
 const setUser = (user) => ({
   type: SET_USER,

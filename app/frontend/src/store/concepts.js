@@ -22,24 +22,6 @@ const loadConceptTopics = (conceptId, topics) => ({
   payload: { conceptId, topics },
 });
 
-// Thunk Actions
-// export const fetchConcepts = (userLevel) => async (dispatch) => {
-//   try {
-//     const conceptsCollectionRef = collection(db, "concepts");
-//     const conceptsSnapshot = await getDocs(conceptsCollectionRef);
-
-//     const conceptsData = conceptsSnapshot.docs.map((doc) => ({
-//       id: doc.id,
-//       ...doc.data(),
-//     }));
-
-//     dispatch(loadConcepts(conceptsData, userLevel)); // Update Redux state with concepts data
-//   } catch (error) {
-//     console.error("Error fetching concepts:", error);
-//     // Dispatch error action or handle error appropriately
-//   }
-// };
-
 export const fetchUserConcepts = (userId) => async (dispatch) => {
   try {
     const progressDocRef = doc(db, "progress", userId);
