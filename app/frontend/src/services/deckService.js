@@ -241,17 +241,6 @@ const addCardsToDeckInDB = async (deckId, userId, aiGeneratedRequestId) => {
   }
 };
 
-<<<<<<< HEAD
-//service to remove a card from a deck
-const removeCardFromDeckInDB = async () => {
-    return
-}
-
-//service to remove a deck
-const removeDeckFromDB = async () => {
-    return
-}
-=======
 //service to view archived decks
 const getArchivedDecksFromDB = async () => {
   try {
@@ -263,7 +252,6 @@ const getArchivedDecksFromDB = async () => {
     throw new Error("Error fetching archived decks: " + error.message);
   }
 };
->>>>>>> origin/live-fix
 
 //service to archive a deck
 const archiveDeckInDB = async (deckId, uid) => {
