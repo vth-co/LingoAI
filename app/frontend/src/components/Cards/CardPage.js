@@ -35,6 +35,7 @@ function CardPage() {
   const attempt = useSelector((state) => state.attempts);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [feedback, setFeedback] = useState({});
+  const [flipped, setFlipped] = useState({})
   //const attemptId = useSelector((state) => state.userAttempts);
   const { attemptId } = location.state || {};
   const topicName = deck?.cards?.[0]?.questionData?.topic;
@@ -65,27 +66,55 @@ function CardPage() {
       );
 
       if (checkAttempt && checkAttempt.message === "Answer is correct!") {
-        setFeedback({ cardIndex, isCorrect: true });
+        setFeedback((prevFeedback) => ({
+          ...prevFeedback,
+          [cardIndex]: {
+            isCorrect: true
+          },
+        }));
       } else if (
         checkAttempt &&
         checkAttempt.message === "Answer is incorrect."
       ) {
-        setFeedback({
-          cardIndex,
-          isCorrect: false,
-          correctAnswer: checkAttempt.correctAnswer,
-        });
+        setFeedback((prevFeedback) => ({
+          ...prevFeedback,
+          [cardIndex]: {
+            isCorrect: false,
+            correctAnswer: checkAttempt.correctAnswer,
+          },
+        }));
       }
+      // if (checkAttempt && checkAttempt.message === "Answer is correct!") {
+      //   setFeedback({ cardIndex, isCorrect: true });
+      // } else if (
+      //   checkAttempt &&
+      //   checkAttempt.message === "Answer is incorrect."
+      // ) {
+      //   setFeedback({
+      //     cardIndex,
+      //     isCorrect: false,
+      //     correctAnswer: checkAttempt.correctAnswer,
+      //   });
+      // }
     } catch (error) {
       console.error("Error modifying user attempt:", error);
     }
   };
 
+  const handleFlip = (cardIndex) => {
+    if (!flipped[cardIndex]) {
+      setFlipped((prevState) => ({
+        ...prevState,
+        [cardIndex]: true
+      }))
+    }
+  }
+
   return (
     <>
       <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topicName}</h1>
       <h3 style={{ textAlign: "center", marginTop: 0 }}>{topicLevel}</h3>
-      <p style={{ textAlign: "center" }}>Each card contains four options. Select your answer to check if it is correct.</p>
+      <p style={{ textAlign: "center" }}>Each card contains four options. Select your answer to see if it's correct.</p>
       <Container
         sx={{
           display: "grid",
@@ -97,12 +126,15 @@ function CardPage() {
       >
         <Grid container spacing={2}>
           {cards.map((card, cardIndex) => (
-            <React.Fragment key={card.id}>
+            <React.Fragment>
               {/* QUESTION CARD */}
               <Flippy
+                key={card.id}
                 flipOnHover={false}
-                flipOnClick={true}
+                flipOnClick={false}
                 flipDirection="horizontal"
+                isFlipped={flipped[cardIndex] || feedback[cardIndex] !== undefined}
+                onClick={() => handleFlip(cardIndex)}
               // ref={(r) => this.flippy = r}
               >
                 <Grid item xs={12} md={4}>
@@ -214,7 +246,7 @@ function CardPage() {
                   }}
                 >
                   {/* CORRECT ANSWER */}
-                  {feedback.cardIndex === cardIndex && feedback.isCorrect && (
+                  {feedback[cardIndex]?.isCorrect && (
                     <Grid item xs={12} md={4}>
                       <Card
                         sx={{
@@ -269,7 +301,8 @@ function CardPage() {
                   )}
 
                   {/* INCORRECT ANSWER */}
-                  {feedback.cardIndex === cardIndex && !feedback.isCorrect && (
+                  {/* {!feedbackcardIndex === cardIndex && !feedback.isCorrect && ( */}
+                  {!feedback[cardIndex]?.isCorrect && feedback[cardIndex] && (
                     <Grid item xs={12} md={4}>
                       <Card
                         sx={{
@@ -320,7 +353,7 @@ function CardPage() {
                           <CloseIcon
                             sx={{ color: theme.palette.completion.poor }}
                           />
-                          <p><span style={{ fontWeight: "bold" }}>Correct answer:</span> {feedback.correctAnswer}</p>
+                          <p><span style={{ fontWeight: "bold" }}>Correct answer:</span> {feedback[cardIndex]?.correctAnswer}</p>
                         </Box>
                       </Card>
                     </Grid>
