@@ -42,6 +42,7 @@ function CardPage() {
   const topicName = deck?.cards?.[0]?.questionData?.topic;
   const topicLevel = deck?.level;
   const [loading, setLoading] = useState(false);
+  const [allAttempted, setAllAttempted] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +56,10 @@ function CardPage() {
 
   }, [dispatch, deckId, attemptId]);
 
+  useEffect(() => {
+    const checkAllAttempted = Object.keys(selectedAnswers).length === cards.length - 1
+    setAllAttempted(checkAllAttempted)
+  }, [selectedAnswers, cards.length])
 
   const handleAnswerChange = async (cardIndex, optionIndex, questionId) => {
     const selectedOption = cards[cardIndex].options[optionIndex];
@@ -110,6 +115,7 @@ function CardPage() {
       const allQuestionsAttempted = Object.keys(selectedAnswers).length === cards.length - 1;
 
       if (allQuestionsAttempted) {
+        setAllAttempted(true)
         await dispatch(archiveDeck(deckId, user.uid));
         console.log("Deck archived")
       }
@@ -135,7 +141,9 @@ function CardPage() {
     <>
       <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topicName}</h1>
       <h3 style={{ textAlign: "center", marginTop: 0 }}>{topicLevel}</h3>
-      <p style={{ textAlign: "center" }}>Each card contains four options. Select your answer to see if it's correct.</p>
+      {!allAttempted && (
+        <p style={{ textAlign: "center" }}>Each card contains four options. Select your answer to see if it's correct.</p>
+      )}
       <Container
         sx={{
           display: "grid",
@@ -298,7 +306,11 @@ function CardPage() {
                                   sx={{ color: theme.palette.text.primary, mt: 2 }}
                                 >
                                   Correct!
-                                  <div>{card.explanation}</div>
+                                </Typography>
+                                <Typography
+                                  sx={{ color: theme.palette.text.primary, mt: 2 }}
+                                >
+                                  {card.explanation}
                                 </Typography>
                               </FormLabel>
                             </Box>
@@ -354,7 +366,11 @@ function CardPage() {
                                   sx={{ color: theme.palette.text.primary, mt: 2 }}
                                 >
                                   Incorrect!
-                                  <div>{card.explanation}</div>
+                                </Typography>
+                                <Typography
+                                  sx={{ color: theme.palette.text.primary, mt: 2 }}
+                                >
+                                  {card.explanation}
                                 </Typography>
                               </FormLabel>
                             </Box>
@@ -415,7 +431,7 @@ function CardPage() {
                         <Typography
                           sx={{ color: theme.palette.text.primary, mt: 2 }}
                         >
-                          <div>{card.explanation}</div>
+                          {card.explanation}
                         </Typography>
                       </FormLabel>
                     </Box>
