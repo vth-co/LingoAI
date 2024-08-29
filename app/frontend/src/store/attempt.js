@@ -19,6 +19,7 @@ const {
 export const LOAD_USER_ATTEMPT = "userAttempts/LOAD_USER_ATTEMPT";
 export const ADD_USER_ATTEMPT = "userAttempts/ADD_USER_ATTEMPT";
 export const UPDATE_USER_ATTEMPT = "userAttempts/UPDATE_USER_ATTEMPT";
+
 // Action Creators
 
 const loadUserAttempt = (attempt) => ({

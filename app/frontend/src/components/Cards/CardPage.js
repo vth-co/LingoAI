@@ -20,7 +20,7 @@ import {
   useLocation,
 } from "react-router-dom/cjs/react-router-dom.min";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchOneDeck } from "../../store/decks";
+import { fetchOneDeck, archiveDeck } from "../../store/decks";
 import { fetchUserAttempt, modifyUserAttempt } from "../../store/attempt";
 import Flippy, { FrontSide, BackSide } from 'react-flippy';
 
@@ -40,7 +40,6 @@ function CardPage() {
   const { attemptId } = location.state || {};
   const topicName = deck?.cards?.[0]?.questionData?.topic;
   const topicLevel = deck?.level;
-
 
   useEffect(() => {
     dispatch(fetchOneDeck(deckId));
@@ -96,6 +95,13 @@ function CardPage() {
       //     correctAnswer: checkAttempt.correctAnswer,
       //   });
       // }
+
+      const allQuestionsAttempted = Object.keys(selectedAnswers).length === cards.length - 1;
+      console.log("AQA", Object.keys(selectedAnswers).length)
+      if (allQuestionsAttempted) {
+        await dispatch(archiveDeck(deckId, user.uid));
+        console.log("Deck archived")
+      }
     } catch (error) {
       console.error("Error modifying user attempt:", error);
     }

@@ -14,6 +14,7 @@ const {
 // Action Types
 export const LOAD_DECKS = "concepts/LOAD_DECKS";
 export const LOAD_ONE_DECK = "concepts/LOAD_ONE_DECK";
+export const ARCHIVE_DECK = "concepts/ARCHIVE_DECK";
 
 // Action Creators
 const loadDecks = (decks) => ({
@@ -25,6 +26,11 @@ const loadOneDeck = (deck) => ({
   type: LOAD_ONE_DECK,
   deck,
 });
+
+const archiveDeckAction = (deckId) => ({
+  type: ARCHIVE_DECK,
+  deckId
+})
 
 // Thunk Actions
 export const fetchDecks = (userId, topicId) => async (dispatch) => {
@@ -104,6 +110,22 @@ export const updateAttemptId = (deckId, attemptId) => async (dispatch) => {
   }
 };
 
+export const archiveDeck = (deckId, userId) => async (dispatch) => {
+  try {
+    const userDocRef = doc(db, "users", userId);
+    const deckDocRef = doc(userDocRef, "decks", deckId);
+
+    await updateDoc(deckDocRef, {
+      archived: true
+    });
+
+    dispatch(archiveDeckAction(deckId))
+  } catch (error) {
+    console.error("Error archiving deck:", error);
+    throw error
+  }
+}
+
 const initialState = {
   decks: [],
 };
@@ -120,6 +142,11 @@ const decksReducer = (state = initialState, action) => {
         ...state,
         selectedDeck: action.deck,
       };
+    case ARCHIVE_DECK:
+      return {
+        ...state,
+        decks: state.decks.filter(deck => deck.id !== action.deckId)
+      }
     default:
       return state;
   }

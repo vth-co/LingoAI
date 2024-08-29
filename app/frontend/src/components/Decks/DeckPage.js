@@ -284,8 +284,8 @@ function DeckPage() {
                               }`,
                           }}
                         >
-                          <Typography variant="h6">{`Deck #${deck.deck_name}`}</Typography>
-                          <h3>{`Deck #${deck.deck_name
+                          {/* <Typography variant="h6">{`Deck #${deck.deck_name}`}</Typography> */}
+                          <h3>{`Deck ${deck.deck_name
                             }`}</h3>
                           {/* Update with your deck field */}
                         </Button>
