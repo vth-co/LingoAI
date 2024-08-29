@@ -33,7 +33,7 @@ function HomePage() {
 
   let proficiencyPercentage = (proficiencyCount / 3) * 100;
 
-  const currentConcepts = progress?.[0].concepts.filter(
+  const currentConcepts = progress?.[0]?.concepts?.filter(
     (concept) => concept.level === user.level
   );
 

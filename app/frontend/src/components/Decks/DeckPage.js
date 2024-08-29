@@ -69,7 +69,7 @@ function DeckPage() {
       const userId = user.uid;
       const result = await dispatch(createUserAttempt(userId, deckId));
       const newAttemptId = result.payload;
-      history.push({
+      history.replace({
         pathname: `/decks/${deckId}`,
         state: { attemptId: newAttemptId },
       });
@@ -79,12 +79,14 @@ function DeckPage() {
     }
   };
 
-  const handleResumeAttempt = (deckId, attemptId) => {
-    history.push({
-      pathname: `/decks/${deckId}`,
-      state: { attemptId },
-    });
-  };
+  // const handleResumeAttempt = (deckId, attemptId) => {
+  //   history.push({
+  //     pathname: `/decks/${deckId}`,
+  //     state: { attemptId },
+  //   });
+  // };
+
+  console.log("DECKFILTER", decksFilter);
 
   const getAllDecks = () => {
     return decksFilter?.filter((deck) => !deck.attemptId && !deck.isArchived) || [];
@@ -154,7 +156,7 @@ function DeckPage() {
                   <Tooltip
                     title={
                       <Typography>
-                        Newly generated decks with zero attempts
+                        Newly generated decks
                       </Typography>
                     }
                     arrow
@@ -202,7 +204,7 @@ function DeckPage() {
                   <Tooltip
                     title={
                       <Typography>
-                        Previously generated decks with at least one attempt
+                        Previously generated decks that have been viewed at least once
                       </Typography>
                     }
                     arrow
@@ -214,29 +216,36 @@ function DeckPage() {
                   <Grid container spacing={2}>
                     {getInProgressDecks().map((deck, index) => (
                       <Grid item key={deck.id} xs={12} sm={6} md={4}>
-                        <Button
-                          component={NavLink}
-                          to={`/decks/${deck.id}`}
-                          variant="contained"
-                          color="secondary"
-                          sx={{
-                            width: "150px",
-                            height: "225px",
-                            borderRadius: "3px",
-                            border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                              }`,
+                        <NavLink
+                          to={{
+                            pathname: `/decks/${deck.id}`,
+                            state: { attemptId: deck.attemptId }
                           }}
-                          onClick={() =>
-                            handleResumeAttempt(deck.id, deck.attemptId)
-                          }
                         >
-                          <h3>{`Deck ${deck.deck_name
-                            }`}</h3>
-                          {/* <Typography variant="body1">
+                          <Button
+                            // component={NavLink}
+                            // to={`/decks/${deck.id}`}
+                            variant="contained"
+                            color="secondary"
+                            sx={{
+                              width: "150px",
+                              height: "225px",
+                              borderRadius: "3px",
+                              border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                                }`,
+                            }}
+                          // onClick={() =>
+                          //   handleResumeAttempt(deck.id, deck.attemptId)
+                          // }
+                          >
+                            <h3>{`Deck ${deck.deck_name
+                              }`}</h3>
+                            {/* <Typography variant="body1">
                             {deck.deckName}
                           </Typography>{" "} */}
-                          {/* Update with your deck field */}
-                        </Button>
+                            {/* Update with your deck field */}
+                          </Button>
+                        </NavLink>
                       </Grid>
                     ))}
                   </Grid>
@@ -263,7 +272,7 @@ function DeckPage() {
                 {getArchivedDecks().length > 0 ? (
                   <Grid container spacing={2}>
                     {getArchivedDecks().map((deck, index) => (
-                      <Grid item key={deck.id} xs={12} sm={6} md={4}>
+                      <Grid item key={deck.id} display="flex" flexDirection="row" columnGap="20px">
                         <Button
                           component={NavLink}
                           to={`/decks/${deck.id}`}
@@ -277,8 +286,8 @@ function DeckPage() {
                               }`,
                           }}
                         >
-                          <Typography variant="h6">{`Deck #${deck.deck_name}`}</Typography>
-                          <h3>{`Deck #${deck.deck_name
+                          {/* <Typography variant="h6">{`Deck #${deck.deck_name}`}</Typography> */}
+                          <h3>{`Deck ${deck.deck_name
                             }`}</h3>
                           {/* Update with your deck field */}
                         </Button>
