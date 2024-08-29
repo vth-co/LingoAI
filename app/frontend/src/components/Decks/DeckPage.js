@@ -69,7 +69,7 @@ function DeckPage() {
       const userId = user.uid;
       const result = await dispatch(createUserAttempt(userId, deckId));
       const newAttemptId = result.payload;
-      history.push({
+      history.replace({
         pathname: `/decks/${deckId}`,
         state: { attemptId: newAttemptId },
       });
@@ -79,12 +79,12 @@ function DeckPage() {
     }
   };
 
-  const handleResumeAttempt = (deckId, attemptId) => {
-    history.push({
-      pathname: `/decks/${deckId}`,
-      state: { attemptId },
-    });
-  };
+  // const handleResumeAttempt = (deckId, attemptId) => {
+  //   history.push({
+  //     pathname: `/decks/${deckId}`,
+  //     state: { attemptId },
+  //   });
+  // };
 
   const getAllDecks = () => {
     return decksFilter?.filter((deck) => !deck.attemptId && !deck.isArchived) || [];
