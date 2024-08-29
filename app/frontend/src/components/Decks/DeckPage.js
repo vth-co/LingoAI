@@ -86,6 +86,8 @@ function DeckPage() {
   //   });
   // };
 
+  console.log("DECKFILTER", decksFilter);
+
   const getAllDecks = () => {
     return decksFilter?.filter((deck) => !deck.attemptId && !deck.isArchived) || [];
   };
@@ -154,7 +156,7 @@ function DeckPage() {
                   <Tooltip
                     title={
                       <Typography>
-                        Newly generated decks with zero attempts
+                        Newly generated decks
                       </Typography>
                     }
                     arrow
@@ -202,7 +204,7 @@ function DeckPage() {
                   <Tooltip
                     title={
                       <Typography>
-                        Previously generated decks with at least one attempt
+                        Previously generated decks that have been viewed at least once
                       </Typography>
                     }
                     arrow
