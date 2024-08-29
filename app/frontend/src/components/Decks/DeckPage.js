@@ -270,7 +270,7 @@ function DeckPage() {
                 {getArchivedDecks().length > 0 ? (
                   <Grid container spacing={2}>
                     {getArchivedDecks().map((deck, index) => (
-                      <Grid item key={deck.id} xs={12} sm={6} md={4}>
+                      <Grid item key={deck.id} display="flex" flexDirection="row" columnGap="20px">
                         <Button
                           component={NavLink}
                           to={`/decks/${deck.id}`}
