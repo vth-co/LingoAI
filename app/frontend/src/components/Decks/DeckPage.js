@@ -214,36 +214,29 @@ function DeckPage() {
                   <Grid container spacing={2}>
                     {getInProgressDecks().map((deck, index) => (
                       <Grid item key={deck.id} xs={12} sm={6} md={4}>
-                        <NavLink
-                          to={{
-                            pathname: `/decks/${deck.id}`,
-                            state: { attemptId: deck.attemptId },
+                        <Button
+                          component={NavLink}
+                          to={`/decks/${deck.id}`}
+                          variant="contained"
+                          color="secondary"
+                          sx={{
+                            width: "150px",
+                            height: "225px",
+                            borderRadius: "3px",
+                            border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                              }`,
                           }}
+                          onClick={() =>
+                            handleResumeAttempt(deck.id, deck.attemptId)
+                          }
                         >
-                          <Button
-                            component={NavLink}
-                            to={`/decks/${deck.id}`}
-                            variant="contained"
-                            color="secondary"
-                            sx={{
-                              width: "150px",
-                              height: "225px",
-                              borderRadius: "3px",
-                              border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                                }`,
-                            }}
-                          // onClick={() =>
-                          //   handleResumeAttempt(deck.id, deck.attemptId)
-                          // }
-                          >
-                            <h3>{`Deck ${deck.deck_name
-                              }`}</h3>
-                            {/* <Typography variant="body1">
+                          <h3>{`Deck ${deck.deck_name
+                            }`}</h3>
+                          {/* <Typography variant="body1">
                             {deck.deckName}
                           </Typography>{" "} */}
-                            {/* Update with your deck field */}
-                          </Button>
-                        </NavLink>
+                          {/* Update with your deck field */}
+                        </Button>
                       </Grid>
                     ))}
                   </Grid>
