@@ -9,11 +9,8 @@ import {
   FormLabel,
   Grid,
   Card,
-<<<<<<< HEAD
-=======
   Button,
   LinearProgress
->>>>>>> origin/carmen-fixes
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
