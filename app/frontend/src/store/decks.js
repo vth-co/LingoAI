@@ -119,7 +119,14 @@ export const archiveDeck = (deckId, userId) => async (dispatch) => {
       archived: true
     });
 
-    dispatch(archiveDeckAction(deckId))
+    const updatedDeckSnapshot = await getDoc(deckDocRef);
+    if (updatedDeckSnapshot.exists()) {
+      const updatedDeck = { id: updatedDeckSnapshot.id, ...updatedDeckSnapshot.data() };
+      dispatch(loadOneDeck(updatedDeck)); // Ensure Redux state is updated
+      console.log("Updated deck after archiving:", updatedDeck);
+    }
+
+    dispatch(archiveDeckAction(deckId));
   } catch (error) {
     console.error("Error archiving deck:", error);
     throw error
@@ -143,9 +150,19 @@ const decksReducer = (state = initialState, action) => {
         selectedDeck: action.deck,
       };
     case ARCHIVE_DECK:
-      return {
-        ...state,
-        decks: state.decks.filter(deck => deck.id !== action.deckId)
+      // return {
+      //   ...state,
+      //   decks: state.decks.filter(deck => deck.id !== action.deckId)
+      // }
+
+      if (state.selectedDeck?.id === action.deckId) {
+        return {
+          ...state,
+          selectedDeck: {
+            ...state.selectedDeck,
+            archived: true,
+          },
+        };
       }
     default:
       return state;

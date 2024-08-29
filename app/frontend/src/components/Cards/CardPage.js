@@ -42,7 +42,6 @@ function CardPage() {
   const topicName = deck?.cards?.[0]?.questionData?.topic;
   const topicLevel = deck?.level;
   const [loading, setLoading] = useState(false);
-  const [allAttempted, setAllAttempted] = useState(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,10 +55,6 @@ function CardPage() {
 
   }, [dispatch, deckId, attemptId]);
 
-  useEffect(() => {
-    const checkAllAttempted = Object.keys(selectedAnswers).length === cards.length - 1
-    setAllAttempted(checkAllAttempted)
-  }, [selectedAnswers, cards.length])
 
   const handleAnswerChange = async (cardIndex, optionIndex, questionId) => {
     const selectedOption = cards[cardIndex].options[optionIndex];
@@ -115,8 +110,8 @@ function CardPage() {
       const allQuestionsAttempted = Object.keys(selectedAnswers).length === cards.length - 1;
 
       if (allQuestionsAttempted) {
-        setAllAttempted(true)
         await dispatch(archiveDeck(deckId, user.uid));
+        await dispatch(fetchOneDeck(deckId))
         console.log("Deck archived")
       }
     } catch (error) {
@@ -137,11 +132,13 @@ function CardPage() {
     return <LinearProgress />;
   }
 
+  console.log(deck);
+
   return (
     <>
       <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topicName}</h1>
       <h3 style={{ textAlign: "center", marginTop: 0 }}>{topicLevel}</h3>
-      {!allAttempted && (
+      {!deck?.archived && (
         <p style={{ textAlign: "center" }}>Each card contains four options. Select your answer to see if it's correct.</p>
       )}
       <Container
