@@ -56,19 +56,21 @@ export const fetchTopicsThroughProgress = (userId) => async (dispatch) => {
 
 export const fetchOneTopic = (topicId) => async (dispatch) => {
   try {
-    const response = await fetch(`/api/topics/${topicId}`);
+    const topicRef = doc(db, "topics", topicId);
+    const topicSnap = await getDoc(topicRef);
 
-    if (response.ok) {
-      const topic = await response.json();
-      dispatch(loadOneTopic(topic));
-      return topic;
+    if (topicSnap.exists()) {
+      const topic = { id: topicSnap.id, ...topicSnap.data() };
+      dispatch(loadOneTopic(topic)); // Dispatch the topic data to Redux store
+      return topic; // Return the topic data if needed
     } else {
-      console.error("Response failed:", response.statusText);
+      console.error("Topic not found");
     }
   } catch (error) {
     console.error("Error fetching topic:", error);
   }
 };
+
 
 // Initial State
 const initialState = {};

@@ -1,7 +1,7 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const { sendEmailVerification } = require("firebase/auth");
 // Access your API key as an environment variable (see "Set up your API key" above)
-const apiKey  = process.env.REACT_APP_API_KEY;
+const apiKey = process.env.REACT_APP_API_KEY;
 
 const genAI = new GoogleGenerativeAI(apiKey);
 
@@ -98,17 +98,10 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
                 For example:
                 Question: The weather is very __ today.
                 Options:
-<<<<<<< HEAD
-                A) hot (mainit)
-                B) warm (mainit-init)
-                C) cold (malamig)
-                D) rainy (maulan)
-=======
                 hot (${native_language})
                 warm (${native_language})
                 cold (${native_language})
                 rainy (${native_language})
->>>>>>> origin/vu-redux
                 Ensure that the explanation for the correct answer is also provided in ${native_language} using this` + jsonschema
 
             }
@@ -156,17 +149,10 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
                 For example:
                 Question: Choose the sentence that uses the indefinite article \"a\" correctly:
                 Options:
-<<<<<<< HEAD
-                A)"The professor gave a lecture on philosophy.",
-                B)"Professor gave lecture on philosophy.",
-                C)"A professor gave a lecture on philosophy."
-                D)"The professor gave the lecture on a philosophy."
-=======
                 "The professor gave a lecture on philosophy.",
                 "Professor gave lecture on philosophy.",
                 "A professor gave a lecture on philosophy."
                 "The professor gave the lecture on a philosophy."
->>>>>>> origin/vu-redux
 
                 Ensure that the explanation for the correct answer is also provided in ${native_language} using this` + jsonschema
 
@@ -187,17 +173,10 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
                 For example:
                 Question: Hello, I’m Emily , a Project Manager at Tech, Inc. I ______ leading cross-functional teams to develop innovative software solutions.
                 Options:
-<<<<<<< HEAD
-                A)"specialize in",
-                B)"good at",
-                C)"expert on"
-                D)"good on"
-=======
                 "specialize in",
                 "good at",
                 "expert on"
                 "good on"
->>>>>>> origin/vu-redux
 
                 Ensure that the explanation for the correct answer is also provided in ${native_language} using this` + jsonschema
 
@@ -213,25 +192,16 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
 
                     Question:
 
-                    Select the most suitable answer for the blank.
+                    Fill in the blank.
 
-                    Person A: Do you have any siblings?
+                    <p>Person A: Do you have any siblings?</p>\n
 
-                    Person B: Yes, I have a brother. _______________
+                    <p>Person B: Yes, I have a brother. [ __________ ]</p>\n
 
-                    Person A: That’s nice! How old is he?
+                    <p>Person A: That’s nice! How old is he?</p>\n
 
                     Options:
 
-<<<<<<< HEAD
-                    A) His name is John.
-
-                    B) He lives in New York.
-
-                    C) He is my best friend.
-
-                    D) He is very funny.
-=======
                      His name is John.
 
                      He lives in New York.
@@ -239,7 +209,6 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
                      He is my best friend.
                      
                      He is very funny.
->>>>>>> origin/vu-redux
 
 
 
@@ -256,65 +225,42 @@ async function generateQuestionsByAI(concept_name, topic, native_language, level
                 For example:
 
                     Question:
-                    Select the most suitable answer for the blank.
+                    Fill in the blank.
 
-                    Person A: What do you do every morning?
+                    <p>Person A: What do you do every morning?</p>\n
 
-                    Person B: I wake up at 7 AM and then I _______________.
+                    <p>Person B: I wake up at 7 AM and then I [ __________ ].</p>\n
 
                     Options:
-<<<<<<< HEAD
-                    A) watch TV
-                    B) go to bed
-                    C) read a book
-                    D) eat breakfast
-=======
                      watch TV
                      go to bed
                      read a book
                      eat breakfast
->>>>>>> origin/vu-redux
                 ensure answer and explaination in ${native_language} using this` + jsonschema
 
             }
             else if (picked_topic === "shopping") {
-                prompt = role + `there're 3 levels Beginner, Intermediate, Advanced.Create 3 questions, each question is a short conversation between 2 people about the topic:${everyday_situations_shopping_question[level]}.
-                each question includes question with Select the most suitable answer for the blank on the top, 4 options in english, answer and explaination test ${level} learner to select the most suitable response or request for the conversation.
+                prompt = role + `there're 3 levels Beginner, Intermediate, Advanced. Create 3 questions, each question is a short conversation between 2 people about the topic: ${everyday_situations_shopping_question[level]}.
+                Each question includes: Select the most suitable answer for the blank on the top, 4 options in English, Answer and explanation to test ${level} learner to select the most suitable response or request for the conversation.
                 For example:
+                Question:
+                Fill in the blank:
+                <p>Shopper: Hi, can you help me?</p>\n
+                <p>Shop Assistant: Of course! What are you looking for?</p>\n
+                <p>Shopper: I am looking for a blue jacket.</p>\n
+                <p>Shop Assistant: We have some blue jackets over here. Would you like to see them?</p>\n
+                <p>Shopper: [ __________ ]</p>\n
+                <p>Shop Assistant: That jacket is $55.</p>
 
-                    Question:
-                    Select the most suitable answer for the blank.
+                Options:
 
-                    Shopper: Hi, can you help me?
+                How much is this one?
 
-                    Shop Assistant: Of course! What are you looking for?
+                What color is it?
 
-                    Shopper: I am looking for a blue jacket.
-
-                    Shop Assistant: We have some blue jackets over here. Would you like to see them?
-
-                    Shopper: Yes, please. __________________________
-
-                    Shop Assistant: That jacket is $55.
-
-                    Options:
-
-<<<<<<< HEAD
-                    A) How much is this one?
-
-                    B) What color is it?
-
-                    C) How tall is it?
-
-                    D) Where is the fitting room?
-=======
-                     How much is this one?
-
-                     What color is it?
-
-                     How tall is it?
-                     Where is the fitting room?
->>>>>>> origin/vu-redux
+                How tall is it?
+                
+                Where is the fitting room?
 
                 ensure answer and explaination in ${native_language} using this` + jsonschema
 

@@ -20,16 +20,18 @@ function TopicsPage() {
   const userId = user.uid;
   const { conceptId } = useParams();
   const [loading, setLoading] = useState(true);
-  const topics = useSelector((state) => state.topics);
-  const progressState = useSelector((state) => state.users.progress);
-  const progress = progressState && Object.values(progressState)
+  // const topics = useSelector((state) => state.topics);
+  // const progressState = useSelector((state) => state.users.progress);
+  // const progress = progressState && Object.values(progressState)
   const concepts = Object.values(useSelector((state) => state.concepts));
 
   const theme = useTheme()
 
-  const currentConcept = progress?.[0]?.concepts?.find(concept =>
+  const currentConcept = concepts?.find(concept =>
     conceptId === concept.id
   );
+
+  // console.log("prog", progressState);
 
   const currConcept = concepts.find(concept => conceptId === concept.id);
 
@@ -37,6 +39,9 @@ function TopicsPage() {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
+      // await dispatch(fetchOneConcept(conceptId));
+      // await dispatch(fetchTopicsByConcept(conceptId));
+      // await dispatch(fetchUserProgress(userId))
       await dispatch(fetchUserProgress(userId))
       await dispatch(fetchTopicsThroughProgress(userId))
       await dispatch(fetchUserConcepts(userId))
