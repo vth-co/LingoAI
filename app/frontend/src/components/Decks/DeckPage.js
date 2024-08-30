@@ -32,7 +32,6 @@ function DeckPage() {
   const decksFilter = decks?.filter((deck) => topicId === deck.topic_id);
   const theme = useTheme();
 
-
   useEffect(() => {
     if (user && topicId) {
       setLoading(true);
@@ -79,15 +78,6 @@ function DeckPage() {
     }
   };
 
-  // const handleResumeAttempt = (deckId, attemptId) => {
-  //   history.push({
-  //     pathname: `/decks/${deckId}`,
-  //     state: { attemptId },
-  //   });
-  // };
-
-  console.log("DECKFILTER", decksFilter);
-
   const getAllDecks = () => {
     return decksFilter?.filter((deck) => !deck.attemptId && !deck.isArchived) || [];
   };
@@ -106,6 +96,7 @@ function DeckPage() {
       alignItems="center"
       flexDirection="column"
       minHeight="100vh"
+      px={2} // Added padding for mobile
     >
       {loading ? (
         <Box
@@ -118,115 +109,173 @@ function DeckPage() {
         </Box>
       ) : (
         <>
-          {/* Check if topic is loaded before trying to access topic_name */}
-          <h1 style={{ marginBottom: 0 }}>{topic ? topic.topic_name : "Loading topic..."}</h1>
-          <h3 style={{ marginTop: 0 }}>{conceptFilter?.level}</h3>
-          <Container sx={{
-            display: "grid",
-            justifyContent: "center"
-          }}>
-            <Box px={50}
+          <Typography variant="h4" gutterBottom>{topic ? topic.topic_name : "Loading topic..."}</Typography>
+          <Typography variant="h6" gutterBottom>{conceptFilter?.level}</Typography>
+          <Container sx={{ display: "grid", justifyContent: "center" }}>
+            <Box
               sx={{
                 display: "flex",
-                justifyContent: "center"
-              }}>
+                justifyContent: "center",
+                mb: 2, // margin bottom
+              }}
+            >
               <Button
                 color="primary"
                 onClick={handleGenerateQuestions}
                 variant="contained"
-
-
-                // fullWidth
-                // size="large"
                 sx={{
                   borderRadius: "3px",
                   border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                     }`,
+                  width: { xs: "100%", sm: "auto" }, // Full width on mobile
                 }}
               >
                 Generate New Deck
               </Button>
             </Box>
-            <Box display="flex" flexDirection="row" width="100%" mt={2} columnGap="20px">
-              {/* New Column */}
-              <Box flex={1} p={2}>
-
-                <Box display="flex" alignItems="center">
-                  <h2>New</h2>
+            <Grid container spacing={2} justifyContent="center">
+              <Grid item xs={12} sm={12} md={6}>
+                <Typography variant="h5" gutterBottom>
+                  New
                   <Tooltip
                     title={
-                      <Typography>
-                        Newly generated decks
-                      </Typography>
+                      <Typography>Newly generated decks</Typography>
                     }
                     arrow
                   >
-                    <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+                    <InfoIcon color="action" sx={{ ml: 1, fontSize: 20 }} />
                   </Tooltip>
-                </Box>
-
+                </Typography>
                 {getAllDecks().length > 0 ? (
-                  <Grid container spacing={2}>
-                    {getAllDecks().map((deck, index) => (
-                      <Grid item key={deck.id} xs={12} sm={6} md={4}>
-                        <Button
-                          component={NavLink}
-                          to={`/decks/${deck.id}`}
-                          variant="contained"
-                          color="primary"
-                          sx={{
-                            width: "150px",
-                            height: "225px",
-                            borderRadius: "3px",
-                            border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                              }`,
-                          }}
-                          onClick={() => handleStartAttempt(deck.id)}
-                        >
-                          <h3>{`Deck ${deck.deck_name}
-                            `}</h3>
-                          {/* <Typography variant="body1">
-                            {deck.deckName}
-                          </Typography>{" "} */}
-                          {/* Update with your deck field */}
-                        </Button>
-                      </Grid>
-                    ))}
+                  <Grid container spacing={2} justifyContent="center">
+                    <Grid item xs={12}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          flexWrap: "wrap",
+                          justifyContent: "center",
+                          gap: 2,
+                        }}
+                      >
+                        {getAllDecks().map((deck) => (
+                          <Box key={deck.id} sx={{ margin: 1 }}>
+                            <Button
+                              component={NavLink}
+                              to={`/decks/${deck.id}`}
+                              variant="contained"
+                              color="primary"
+                              sx={{
+                                width: "150px",
+                                height: "225px",
+                                borderRadius: "3px",
+                                border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                                  }`,
+                              }}
+                              onClick={() => handleStartAttempt(deck.id)}
+                            >
+                              <Typography variant="body1">
+                                {`Deck ${deck.deck_name}`}
+                              </Typography>
+                            </Button>
+                          </Box>
+                        ))}
+                      </Box>
+                    </Grid>
                   </Grid>
                 ) : (
                   <Typography>You currently do not have any new decks.</Typography>
                 )}
-              </Box>
+              </Grid>
 
-              <Box flex={1} p={2}>
-                <Box display="flex" alignItems="center">
-                  <h2>In Progress</h2>
+              <Grid item xs={12} sm={12} md={6}>
+                <Typography variant="h5" gutterBottom>
+                  In Progress
                   <Tooltip
                     title={
-                      <Typography>
-                        Previously generated decks that have been viewed at least once
-                      </Typography>
+                      <Typography>Previously generated decks that have been viewed at least once</Typography>
                     }
                     arrow
                   >
-                    <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+                    <InfoIcon color="action" sx={{ ml: 1, fontSize: 20 }} />
                   </Tooltip>
-                </Box>
+                </Typography>
                 {getInProgressDecks().length > 0 ? (
-                  <Grid container spacing={2}>
-                    {getInProgressDecks().map((deck, index) => (
-                      <Grid item key={deck.id} xs={12} sm={6} md={4}>
-                        <NavLink
-                          to={{
-                            pathname: `/decks/${deck.id}`,
-                            state: { attemptId: deck.attemptId }
-                          }}
-                        >
+                  <Grid container spacing={2} justifyContent="center">
+                    <Grid item xs={12}>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          flexWrap: "wrap",
+                          justifyContent: "center",
+                          gap: 2,
+                        }}
+                      >
+                        {getInProgressDecks().map((deck) => (
+                          <Box key={deck.id} sx={{ margin: 1 }}>
+                            <Button
+                              component={NavLink}
+                              to={{
+                                pathname: `/decks/${deck.id}`,
+                                state: { attemptId: deck.attemptId }
+                              }}
+                              variant="contained"
+                              color="secondary"
+                              sx={{
+                                width: "150px",
+                                height: "225px",
+                                borderRadius: "3px",
+                                border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                                  }`,
+                              }}
+                            >
+                              <Typography variant="body1">
+                                {`Deck ${deck.deck_name}`}
+                              </Typography>
+                            </Button>
+                          </Box>
+                        ))}
+                      </Box>
+                    </Grid>
+                  </Grid>
+                ) : (
+                  <Typography>You currently do not have any decks in progress.</Typography>
+                )}
+              </Grid>
+            </Grid>
+
+            <Box mt={4}>
+              <Typography variant="h5" gutterBottom>
+                Archived
+                <Tooltip
+                  title={
+                    <Typography>Completed decks</Typography>
+                  }
+                  arrow
+                >
+                  <InfoIcon color="action" sx={{ ml: 1, fontSize: 20 }} />
+                </Tooltip>
+              </Typography>
+              {getArchivedDecks().length > 0 ? (
+                <Grid container spacing={2} justifyContent="center">
+                  <Grid item xs={12}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                        gap: 2,
+                      }}
+                    >
+                      {getArchivedDecks().map((deck) => (
+                        <Box key={deck.id} sx={{ margin: 1 }}>
                           <Button
-                            // component={NavLink}
-                            // to={`/decks/${deck.id}`}
+                            component={NavLink}
+                            to={`/decks/${deck.id}`}
                             variant="contained"
-                            color="secondary"
+                            color="divider"
                             sx={{
                               width: "150px",
                               height: "225px",
@@ -234,75 +283,25 @@ function DeckPage() {
                               border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                                 }`,
                             }}
-                          // onClick={() =>
-                          //   handleResumeAttempt(deck.id, deck.attemptId)
-                          // }
                           >
-                            <h3>{`Deck ${deck.deck_name
-                              }`}</h3>
-                            {/* <Typography variant="body1">
-                            {deck.deckName}
-                          </Typography>{" "} */}
-                            {/* Update with your deck field */}
+                            <Typography variant="body1">
+                              {`Deck ${deck.deck_name}`}
+                            </Typography>
                           </Button>
-                        </NavLink>
-                      </Grid>
-                    ))}
+                        </Box>
+                      ))}
+                    </Box>
                   </Grid>
-                ) : (
-                  <Typography>You currently do not have any decks in progress.</Typography>
-                )}
-              </Box>
-            </Box>
-            <Box>
-              <Box flex={1} p={2} paddingTop="20px">
-                <Box display="flex" alignItems="center">
-                  <h2>Archived</h2>
-                  <Tooltip
-                    title={
-                      <Typography>
-                        Completed decks
-                      </Typography>
-                    }
-                    arrow
-                  >
-                    <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
-                  </Tooltip>
-                </Box>
-                {getArchivedDecks().length > 0 ? (
-                  <Grid container spacing={2}>
-                    {getArchivedDecks().map((deck, index) => (
-                      <Grid item key={deck.id} display="flex" flexDirection="row" columnGap="20px">
-                        <Button
-                          component={NavLink}
-                          to={`/decks/${deck.id}`}
-                          variant="contained"
-                          color="divider"
-                          sx={{
-                            width: "150px",
-                            height: "225px",
-                            borderRadius: "3px",
-                            border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                              }`,
-                          }}
-                        >
-                          {/* <Typography variant="h6">{`Deck #${deck.deck_name}`}</Typography> */}
-                          <h3>{`Deck ${deck.deck_name
-                            }`}</h3>
-                          {/* Update with your deck field */}
-                        </Button>
-                      </Grid>
-                    ))}
-                  </Grid>
-                ) : (
-                  <Typography>You currently do not have any archived decks.</Typography>
-                )}
-              </Box>
+                </Grid>
+              ) : (
+                <Typography>You currently do not have any archived decks.</Typography>
+              )}
             </Box>
           </Container>
         </>
-      )}
-    </Box>
+      )
+      }
+    </Box >
   );
 }
 

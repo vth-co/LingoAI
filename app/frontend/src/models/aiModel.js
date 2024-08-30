@@ -3,7 +3,7 @@ const { sendEmailVerification } = require("firebase/auth");
 // Access your API key as an environment variable (see "Set up your API key" above)
 const apiKey = process.env.REACT_APP_API_KEY;
 
-const genAI = new GoogleGenerativeAI(apiKey);
+const genAI = new GoogleGenerativeAI("AIzaSyA5nk2gkSlvaZMkuOq3e2sq2IhLIMzoMtw");
 
 
 //generate questions from ai based on different topic
