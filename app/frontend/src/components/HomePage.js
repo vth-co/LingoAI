@@ -326,10 +326,21 @@ function HomePage() {
         >
           {data.map((row, index) => (
             <React.Fragment key={index}>
-              <Grid item xs={4}>
+              <Grid
+                item
+                // xs={4}
+                xs={12} // Full width on extra small screens
+                sm={6}  // Half width on small screens
+                md={4}  // One-third width on medium screens
+              >
                 <Typography fontWeight="bold">{row.left}</Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid
+                item
+                xs={12} // Full width on extra small screens
+                sm={6}  // Half width on small screens
+                md={6}  // One-third width on medium screens
+              >
                 {row.right}
               </Grid>
             </React.Fragment>

@@ -86,7 +86,7 @@ const NavBar = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "2vw",
+          padding: "5vw",
         }}
       >
         <NavLink to="/" exact={true} activeClassName="active">
