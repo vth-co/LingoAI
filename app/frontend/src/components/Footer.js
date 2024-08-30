@@ -4,7 +4,7 @@ import React from "react";
 
 function Footer() {
     return (
-        <Container style={{ padding: "10px 0px 20px 0px", textAlign: "center" }}>
+        <Container style={{ padding: "10px 10px 20px 10px", textAlign: "center" }}>
             <Typography variant="overline" sx={{ lineHeight: 1.2 }}>
                 <Box
                     sx={{
