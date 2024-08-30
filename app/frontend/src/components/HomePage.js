@@ -37,6 +37,7 @@ function HomePage() {
     (concept) => concept.level === user.level
   );
 
+  console.log("CC", currentConcepts);
   let conceptCount = 0;
 
   currentConcepts?.map((concept) => {
@@ -48,7 +49,7 @@ function HomePage() {
 
   const data = [
     {
-      left: "Current English Proficiency Level",
+      left: "Current English Proficiency Level:",
       right: `${user.level}`,
     },
     {
