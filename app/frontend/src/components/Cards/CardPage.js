@@ -143,14 +143,14 @@ function CardPage() {
       )}
       <Container
         sx={{
-          display: "grid",
-          justifyContent: "space-evenly",
+          display: "flex",
+          justifyContent: "center",
           minHeight: "100vh",
           paddingBottom: "100px",
           p: 2,
         }}
       >
-        <Grid container spacing={2}>
+        <Grid container spacing={2} justifyContent="center">
           {cards.map((card, cardIndex) => (
             <React.Fragment key={card.id}>
               {!card.isAttempted ? (
@@ -166,12 +166,14 @@ function CardPage() {
                     onClick={() => handleFlip(cardIndex)}
                   // ref={(r) => this.flippy = r}
                   >
-                    <Grid item xs={12} md={4}>
+                    <Grid item xs={12} sm={12} md={12} container justifyContent="center">
 
                       <FrontSide
                         style={{
                           backgroundColor: "transparent",
-                          boxShadow: "none"
+                          boxShadow: "none",
+                          display: "flex",
+                          justifyContent: "center",
                         }}
                       >
                         <Card
@@ -214,6 +216,8 @@ function CardPage() {
                               overflow: "auto",
                               display: "flex",
                               alignContent: "center",
+                              flexDirection: "column", // Ensures content stacks vertically
+                              alignItems: "stretch", // Ensures children take up full width
                             }}
                           >
                             <FormControl>
@@ -227,7 +231,7 @@ function CardPage() {
                                   gridAutoFlow: "row",
                                   // gap: "5px",
                                   alignItems: "center",
-                                  width: "fit-content",
+                                  // width: "100%",
                                   height: "fit-content",
                                   overflow: "auto",
                                   padding: "5px",
@@ -255,7 +259,7 @@ function CardPage() {
                                       width: "100%",
                                       // maxWidth: "130px",
                                       display: "flex",
-                                      alignItems: "center", // Vertically centers content within each grid cell
+                                      alignItems: "center",
                                       justifyContent: "flex-start",
                                       height: "100%",
                                       gap: "10px",
@@ -272,12 +276,14 @@ function CardPage() {
                     <BackSide
                       style={{
                         backgroundColor: "transparent",
-                        boxShadow: "none"
+                        boxShadow: "none",
+                        display: "flex",
+                        justifyContent: "center",
                       }}
                     >
                       {/* CORRECT ANSWER */}
                       {feedback[cardIndex]?.isCorrect && (
-                        <Grid item xs={12} md={4}>
+                        <Grid item xs={12} sm={12} md={12} container justifyContent="center">
                           <Card
                             sx={{
                               display: "flex",
@@ -337,7 +343,7 @@ function CardPage() {
                       {/* INCORRECT ANSWER */}
                       {/* {!feedbackcardIndex === cardIndex && !feedback.isCorrect && ( */}
                       {!feedback[cardIndex]?.isCorrect && feedback[cardIndex] && (
-                        <Grid item xs={12} md={4}>
+                        <Grid item xs={12} sm={12} md={12} container justifyContent="center">
                           <Card
                             sx={{
                               display: "flex",
@@ -402,7 +408,7 @@ function CardPage() {
 
 
               ) : (
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} sm={12} md={4} container justifyContent="center">
                   <Card
                     key={card.id}
                     sx={{
