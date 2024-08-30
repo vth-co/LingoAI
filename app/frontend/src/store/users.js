@@ -39,58 +39,58 @@ export const fetchSingleUser = (uid) => async (dispatch) => {
   }
 };
 
-// export const fetchUserProgress = (uid) => async (dispatch) => {
-//   try {
-//     const response = await fetch(`/api/users/${uid}/progress`);
-//     console.log('respoinse', response)
-
-//     if (response.ok) {
-//       const progress = await response.json();
-//       dispatch(loadUserProgress(uid, progress));
-//     } else {
-//       console.error("Response not OK");
-//     }
-//   } catch (error) {
-//     console.error("Error fetching user progress:", error);
-//   }
-// };
-
 export const fetchUserProgress = (uid) => async (dispatch) => {
   try {
-    // Fetch progress and user data using the getProgressFromDB logic
-    const progressDocRef = doc(db, "progress", uid);
-    const userDocRef = doc(db, "users", uid);
+    const response = await fetch(`/api/users/${uid}/progress`);
+    console.log('respoinse', response)
 
-    const userDoc = await getDoc(userDocRef);
-    if (!userDoc.exists()) {
-      console.error("User not found");
-      return;
+    if (response.ok) {
+      const progress = await response.json();
+      dispatch(loadUserProgress(uid, progress));
+    } else {
+      console.error("Response not OK");
     }
-
-    // Access the 'concepts' subcollection
-    const conceptsCollectionRef = collection(progressDocRef, "concepts");
-    const conceptsSnapshot = await getDocs(conceptsCollectionRef);
-    const concepts = conceptsSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-
-    // Combine user data and concepts into a single progress object
-    const progressData = {
-      uid,
-      username: userDoc.data().username,
-      level: userDoc.data().level,
-      concepts,
-    };
-
-    console.log("This is the data:", progressData);
-
-    // Dispatch the combined progress data to the Redux store
-    dispatch(loadUserProgress(progressData));
   } catch (error) {
     console.error("Error fetching user progress:", error);
   }
 };
+
+// export const fetchUserProgress = (uid) => async (dispatch) => {
+//   try {
+//     // Fetch progress and user data using the getProgressFromDB logic
+//     const progressDocRef = doc(db, "progress", uid);
+//     const userDocRef = doc(db, "users", uid);
+
+//     const userDoc = await getDoc(userDocRef);
+//     if (!userDoc.exists()) {
+//       console.error("User not found");
+//       return;
+//     }
+
+//     // Access the 'concepts' subcollection
+//     const conceptsCollectionRef = collection(progressDocRef, "concepts");
+//     const conceptsSnapshot = await getDocs(conceptsCollectionRef);
+//     const concepts = conceptsSnapshot.docs.map((doc) => ({
+//       id: doc.id,
+//       ...doc.data(),
+//     }));
+
+//     // Combine user data and concepts into a single progress object
+//     const progressData = {
+//       uid,
+//       username: userDoc.data().username,
+//       level: userDoc.data().level,
+//       concepts,
+//     };
+
+//     console.log("This is the data:", progressData);
+
+//     // Dispatch the combined progress data to the Redux store
+//     dispatch(loadUserProgress(progressData));
+//   } catch (error) {
+//     console.error("Error fetching user progress:", error);
+//   }
+// };
 
 
 
