@@ -206,7 +206,8 @@ function HomePage() {
           <Box
             sx={{
               display: "flex",
-              columnGap: "20px",
+              gap: "20px",
+              flexWrap: "wrap"
             }}
           >
             {user.badges?.includes("Bronze") && (
@@ -214,7 +215,8 @@ function HomePage() {
                 src="/assets/badges/beginner-badge.png"
                 alt="Lingo.ai Beginner Champion Badge"
                 style={{
-                  width: "25%",
+                  width: "100%",
+                  maxWidth: "144px",
                   borderRadius: "3.5px",
                   boxShadow: `0 0 2.5px ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                     }`,
@@ -227,7 +229,8 @@ function HomePage() {
                 src="/assets/badges/intermediate-badge.png"
                 alt="Lingo.ai Intermediate Champion Badge"
                 style={{
-                  width: "25%",
+                  width: "100%",
+                  maxWidth: "144px",
                   borderRadius: "3.5px",
                   boxShadow: `0 0 2.5px ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                     }`,
@@ -240,7 +243,8 @@ function HomePage() {
                 src="/assets/badges/advanced-badge.png"
                 alt="Lingo.ai Advanced Champion Badge"
                 style={{
-                  width: "25%",
+                  width: "100%",
+                  maxWidth: "144px",
                   borderRadius: "3.5px",
                   boxShadow: `0 0 2.5px ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                     }`,
@@ -307,7 +311,7 @@ function HomePage() {
               display: "grid",
               justifyContent: "center",
               justifyItems: "center",
-              padding: "0px 0px 20px 0px",
+              padding: "0px 20px 20px 20px",
               backgroundColor: `${theme.palette.secondary.main}`,
               borderRadius: "5px",
               width: "100%",
