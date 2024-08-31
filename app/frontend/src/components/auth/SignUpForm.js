@@ -90,195 +90,201 @@ const SignUpForm = ({ locale, setLocale }) => {
   };
 
   return (
-    <form onSubmit={onSignUp}>
-      <Container
-        maxWidth="xs"
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          border: "1px solid black",
-          p: 2,
-          borderRadius: 10,
-        }}
-      >
-        <Box
-          display="flex"
-          flexDirection="column"
-          alignItems="center"
-          mb="10px"
+    <Container
+      sx={{
+        padding: "5vw"
+      }}
+    >
+      <form onSubmit={onSignUp}>
+        <Container
+          maxWidth="xs"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            border: "1px solid black",
+            p: 2,
+            borderRadius: 1.5,
+          }}
         >
-          <Typography
-            variant="h1"
-            m={2}
-            sx={{
-              // color: "primary.main",
-              fontSize: "2rem",
-              textAlign: "center",
-              fontWeight: "bold",
-            }}
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            mb="10px"
           >
-            Create your Account
-          </Typography>
-        </Box>
-
-        <Box display="flex" flexDirection="row" p={1}>
-          <Box display="flex" flexDirection="column">
-            {getFieldLabel("firstName")}
-            <TextField
-              id="outlined-firstName-input"
-              type="text"
-              autoComplete="given-name"
-              onChange={(e) => setFirstName(e.target.value)}
-              size="small"
-              InputProps={{ sx: { borderRadius: 100 } }}
-              required
-            />
-          </Box>
-          <Box display="flex" flexDirection="column">
-            {getFieldLabel("lastName")}
-
-            <TextField
-              id="outlined-lastName-input"
-              type="text"
-              autoComplete="family-name"
-              onChange={(e) => setLastName(e.target.value)}
-              size="small"
-              InputProps={{ sx: { borderRadius: 100 } }}
-              required
-            />
-          </Box>
-        </Box>
-
-        <Box display="flex" flexDirection="column" p={1}>
-          {getFieldLabel("username")}
-          <TextField
-            id="outlined-username-input"
-            type="text"
-            autoComplete="username"
-            onChange={(e) => setUsername(e.target.value)}
-            size="small"
-            InputProps={{ sx: { borderRadius: 100 } }}
-            required
-          />
-        </Box>
-
-        <Box display="flex" flexDirection="column" p={1}>
-          {getFieldLabel("email")}
-          <TextField
-            id="outlined-email-input"
-            type="email"
-            autoComplete="email"
-            onChange={(e) => setEmail(e.target.value)}
-            size="small"
-            InputProps={{ sx: { borderRadius: 100 } }}
-            required
-          />
-        </Box>
-
-        <Box display="flex" flexDirection="column" p={1}>
-          {getFieldLabel("password")}
-          <TextField
-            id="outlined-password-input"
-            type="password"
-            autoComplete="new-password"
-            onChange={(e) => setPassword(e.target.value)}
-            size="small"
-            InputProps={{ sx: { borderRadius: 100 } }}
-            required
-          />
-        </Box>
-
-        <Box display="flex" flexDirection="column" p={1}>
-          {getFieldLabel("confirmPassword")}
-          <TextField
-            id="outlined-confirm-password-input"
-            type="password"
-            autoComplete="new-password"
-            onChange={(e) => setPassword(e.target.value)}
-            size="small"
-            InputProps={{ sx: { borderRadius: 100 } }}
-            required
-          />
-        </Box>
-
-        <Box display="flex" flexDirection="column" p={1}>
-          {getFieldLabel("nativeLanguage")}
-          <Select
-            value={locale}
-            onChange={handleLanguageChange}
-            sx={{ borderRadius: 10 }}
-            size="small"
-          >
-            <MenuItem value="en">English</MenuItem>
-            <MenuItem value="fr">Français</MenuItem>
-            <MenuItem value="ko">한국어</MenuItem>
-            <MenuItem value="es">Español</MenuItem>
-            <MenuItem value="ja">日本語</MenuItem>
-            <MenuItem value="vi">Tiếng Việt</MenuItem>
-            <MenuItem value="zh">中文</MenuItem>
-            <MenuItem value="hi">हिंदी</MenuItem>
-          </Select>
-        </Box>
-
-        <Box display="flex" flexDirection="column" p={1}>
-          <Box display="flex">
-            {getFieldLabel("englishProficiency")}
-            <Tooltip
-              title={
-                <Typography>
-                  Beginner: Start here if you need to learn basic words, simple
-                  sentences, and everyday phrases.
-                  {
-                    <Typography my={1}>
-                      Intermediate: Choose this if you can understand and use
-                      common phrases and need to improve grammar and vocabulary.
-                    </Typography>
-                  }
-                  {
-                    <Typography>
-                      Advanced: Select this if you are comfortable with complex
-                      sentences and want to master fluency and Advanced topics.
-                    </Typography>
-                  }
-                </Typography>
-              }
-              arrow
+            <Typography
+              variant="h1"
+              m={2}
+              sx={{
+                // color: "primary.main",
+                fontSize: "2rem",
+                textAlign: "center",
+                fontWeight: "bold",
+              }}
             >
-              <InfoIcon color="divider" />
-            </Tooltip>
+              Create Your Account
+            </Typography>
           </Box>
-          <Select
-            value={level}
-            onChange={handleLevelChange}
-            sx={{ borderRadius: 10 }}
-            size="small"
-          >
-            <MenuItem value="Beginner">1: Beginner</MenuItem>
-            <MenuItem value="Intermediate">2: Intermediate</MenuItem>
-            <MenuItem value="Advanced">3: Advanced</MenuItem>
-          </Select>
-          <Button
-            variant="contained"
-            type="submit"
-            color="primary"
-            sx={{
-              borderRadius: 100,
-              mt: 2,
-              fontWeight: "500",
-            }}
-          >
-            <FormattedMessage id="signUp" defaultMessage="Sign Up" />
-          </Button>
-          <Button onClick={handleDemoClick} type="submit" sx={{
-            borderRadius: 100,
-            mt: 1,
-          }}>
-            Demo
-          </Button>
-        </Box>
-      </Container>
-    </form>
+
+          <Box display="flex" flexDirection="row" p={1} columnGap="15px">
+            <Box display="flex" flexDirection="column">
+              {getFieldLabel("firstName")}
+              <TextField
+                id="outlined-firstName-input"
+                type="text"
+                autoComplete="given-name"
+                onChange={(e) => setFirstName(e.target.value)}
+                size="small"
+                InputProps={{ sx: { borderRadius: 1.5 } }}
+                required
+              />
+            </Box>
+            <Box display="flex" flexDirection="column">
+              {getFieldLabel("lastName")}
+
+              <TextField
+                id="outlined-lastName-input"
+                type="text"
+                autoComplete="family-name"
+                onChange={(e) => setLastName(e.target.value)}
+                size="small"
+                InputProps={{ sx: { borderRadius: 1.5 } }}
+                required
+              />
+            </Box>
+          </Box>
+
+          <Box display="flex" flexDirection="column" p={1}>
+            {getFieldLabel("username")}
+            <TextField
+              id="outlined-username-input"
+              type="text"
+              autoComplete="username"
+              onChange={(e) => setUsername(e.target.value)}
+              size="small"
+              InputProps={{ sx: { borderRadius: 1.5 } }}
+              required
+            />
+          </Box>
+
+          <Box display="flex" flexDirection="column" p={1}>
+            {getFieldLabel("email")}
+            <TextField
+              id="outlined-email-input"
+              type="email"
+              autoComplete="email"
+              onChange={(e) => setEmail(e.target.value)}
+              size="small"
+              InputProps={{ sx: { borderRadius: 1.5 } }}
+              required
+            />
+          </Box>
+
+          <Box display="flex" flexDirection="column" p={1}>
+            {getFieldLabel("password")}
+            <TextField
+              id="outlined-password-input"
+              type="password"
+              autoComplete="new-password"
+              onChange={(e) => setPassword(e.target.value)}
+              size="small"
+              InputProps={{ sx: { borderRadius: 1.5 } }}
+              required
+            />
+          </Box>
+
+          <Box display="flex" flexDirection="column" p={1}>
+            {getFieldLabel("confirmPassword")}
+            <TextField
+              id="outlined-confirm-password-input"
+              type="password"
+              autoComplete="new-password"
+              onChange={(e) => setPassword(e.target.value)}
+              size="small"
+              InputProps={{ sx: { borderRadius: 1.5 } }}
+              required
+            />
+          </Box>
+
+          <Box display="flex" flexDirection="column" p={1}>
+            {getFieldLabel("nativeLanguage")}
+            <Select
+              value={locale}
+              onChange={handleLanguageChange}
+              sx={{ borderRadius: 1.5 }}
+              size="small"
+            >
+              <MenuItem value="en">English</MenuItem>
+              <MenuItem value="fr">Français</MenuItem>
+              <MenuItem value="ko">한국어</MenuItem>
+              <MenuItem value="es">Español</MenuItem>
+              <MenuItem value="ja">日本語</MenuItem>
+              <MenuItem value="vi">Tiếng Việt</MenuItem>
+              <MenuItem value="zh">中文</MenuItem>
+              <MenuItem value="hi">हिंदी</MenuItem>
+            </Select>
+          </Box>
+
+          <Box display="flex" flexDirection="column" p={1}>
+            <Box display="flex">
+              {getFieldLabel("englishProficiency")}
+              <Tooltip
+                title={
+                  <Typography>
+                    Beginner: Start here if you need to learn basic words, simple
+                    sentences, and everyday phrases.
+                    {
+                      <Typography my={1}>
+                        Intermediate: Choose this if you can understand and use
+                        common phrases and need to improve grammar and vocabulary.
+                      </Typography>
+                    }
+                    {
+                      <Typography>
+                        Advanced: Select this if you are comfortable with complex
+                        sentences and want to master fluency and Advanced topics.
+                      </Typography>
+                    }
+                  </Typography>
+                }
+                arrow
+              >
+                <InfoIcon color="divider" />
+              </Tooltip>
+            </Box>
+            <Select
+              value={level}
+              onChange={handleLevelChange}
+              sx={{ borderRadius: 1.5 }}
+              size="small"
+            >
+              <MenuItem value="Beginner">Beginner</MenuItem>
+              <MenuItem value="Intermediate">Intermediate</MenuItem>
+              <MenuItem value="Advanced">Advanced</MenuItem>
+            </Select>
+            <Button
+              variant="contained"
+              type="submit"
+              color="primary"
+              sx={{
+                borderRadius: 1.5,
+                mt: 2,
+                fontWeight: "500",
+              }}
+            >
+              <FormattedMessage id="signUp" defaultMessage="Sign Up" />
+            </Button>
+            <Button onClick={handleDemoClick} type="submit" sx={{
+              borderRadius: 1.5,
+              mt: 1,
+            }}>
+              Demo
+            </Button>
+          </Box>
+        </Container>
+      </form>
+    </Container>
   );
 };
 

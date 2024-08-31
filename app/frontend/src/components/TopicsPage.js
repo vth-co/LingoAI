@@ -68,8 +68,9 @@ function TopicsPage() {
   return (
     <Container>
       <Box>
-        <Box display="flex" flexDirection="column" alignItems="center">
-          <h1>Select a {currentConcept?.concept_name} Topic</h1>
+        <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center"
+          textAlign="center">
+          <h1>Select {currentConcept?.concept_name} Topic</h1>
           <p>
             Select any topic to begin. In order to pass a topic, you must score
             at least 80% three times.
@@ -122,12 +123,20 @@ function TopicsPage() {
 
             <>
 
-              <Grid item key={topic.id}>
+              <Grid item key={topic.id}
+                xs={12} // Full width on extra small screens
+                sm={6}  // Half width on small screens
+                md={4}  // One-third width on medium screens
+                sx={{ padding: 0 }}
+              >
                 <Button component={NavLink}
                   to={`/concepts/${conceptId}/topics/${topic.id}/decks`}
                   sx={{
                     backgroundColor: `${theme.palette.primary.main}`,
                     color: `${theme.palette.text.main}`,
+                    width: '100%',  // Ensure the button takes up the full width of the grid item
+                    display: 'block',
+                    padding: 0,  // Remove any default padding
                   }}>
                   <Box display='flex' flexDirection='column'
                     sx={{
@@ -135,7 +144,7 @@ function TopicsPage() {
                       flexDirection: "column",
                       alignContent: "center",
                       padding: "0px 20px",
-                      width: "400px",
+                      width: "100%",
                       height: "200px"
                     }}>
                     <Box
