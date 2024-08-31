@@ -7,17 +7,20 @@
 
 .scroll-container {
   display: flex;
-  animation: scroll 15s linear infinite;
+  animation: scroll 60s linear infinite;
   position: absolute;
   /* top: 0; */
   left: 0;
-  width: calc(100% * 2); /* Ensure the width is sufficient to accommodate the scroll */
+  /* width: calc(100% * 2);  */
+  width: auto;
 }
 
 .scroll-item {
   display: inline-block;
-  margin-right: 2rem; /* Adjust spacing as needed */
+  margin-right: 5rem; /* Adjust spacing as needed */
   font-size: 1.5rem;
+  width: auto;
+  white-space: nowrap;
   /* background: linear-gradient(to right, #fff, #000, #fff);  */
   /* Gradient from white to black to white */
   /* -webkit-background-clip: text; Clip background to text */

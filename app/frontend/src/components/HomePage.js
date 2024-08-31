@@ -207,7 +207,8 @@ function HomePage() {
           <Box
             sx={{
               display: "flex",
-              columnGap: "20px",
+              gap: "20px",
+              flexWrap: "wrap"
             }}
           >
             {user.badges?.includes("Bronze") && (
@@ -215,8 +216,9 @@ function HomePage() {
                 src="/assets/badges/beginner-badge.png"
                 alt="Lingo.ai Beginner Champion Badge"
                 style={{
-                  width: "25%",
-                  borderRadius: "3.5px",
+                  width: "100%",
+                  maxWidth: "178px",
+                  borderRadius: "5px",
                   boxShadow: `0 0 2.5px ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                     }`,
                 }}
@@ -228,8 +230,9 @@ function HomePage() {
                 src="/assets/badges/intermediate-badge.png"
                 alt="Lingo.ai Intermediate Champion Badge"
                 style={{
-                  width: "25%",
-                  borderRadius: "3.5px",
+                  width: "100%",
+                  maxWidth: "178px",
+                  borderRadius: "5px",
                   boxShadow: `0 0 2.5px ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                     }`,
                 }}
@@ -241,8 +244,9 @@ function HomePage() {
                 src="/assets/badges/advanced-badge.png"
                 alt="Lingo.ai Advanced Champion Badge"
                 style={{
-                  width: "25%",
-                  borderRadius: "3.5px",
+                  width: "100%",
+                  maxWidth: "178px",
+                  borderRadius: "5px",
                   boxShadow: `0 0 2.5px ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                     }`,
                 }}
@@ -308,7 +312,7 @@ function HomePage() {
               display: "grid",
               justifyContent: "center",
               justifyItems: "center",
-              padding: "0px 0px 20px 0px",
+              padding: "0px 20px 20px 20px",
               backgroundColor: `${theme.palette.secondary.main}`,
               borderRadius: "5px",
               width: "100%",
@@ -327,10 +331,21 @@ function HomePage() {
         >
           {data.map((row, index) => (
             <React.Fragment key={index}>
-              <Grid item xs={4}>
+              <Grid
+                item
+                // xs={4}
+                xs={12} // Full width on extra small screens
+                sm={6}  // Half width on small screens
+                md={4}  // One-third width on medium screens
+              >
                 <Typography fontWeight="bold">{row.left}</Typography>
               </Grid>
-              <Grid item xs={6}>
+              <Grid
+                item
+                xs={12} // Full width on extra small screens
+                sm={6}  // Half width on small screens
+                md={6}  // One-third width on medium screens
+              >
                 {row.right}
               </Grid>
             </React.Fragment>

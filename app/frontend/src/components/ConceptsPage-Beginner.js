@@ -100,14 +100,22 @@ function BeginnerConcepts({ user, concepts }) {
                     previousConceptPassed = concept.status;
 
                     return (
-                        <Grid item key={concept.id}>
+                        <Grid item key={concept.id}
+                            xs={12} // Full width on extra small screens
+                            sm={6}  // Half width on small screens
+                            md={4}  // One-third width on medium screens
+                            sx={{ padding: 0 }}
+                        >
                             <Button
                                 component={NavLink}
                                 to={isConceptUnlocked ? `/concepts/${concept.id}` : "#"}
                                 sx={{
                                     backgroundColor: isConceptUnlocked ? `${theme.palette.secondary.main}` : `${theme.palette.text.disabled}`,
                                     color: isConceptUnlocked ? `${theme.palette.secondary.contrastText}` : `${theme.palette.text.disabled}`,
-                                    cursor: isConceptUnlocked ? 'pointer' : 'default'
+                                    cursor: isConceptUnlocked ? 'pointer' : 'default',
+                                    width: '100%',
+                                    display: 'block',
+                                    padding: 0,
                                 }}
                                 disabled={!isConceptUnlocked}
                             >
@@ -117,7 +125,7 @@ function BeginnerConcepts({ user, concepts }) {
                                         flexDirection: "column",
                                         alignContent: "center",
                                         padding: "10px 20px",
-                                        width: "250px",
+                                        width: "100%",
                                         height: "200px",
                                     }}>
                                     <Box
