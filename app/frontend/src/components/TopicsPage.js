@@ -115,7 +115,7 @@ function TopicsPage() {
         </Box>
       </Box>
 
-      <Grid container spacing={10} justifyContent='center' py={5}>
+      <Grid container spacing={5} justifyContent='center' py={5}>
         {combinedTopics?.map(topic => {
           const topicPercentage = Math.round((topic.passes / 3) * 100)
 
@@ -143,7 +143,7 @@ function TopicsPage() {
                       display: "flex",
                       flexDirection: "column",
                       alignContent: "center",
-                      padding: "0px 20px",
+                      padding: "10px 20px",
                       width: "100%",
                       height: "200px"
                     }}>
