@@ -135,7 +135,11 @@ function CardPage() {
   console.log(deck);
 
   return (
-    <>
+    <Container
+      sx={{
+        padding: "5vw"
+      }}
+    >
       <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topicName}</h1>
       <h3 style={{ textAlign: "center", marginTop: 0 }}>{topicLevel}</h3>
       {!deck?.archived && (
@@ -146,133 +150,116 @@ function CardPage() {
           display: "flex",
           justifyContent: "center",
           minHeight: "100vh",
-          paddingBottom: "100px",
           p: 2,
         }}
       >
-        <Grid container spacing={2} justifyContent="center">
+        <Grid container spacing={2} justifyContent="center" alignItems="center">
           {cards.map((card, cardIndex) => (
             <React.Fragment key={card.id}>
               {!card.isAttempted ? (
-
-                <React.Fragment>
-                  {/* QUESTION CARD */}
+                <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
                   <Flippy
-                    key={card.id}
                     flipOnHover={false}
                     flipOnClick={false}
                     flipDirection="horizontal"
                     isFlipped={flipped[cardIndex] || feedback[cardIndex] !== undefined}
                     onClick={() => handleFlip(cardIndex)}
-                  // ref={(r) => this.flippy = r}
                   >
-                    <Grid item xs={12} sm={12} md={12} container justifyContent="center">
-
-                      <FrontSide
-                        style={{
-                          backgroundColor: "transparent",
-                          boxShadow: "none",
+                    <FrontSide
+                      style={{
+                        backgroundColor: "transparent",
+                        boxShadow: "none",
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Card
+                        sx={{
                           display: "flex",
-                          justifyContent: "center",
+                          flexDirection: "column",
+                          width: "300px",
+                          height: "450px",
+                          borderRadius: "3px",
+                          border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                         }}
                       >
-                        <Card
+                        <Box
                           sx={{
-                            display: "flex",
-                            flexDirection: "column",
-                            width: "300px",
-                            height: "450px",
-                            borderRadius: "3px",
-                            border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                              }`,
+                            backgroundColor: `${theme.palette.divider.main}`,
+                            height: "300px",
+                            padding: "20px",
+                            overflow: "auto",
                           }}
                         >
-                          <Box
-                            sx={{
-                              backgroundColor: `${theme.palette.divider.main}`,
-                              height: "300px",
-                              padding: "20px",
-                              overflow: "auto",
+                          <h2
+                            style={{ margin: "0" }}
+                            dangerouslySetInnerHTML={{
+                              __html: card.question.split('\n')
+                                .map(line => `<div style="margin: 0; padding: 0; margin-bottom: 10px;">${line}</div>`)
+                                .join('')
                             }}
-                          >
-                            {/* <h2 style={{ margin: "0" }}>{card.question}</h2> */}
-                            <h2
-                              style={{ margin: "0" }}
-                              dangerouslySetInnerHTML={{
-                                __html: card.question.split('\n')
-                                  .map(line => `<div style="margin: 0; padding: 0; margin-bottom: 10px;">${line}</div>`)
-                                  .join('')
-                              }}>
-                            </h2>
-
-                          </Box>
-                          <Box
-                            sx={{
-                              backgroundColor: `${theme.palette.background.main}`,
-                              height: "150px",
-                              padding: "10px",
-                              borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                                }`,
-                              overflow: "auto",
-                              display: "flex",
-                              alignContent: "center",
-                              flexDirection: "column", // Ensures content stacks vertically
-                              alignItems: "stretch", // Ensures children take up full width
-                            }}
-                          >
-                            <FormControl>
-                              <RadioGroup
-                                row
-                                aria-labelledby="demo-row-radio-buttons-group-label"
-                                name="row-radio-buttons-group"
-                                sx={{
-                                  display: "grid",
-                                  // gridTemplateColumns: "repeat(2, 1fr)",
-                                  gridAutoFlow: "row",
-                                  // gap: "5px",
-                                  alignItems: "center",
-                                  // width: "100%",
-                                  height: "fit-content",
-                                  overflow: "auto",
-                                  padding: "5px",
-                                }}
-                                onChange={(e) =>
-                                  handleAnswerChange(
-                                    cardIndex,
-                                    parseInt(e.target.value),
-                                    card.id
-                                  )
-                                }
-                              >
-                                {card.options.map((option, optionIndex) => (
-                                  <FormControlLabel
-                                    key={optionIndex}
-                                    value={optionIndex} // Set the index as the value
-                                    control={
-                                      <Radio
-                                        sx={{ color: theme.palette.primary.main, width: "30px", height: "30px" }}
-                                      />
-                                    }
-                                    label={option}
-                                    sx={{
-                                      margin: 0,
-                                      width: "100%",
-                                      // maxWidth: "130px",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      justifyContent: "flex-start",
-                                      height: "100%",
-                                      gap: "10px",
-
-                                    }}
-                                  />
-                                ))}
-                              </RadioGroup>
-                            </FormControl>
-                          </Box>
-                        </Card>
-                      </FrontSide>
-                    </Grid>
+                          />
+                        </Box>
+                        <Box
+                          sx={{
+                            backgroundColor: `${theme.palette.background.main}`,
+                            height: "150px",
+                            padding: "10px",
+                            borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
+                            overflow: "auto",
+                            display: "flex",
+                            alignContent: "center",
+                            flexDirection: "column",
+                            alignItems: "stretch",
+                          }}
+                        >
+                          <FormControl>
+                            <RadioGroup
+                              row
+                              aria-labelledby="demo-row-radio-buttons-group-label"
+                              name="row-radio-buttons-group"
+                              sx={{
+                                display: "grid",
+                                gridAutoFlow: "row",
+                                alignItems: "center",
+                                height: "fit-content",
+                                overflow: "auto",
+                                padding: "5px",
+                              }}
+                              onChange={(e) =>
+                                handleAnswerChange(
+                                  cardIndex,
+                                  parseInt(e.target.value),
+                                  card.id
+                                )
+                              }
+                            >
+                              {card.options.map((option, optionIndex) => (
+                                <FormControlLabel
+                                  key={optionIndex}
+                                  value={optionIndex}
+                                  control={
+                                    <Radio
+                                      sx={{ color: theme.palette.primary.main, width: "30px", height: "30px" }}
+                                    />
+                                  }
+                                  label={option}
+                                  sx={{
+                                    margin: 0,
+                                    width: "100%",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "flex-start",
+                                    height: "100%",
+                                    gap: "10px",
+                                  }}
+                                />
+                              ))}
+                            </RadioGroup>
+                          </FormControl>
+                        </Box>
+                      </Card>
+                    </FrontSide>
                     <BackSide
                       style={{
                         backgroundColor: "transparent",
@@ -281,9 +268,8 @@ function CardPage() {
                         justifyContent: "center",
                       }}
                     >
-                      {/* CORRECT ANSWER */}
                       {feedback[cardIndex]?.isCorrect && (
-                        <Grid item xs={12} sm={12} md={12} container justifyContent="center">
+                        <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
                           <Card
                             sx={{
                               display: "flex",
@@ -291,8 +277,7 @@ function CardPage() {
                               width: "300px",
                               height: "450px",
                               borderRadius: "3px",
-                              border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                                }`,
+                              border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                             }}
                           >
                             <Box
@@ -322,11 +307,12 @@ function CardPage() {
                                 backgroundColor: `${theme.palette.background.main}`,
                                 height: "150px",
                                 padding: "10px",
-                                borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                                  }`,
+                                borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                                 overflow: "auto",
                                 display: "flex",
                                 alignContent: "center",
+                                justifyContent: "center",
+                                flexDirection: "column",
                               }}
                             >
                               <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -339,11 +325,8 @@ function CardPage() {
                           </Card>
                         </Grid>
                       )}
-
-                      {/* INCORRECT ANSWER */}
-                      {/* {!feedbackcardIndex === cardIndex && !feedback.isCorrect && ( */}
                       {!feedback[cardIndex]?.isCorrect && feedback[cardIndex] && (
-                        <Grid item xs={12} sm={12} md={12} container justifyContent="center">
+                        <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
                           <Card
                             sx={{
                               display: "flex",
@@ -351,8 +334,7 @@ function CardPage() {
                               width: "300px",
                               height: "450px",
                               borderRadius: "3px",
-                              border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                                }`,
+                              border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                             }}
                           >
                             <Box
@@ -382,18 +364,14 @@ function CardPage() {
                                 backgroundColor: `${theme.palette.background.main}`,
                                 height: "150px",
                                 padding: "10px",
-                                borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                                  }`,
+                                borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                                 overflow: "auto",
                                 display: "flex",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                flexDirection: "column"
+                                flexDirection: "column",
                               }}
                             >
-                              {/* <Typography sx={{ ml: 2 }}>
-                          {feedback.correctAnswer}
-                          </Typography> */}
                               <CloseIcon
                                 sx={{ color: theme.palette.completion.poor }}
                               />
@@ -404,11 +382,9 @@ function CardPage() {
                       )}
                     </BackSide>
                   </Flippy>
-                </React.Fragment>
-
-
+                </Grid>
               ) : (
-                <Grid item xs={12} sm={12} md={4} container justifyContent="center">
+                <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
                   <Card
                     key={card.id}
                     sx={{
@@ -417,8 +393,7 @@ function CardPage() {
                       width: "300px",
                       height: "450px",
                       borderRadius: "3px",
-                      border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                        }`,
+                      border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                     }}
                   >
                     <Box
@@ -434,6 +409,11 @@ function CardPage() {
                         <Typography
                           sx={{ color: theme.palette.text.primary, mt: 2 }}
                         >
+                          Correct!
+                        </Typography>
+                        <Typography
+                          sx={{ color: theme.palette.text.primary, mt: 2 }}
+                        >
                           {card.explanation}
                         </Typography>
                       </FormLabel>
@@ -443,11 +423,12 @@ function CardPage() {
                         backgroundColor: `${theme.palette.background.main}`,
                         height: "150px",
                         padding: "10px",
-                        borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                          }`,
+                        borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                         overflow: "auto",
                         display: "flex",
-                        alignContent: "center",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column",
                       }}
                     >
                       <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -459,13 +440,13 @@ function CardPage() {
                     </Box>
                   </Card>
                 </Grid>
-
               )}
             </React.Fragment>
           ))}
         </Grid>
-      </Container >
-    </>
+      </Container>
+    </Container>
+
   );
 }
 

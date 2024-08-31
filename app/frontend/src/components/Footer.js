@@ -11,7 +11,7 @@ function Footer() {
                         display: "flex",
                         alignItems: { xs: "start", sm: "center" },
                         justifyContent: "center",
-                        gap: "5px",
+                        gap: { xs: "0px", sm: "5px" },
                         margin: "0 auto",
                         padding: { xs: "0 20px", sm: "0" },
                     }}

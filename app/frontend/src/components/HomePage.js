@@ -216,8 +216,8 @@ function HomePage() {
                 alt="Lingo.ai Beginner Champion Badge"
                 style={{
                   width: "100%",
-                  maxWidth: "144px",
-                  borderRadius: "3.5px",
+                  maxWidth: "178px",
+                  borderRadius: "5px",
                   boxShadow: `0 0 2.5px ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                     }`,
                 }}
@@ -230,8 +230,8 @@ function HomePage() {
                 alt="Lingo.ai Intermediate Champion Badge"
                 style={{
                   width: "100%",
-                  maxWidth: "144px",
-                  borderRadius: "3.5px",
+                  maxWidth: "178px",
+                  borderRadius: "5px",
                   boxShadow: `0 0 2.5px ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                     }`,
                 }}
@@ -244,8 +244,8 @@ function HomePage() {
                 alt="Lingo.ai Advanced Champion Badge"
                 style={{
                   width: "100%",
-                  maxWidth: "144px",
-                  borderRadius: "3.5px",
+                  maxWidth: "178px",
+                  borderRadius: "5px",
                   boxShadow: `0 0 2.5px ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                     }`,
                 }}
