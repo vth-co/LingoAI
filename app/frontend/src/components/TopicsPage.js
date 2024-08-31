@@ -65,7 +65,7 @@ function TopicsPage() {
       <Box>
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center"
           textAlign="center">
-          <h1>Select a {currentConcept?.concept_name} Topic</h1>
+          <h1>Select {currentConcept?.concept_name} Topic</h1>
           <p>
             Select any topic to begin. In order to pass a topic, you must score
             at least 80% three times.

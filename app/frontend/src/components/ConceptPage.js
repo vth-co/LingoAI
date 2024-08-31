@@ -65,7 +65,7 @@ function ConceptPage() {
     <Container>
       <Box>
         <Box display='flex' flexDirection='column' alignItems='center' textAlign="center">
-          <h1>Select a {user.level} Concept</h1>
+          <h1>Select {user.level} Concept</h1>
           <p>These are the recommended concepts based on your current proficiency level.</p>
           {conceptPercentage === 100 ? (
             <p>Congratulations! You've earned the Lingo.ai {user.level} Champion Badge.</p>

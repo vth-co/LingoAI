@@ -109,9 +109,9 @@ function DeckPage() {
         </Box>
       ) : (
         <>
-          <Typography variant="h4" gutterBottom>{topic ? topic.topic_name : "Loading topic..."}</Typography>
-          <Typography variant="h6" gutterBottom>{conceptFilter?.level}</Typography>
-          <Container sx={{ display: "grid", justifyContent: "center" }}>
+          <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topic ? topic.topic_name : "Loading topic..."}</h1>
+          <h3 style={{ textAlign: "center", marginTop: 0 }}>{conceptFilter?.level}</h3>
+          <Container sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
             <Box
               sx={{
                 display: "flex",
@@ -133,7 +133,7 @@ function DeckPage() {
                 Generate New Deck
               </Button>
             </Box>
-            <Grid container spacing={2} justifyContent="center">
+            <Grid container spacing={2} justifyContent="center" paddingTop="20px">
               <Grid item xs={12} sm={12} md={6}>
                 <Typography variant="h5" gutterBottom>
                   New
@@ -143,12 +143,12 @@ function DeckPage() {
                     }
                     arrow
                   >
-                    <InfoIcon color="action" sx={{ ml: 1, fontSize: 20 }} />
+                    <InfoIcon color="action" sx={{ fontSize: 16 }} />
                   </Tooltip>
                 </Typography>
                 {getAllDecks().length > 0 ? (
                   <Grid container spacing={2} justifyContent="center">
-                    <Grid item xs={12}>
+                    <Grid item xs={12} md={6}>
                       <Box
                         sx={{
                           display: "flex",
@@ -197,7 +197,7 @@ function DeckPage() {
                     }
                     arrow
                   >
-                    <InfoIcon color="action" sx={{ ml: 1, fontSize: 20 }} />
+                    <InfoIcon color="action" sx={{ fontSize: 16 }} />
                   </Tooltip>
                 </Typography>
                 {getInProgressDecks().length > 0 ? (
@@ -254,12 +254,12 @@ function DeckPage() {
                   }
                   arrow
                 >
-                  <InfoIcon color="action" sx={{ ml: 1, fontSize: 20 }} />
+                  <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
                 </Tooltip>
               </Typography>
               {getArchivedDecks().length > 0 ? (
                 <Grid container spacing={2} justifyContent="center">
-                  <Grid item xs={12}>
+                  <Grid item xs={12} md={6}>
                     <Box
                       sx={{
                         display: "flex",

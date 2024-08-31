@@ -137,7 +137,7 @@ function CardPage() {
   return (
     <Container
       sx={{
-        padding: "5vw"
+        padding: "0 5vw 0 5vw"
       }}
     >
       <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topicName}</h1>
