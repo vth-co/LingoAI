@@ -64,7 +64,7 @@ function ConceptPage() {
   return (
     <Container>
       <Box>
-        <Box display='flex' flexDirection='column' alignItems='center'>
+        <Box display='flex' flexDirection='column' alignItems='center' textAlign="center">
           <h1>Select a {user.level} Concept</h1>
           <p>These are the recommended concepts based on your current proficiency level.</p>
           {conceptPercentage === 100 ? (
@@ -129,9 +129,9 @@ function ConceptPage() {
                   backgroundColor: isConceptUnlocked ? `${theme.palette.secondary.main}` : `${theme.palette.text.disabled}`,
                   color: isConceptUnlocked ? `${theme.palette.secondary.contrastText}` : `${theme.palette.text.disabled}`,
                   cursor: isConceptUnlocked ? 'pointer' : 'default',
-                  width: '100%',  // Ensure the button takes up the full width of the grid item
+                  width: '100%',
                   display: 'block',
-                  padding: 0,  // Remove any default padding
+                  padding: 0,
                 }}
                 disabled={!isConceptUnlocked}
               >
