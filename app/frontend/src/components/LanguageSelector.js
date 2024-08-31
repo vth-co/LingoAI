@@ -58,7 +58,7 @@ function LanguageSelector({ setLocale }) {
   return (
     <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
       {flagsArr.map((flag, index) => (
-        <Grid item xs={3} key={index}>
+        <Grid item xs={6} md={3} key={index}>
           <Box
             position="relative"
             textAlign="center"
