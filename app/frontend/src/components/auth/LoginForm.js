@@ -38,7 +38,7 @@ const LoginForm = () => {
             justifyContent: "center",
             border: "1px solid black",
             p: 2,
-            borderRadius: 1,
+            borderRadius: 1.5,
           }}
         >
           <Typography
@@ -70,7 +70,7 @@ const LoginForm = () => {
               autoComplete="current-email"
               onChange={(e) => setEmail(e.target.value)} // Ensures state updates when user types in the email field
               size="small"
-              InputProps={{ sx: { borderRadius: 1 } }}
+              InputProps={{ sx: { borderRadius: 1.5 } }}
               required
             />
           </Box>
@@ -91,7 +91,7 @@ const LoginForm = () => {
               autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)} // Updates password state
               size="small"
-              InputProps={{ sx: { borderRadius: 1 } }}
+              InputProps={{ sx: { borderRadius: 1.5 } }}
               required
             />
             <Button
@@ -99,7 +99,7 @@ const LoginForm = () => {
               type="submit"
               color="primary"
               sx={{
-                borderRadius: 1,
+                borderRadius: 1.5,
                 mt: 2,
               }}
             >
@@ -109,7 +109,7 @@ const LoginForm = () => {
               onClick={handleDemoClick}
               type="submit"
               sx={{
-                borderRadius: 1,
+                borderRadius: 1.5,
                 mt: 1,
               }}
             >

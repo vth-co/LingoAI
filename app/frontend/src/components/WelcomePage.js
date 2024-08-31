@@ -8,7 +8,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 function WelcomePage({ setLocale }) {
   return (
-    <Box display="flex" alignItems="center" flexDirection="column">
+    <Box display="flex" alignItems="center" flexDirection="column" paddingLeft="5vw" paddingRight="5vw">
       <h1 style={{ marginBottom: "0px" }}>Select Your Language</h1>
       <InfiniteLangScroll />
       <Container>
