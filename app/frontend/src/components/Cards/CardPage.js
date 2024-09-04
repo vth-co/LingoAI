@@ -157,7 +157,7 @@ function CardPage() {
           {cards.map((card, cardIndex) => (
             <React.Fragment key={card.id}>
               {!card.isAttempted ? (
-                <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
+                <Grid item xs={12} sm={12} md={6} lg={4} xl={3} container justifyContent="center" alignItems="center">
                   <Flippy
                     flipOnHover={false}
                     flipOnClick={false}
@@ -275,7 +275,7 @@ function CardPage() {
                       }}
                     >
                       {feedback[cardIndex]?.isCorrect && (
-                        <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
+                        <Grid item xs={12} sm={12} md={6} container justifyContent="center" alignItems="center">
                           <Card
                             sx={{
                               display: "flex",
@@ -335,7 +335,7 @@ function CardPage() {
                       )}
 
                       {!feedback[cardIndex]?.isCorrect && feedback[cardIndex] && (
-                        <Grid item xs={12} sm={12} md={12} container justifyContent="center" alignItems="center">
+                        <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
                           <Card
                             sx={{
                               display: "flex",
