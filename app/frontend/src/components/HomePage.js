@@ -17,8 +17,8 @@ import { useTheme } from "@mui/material/styles";
 function HomePage() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.session.user);
-  const progressState = useSelector((state) => state.users.progress);
-  const progress = progressState && Object.values(progressState);
+  // const progressState = useSelector((state) => state.users.progress);
+  // const progress = progressState && Object.values(progressState);
   const theme = useTheme();
 
   useEffect(() => {
@@ -33,19 +33,19 @@ function HomePage() {
 
   let proficiencyPercentage = (proficiencyCount / 3) * 100;
 
-  const currentConcepts = progress?.[0]?.concepts?.filter(
-    (concept) => concept.level === user.level
-  );
+  // const currentConcepts = progress?.[0]?.concepts?.filter(
+  //   (concept) => concept.level === user.level
+  // );
 
-  console.log("CC", currentConcepts);
-  let conceptCount = 0;
+  // console.log("CC", currentConcepts);
+  // let conceptCount = 0;
 
-  currentConcepts?.map((concept) => {
-    if (concept.status === true) conceptCount++;
-    return conceptCount;
-  });
+  // currentConcepts?.map((concept) => {
+  //   if (concept.status === true) conceptCount++;
+  //   return conceptCount;
+  // });
 
-  let conceptPercentage = (conceptCount / currentConcepts?.length) * 100;
+  // let conceptPercentage = (conceptCount / currentConcepts?.length) * 100;
 
   const data = [
     {
@@ -111,68 +111,68 @@ function HomePage() {
     //   left: 'Current Concept:',
     //   right: `${user.current_level} - Basic Nouns`
     // },
-    {
-      left: (
-        <>
-          <Box display="flex" alignItems="center">
-            Concept Progress
-            <Tooltip
-              title={
-                <Typography>
-                  Progress toward mastering your concepts for the current level
-                  by completing all the topics.
-                </Typography>
-              }
-              arrow
-            >
-              <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
-            </Tooltip>
-            :
-          </Box>
-        </>
-      ),
-      right: (
-        <Box
-          sx={{ position: "relative", display: "inline-flex", width: "100%" }}
-        >
-          <LinearProgress
-            variant="determinate"
-            value={conceptPercentage}
-            sx={{ height: 25, width: "100%", borderRadius: "3px" }}
-            color="secondary"
-          />
-          <Box
-            sx={{
-              top: 0,
-              left: 0,
-              bottom: 0,
-              right: 0,
-              position: "absolute",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Typography
-              fontSize="small"
-              fontWeight="bold"
-              color="textSecondary"
-            >
-              {" "}
-              {isNaN(conceptPercentage)
-                ? "0%"
-                : `${Math.round(conceptPercentage)}%`}
-            </Typography>
-          </Box>
-        </Box>
-      ),
-      // <LinearProgress
-      //   variant="determinate"
-      //   value={conceptPercentage}
-      //   sx={{ height: 25 }}
-      //   color='secondary'
-      // />
-    },
+    // {
+    //   left: (
+    //     <>
+    //       <Box display="flex" alignItems="center">
+    //         Concept Progress
+    //         <Tooltip
+    //           title={
+    //             <Typography>
+    //               Progress toward mastering your concepts for the current level
+    //               by completing all the topics.
+    //             </Typography>
+    //           }
+    //           arrow
+    //         >
+    //           <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+    //         </Tooltip>
+    //         :
+    //       </Box>
+    //     </>
+    //   ),
+    //   right: (
+    //     <Box
+    //       sx={{ position: "relative", display: "inline-flex", width: "100%" }}
+    //     >
+    //       <LinearProgress
+    //         variant="determinate"
+    //         value={conceptPercentage}
+    //         sx={{ height: 25, width: "100%", borderRadius: "3px" }}
+    //         color="secondary"
+    //       />
+    //       <Box
+    //         sx={{
+    //           top: 0,
+    //           left: 0,
+    //           bottom: 0,
+    //           right: 0,
+    //           position: "absolute",
+    //           display: "flex",
+    //           alignItems: "center",
+    //           justifyContent: "center",
+    //         }}
+    //       >
+    //         <Typography
+    //           fontSize="small"
+    //           fontWeight="bold"
+    //           color="textSecondary"
+    //         >
+    //           {" "}
+    //           {isNaN(conceptPercentage)
+    //             ? "0%"
+    //             : `${Math.round(conceptPercentage)}%`}
+    //         </Typography>
+    //       </Box>
+    //     </Box>
+    //   ),
+    // <LinearProgress
+    //   variant="determinate"
+    //   value={conceptPercentage}
+    //   sx={{ height: 25 }}
+    //   color='secondary'
+    // />
+    // },
     // {
     //   left: 'Topics Progress:',
     //   right: <LinearProgress
