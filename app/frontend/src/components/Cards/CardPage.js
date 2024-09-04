@@ -171,6 +171,8 @@ function CardPage() {
                         boxShadow: "none",
                         display: "flex",
                         justifyContent: "center",
+                        margin: 0,
+                        padding: 0,
                       }}
                     >
                       <Card
@@ -266,6 +268,10 @@ function CardPage() {
                         boxShadow: "none",
                         display: "flex",
                         justifyContent: "center",
+                        width: "300px",
+                        height: "450px",
+                        margin: 0,
+                        padding: 0,
                       }}
                     >
                       {feedback[cardIndex]?.isCorrect && (
@@ -278,6 +284,8 @@ function CardPage() {
                               height: "450px",
                               borderRadius: "3px",
                               border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
+                              width: "300px",
+                              height: "450px",
                             }}
                           >
                             <Box
@@ -325,8 +333,9 @@ function CardPage() {
                           </Card>
                         </Grid>
                       )}
+
                       {!feedback[cardIndex]?.isCorrect && feedback[cardIndex] && (
-                        <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
+                        <Grid item xs={12} sm={12} md={12} container justifyContent="center" alignItems="center">
                           <Card
                             sx={{
                               display: "flex",
@@ -335,11 +344,13 @@ function CardPage() {
                               height: "450px",
                               borderRadius: "3px",
                               border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
+                              overflow: "hidden"
                             }}
                           >
                             <Box
                               sx={{
                                 backgroundColor: `${theme.palette.primary.main}`,
+                                width: "300px",
                                 height: "300px",
                                 padding: "20px",
                                 overflow: "auto",
@@ -362,6 +373,7 @@ function CardPage() {
                             <Box
                               sx={{
                                 backgroundColor: `${theme.palette.background.main}`,
+                                width: "300px",
                                 height: "150px",
                                 padding: "10px",
                                 borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
@@ -384,7 +396,12 @@ function CardPage() {
                   </Flippy>
                 </Grid>
               ) : (
-                <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
+                <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center" sx={{
+                  width: "300px",
+                  height: "450px",
+                  margin: 0,
+                  padding: 0,
+                }}>
                   <Card
                     key={card.id}
                     sx={{
@@ -399,6 +416,7 @@ function CardPage() {
                     <Box
                       sx={{
                         backgroundColor: `${theme.palette.secondary.main}`,
+                        width: "300px",
                         height: "300px",
                         padding: "20px",
                         overflow: "auto",
@@ -421,6 +439,7 @@ function CardPage() {
                     <Box
                       sx={{
                         backgroundColor: `${theme.palette.background.main}`,
+                        width: "300px",
                         height: "150px",
                         padding: "10px",
                         borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
