@@ -135,7 +135,7 @@ function DeckPage() {
             </Box>
             <Grid container spacing={2} justifyContent="center" paddingTop="20px">
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h5" gutterBottom>
+                <h2>
                   New
                   <Tooltip
                     title={
@@ -145,7 +145,7 @@ function DeckPage() {
                   >
                     <InfoIcon color="action" sx={{ fontSize: 16 }} />
                   </Tooltip>
-                </Typography>
+                </h2>
                 {getAllDecks().length > 0 ? (
                   <Grid container spacing={2} justifyContent="center">
                     <Grid item xs={12} md={6}>
@@ -154,7 +154,7 @@ function DeckPage() {
                           display: "flex",
                           flexDirection: "row",
                           flexWrap: "wrap",
-                          justifyContent: "center",
+                          justifyContent: "space-between",
                           gap: 2,
                         }}
                       >
@@ -174,9 +174,9 @@ function DeckPage() {
                               }}
                               onClick={() => handleStartAttempt(deck.id)}
                             >
-                              <Typography variant="body1">
+                              <h3>
                                 {`Deck ${deck.deck_name}`}
-                              </Typography>
+                              </h3>
                             </Button>
                           </Box>
                         ))}
@@ -189,7 +189,7 @@ function DeckPage() {
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>
-                <Typography variant="h5" gutterBottom>
+                <h2>
                   In Progress
                   <Tooltip
                     title={
@@ -199,7 +199,7 @@ function DeckPage() {
                   >
                     <InfoIcon color="action" sx={{ fontSize: 16 }} />
                   </Tooltip>
-                </Typography>
+                </h2>
                 {getInProgressDecks().length > 0 ? (
                   <Grid container spacing={2} justifyContent="center">
                     <Grid item xs={12}>
@@ -208,7 +208,7 @@ function DeckPage() {
                           display: "flex",
                           flexDirection: "row",
                           flexWrap: "wrap",
-                          justifyContent: "center",
+                          justifyContent: "space-between",
                           gap: 2,
                         }}
                       >
@@ -230,9 +230,9 @@ function DeckPage() {
                                   }`,
                               }}
                             >
-                              <Typography variant="body1">
+                              <h3>
                                 {`Deck ${deck.deck_name}`}
-                              </Typography>
+                              </h3>
                             </Button>
                           </Box>
                         ))}
@@ -246,7 +246,7 @@ function DeckPage() {
             </Grid>
 
             <Box mt={4}>
-              <Typography variant="h5" gutterBottom>
+              <h2>
                 Archived
                 <Tooltip
                   title={
@@ -256,16 +256,16 @@ function DeckPage() {
                 >
                   <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
                 </Tooltip>
-              </Typography>
+              </h2>
               {getArchivedDecks().length > 0 ? (
                 <Grid container spacing={2} justifyContent="center">
-                  <Grid item xs={12} md={6}>
+                  <Grid item xs={12} md={12}>
                     <Box
                       sx={{
                         display: "flex",
                         flexDirection: "row",
                         flexWrap: "wrap",
-                        justifyContent: "center",
+                        justifyContent: "space-between",
                         gap: 2,
                       }}
                     >
@@ -284,9 +284,9 @@ function DeckPage() {
                                 }`,
                             }}
                           >
-                            <Typography variant="body1">
+                            <h3>
                               {`Deck ${deck.deck_name}`}
-                            </Typography>
+                            </h3>
                           </Button>
                         </Box>
                       ))}
