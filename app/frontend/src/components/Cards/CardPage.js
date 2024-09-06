@@ -111,7 +111,7 @@ function CardPage() {
 
       if (allQuestionsAttempted) {
         await dispatch(archiveDeck(deckId, user.uid));
-        await dispatch(fetchOneDeck(deckId))
+        // await dispatch(fetchOneDeck(deckId))
         console.log("Deck archived")
       }
     } catch (error) {

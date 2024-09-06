@@ -151,11 +151,18 @@ function DeckPage() {
                     <Grid item xs={12} md={6}>
                       <Box
                         sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          flexWrap: "wrap",
-                          justifyContent: "space-between",
+                          // display: "flex",
+                          // flexDirection: "row",
+                          // flexWrap: "wrap",
+                          // justifyContent: "space-between",
+                          // gap: 2,
+                          display: "grid",
+                          gridTemplateColumns: {
+                            xs: "repeat(2, 1fr)",
+                            sm: "repeat(3, 1fr)",
+                          },
                           gap: 2,
+                          justifyContent: "center",
                         }}
                       >
                         {getAllDecks().map((deck) => (
@@ -205,11 +212,18 @@ function DeckPage() {
                     <Grid item xs={12}>
                       <Box
                         sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          flexWrap: "wrap",
-                          justifyContent: "space-between",
+                          // display: "flex",
+                          // flexDirection: "row",
+                          // flexWrap: "wrap",
+                          // justifyContent: "flex-start",
+                          // gap: 2,
+                          display: "grid",
+                          gridTemplateColumns: {
+                            xs: "repeat(2, 1fr)",
+                            sm: "repeat(3, 1fr)",
+                          },
                           gap: 2,
+                          justifyContent: "center",
                         }}
                       >
                         {getInProgressDecks().map((deck) => (
@@ -262,11 +276,20 @@ function DeckPage() {
                   <Grid item xs={12} md={12}>
                     <Box
                       sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        justifyContent: "space-between",
+                        // display: "flex",
+                        // flexDirection: "row",
+                        // flexWrap: "wrap",
+                        // justifyContent: "space-between",
+                        // gap: 2,
+                        display: "grid",
+                        gridTemplateColumns: {
+                          xs: "repeat(2, 1fr)",
+                          sm: "repeat(4, 1fr)",
+                          md: "repeat(5, 1fr)",
+                          lg: "repeat(6, 1fr)",
+                        },
                         gap: 2,
+                        justifyContent: "center",
                       }}
                     >
                       {getArchivedDecks().map((deck) => (
