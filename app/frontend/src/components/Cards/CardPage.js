@@ -391,10 +391,20 @@ function CardPage() {
                               flexDirection: "column",
                             }}
                           >
-                            <CloseIcon
-                              sx={{ color: theme.palette.completion.poor }}
-                            />
-                            <p><span style={{ fontWeight: "bold" }}>Correct answer:</span> {feedback[cardIndex]?.correctAnswer}</p>
+                            <Box sx={{
+                              display: "grid",
+                              alignItems: "flex-start",
+                              justifyItems: "center",
+                              justifyContent: "flex-start",
+                              height: "110px",
+                              overflowY: "auto",
+                              width: "100%",
+                            }}>
+                              <CloseIcon
+                                sx={{ color: theme.palette.completion.poor }}
+                              />
+                              <p><span style={{ fontWeight: "bold" }}>Correct answer:</span> {feedback[cardIndex]?.correctAnswer}</p>
+                            </Box>
                           </Box>
                         </Card>
                       </Grid>
