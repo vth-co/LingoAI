@@ -273,7 +273,7 @@ function DeckPage() {
                         <Box key={deck.id} sx={{ margin: 1 }}>
                           <Button
                             component={NavLink}
-                            to={`/decks/${deck.id}`}
+                            to={`/decks/${deck.id}/archived`}
                             variant="contained"
                             color="divider"
                             sx={{
