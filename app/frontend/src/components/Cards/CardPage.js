@@ -147,17 +147,21 @@ function CardPage() {
       )}
       <Container
         sx={{
-          display: "flex",
           justifyContent: "center",
           minHeight: "100vh",
           p: 2,
         }}
       >
-        <Grid container spacing={2} justifyContent="center" alignItems="center">
+        <Grid container spacing={2}
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            flexWrap: { md: "nowrap" }
+          }}>
           {cards.map((card, cardIndex) => (
             <React.Fragment key={card.id}>
               {!card.isAttempted ? (
-                <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
+                <Grid item container>
                   <Flippy
                     flipOnHover={false}
                     flipOnClick={false}
@@ -171,6 +175,8 @@ function CardPage() {
                         boxShadow: "none",
                         display: "flex",
                         justifyContent: "center",
+                        margin: 0,
+                        padding: 0,
                       }}
                     >
                       <Card
@@ -204,7 +210,7 @@ function CardPage() {
                           sx={{
                             backgroundColor: `${theme.palette.background.main}`,
                             height: "150px",
-                            padding: "10px",
+                            padding: "10px 20px",
                             borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                             overflow: "auto",
                             display: "flex",
@@ -240,10 +246,23 @@ function CardPage() {
                                   value={optionIndex}
                                   control={
                                     <Radio
-                                      sx={{ color: theme.palette.primary.main, width: "30px", height: "30px" }}
+                                      sx={{
+                                        color: theme.palette.primary.main,
+                                        width: "30px",
+                                        height: "30px",
+                                        alignSelf: "flex-start"
+                                      }}
                                     />
                                   }
-                                  label={option}
+                                  label={
+                                    <Box
+                                      sx={{
+                                        display: "flex",
+                                        alignItems: "flex-start",
+                                        paddingLeft: "5px"
+                                      }}>
+                                      {option}
+                                    </Box>}
                                   sx={{
                                     margin: 0,
                                     width: "100%",
@@ -266,10 +285,13 @@ function CardPage() {
                         boxShadow: "none",
                         display: "flex",
                         justifyContent: "center",
+                        width: "300px",
+                        height: "450px",
+                        padding: 0,
                       }}
                     >
                       {feedback[cardIndex]?.isCorrect && (
-                        <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
+                        <Grid item container>
                           <Card
                             sx={{
                               display: "flex",
@@ -306,7 +328,7 @@ function CardPage() {
                               sx={{
                                 backgroundColor: `${theme.palette.background.main}`,
                                 height: "150px",
-                                padding: "10px",
+                                padding: "20px",
                                 borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                                 overflow: "auto",
                                 display: "flex",
@@ -325,8 +347,9 @@ function CardPage() {
                           </Card>
                         </Grid>
                       )}
+
                       {!feedback[cardIndex]?.isCorrect && feedback[cardIndex] && (
-                        <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
+                        <Grid container>
                           <Card
                             sx={{
                               display: "flex",
@@ -335,6 +358,7 @@ function CardPage() {
                               height: "450px",
                               borderRadius: "3px",
                               border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
+                              overflow: "hidden"
                             }}
                           >
                             <Box
@@ -363,7 +387,7 @@ function CardPage() {
                               sx={{
                                 backgroundColor: `${theme.palette.background.main}`,
                                 height: "150px",
-                                padding: "10px",
+                                padding: "20px",
                                 borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                                 overflow: "auto",
                                 display: "flex",
@@ -384,7 +408,7 @@ function CardPage() {
                   </Flippy>
                 </Grid>
               ) : (
-                <Grid item xs={12} sm={12} md={4} container justifyContent="center" alignItems="center">
+                <Grid item container justifyContent="center" alignItems="center">
                   <Card
                     key={card.id}
                     sx={{
@@ -399,6 +423,7 @@ function CardPage() {
                     <Box
                       sx={{
                         backgroundColor: `${theme.palette.secondary.main}`,
+                        width: "300px",
                         height: "300px",
                         padding: "20px",
                         overflow: "auto",
@@ -421,8 +446,9 @@ function CardPage() {
                     <Box
                       sx={{
                         backgroundColor: `${theme.palette.background.main}`,
+                        width: "300px",
                         height: "150px",
-                        padding: "10px",
+                        padding: "20px",
                         borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                         overflow: "auto",
                         display: "flex",
