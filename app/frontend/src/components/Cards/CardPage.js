@@ -111,7 +111,7 @@ function CardPage() {
 
       if (allQuestionsAttempted) {
         await dispatch(archiveDeck(deckId, user.uid));
-        // await dispatch(fetchOneDeck(deckId))
+        await dispatch(fetchOneDeck(deckId))
         console.log("Deck archived")
       }
     } catch (error) {
@@ -205,8 +205,7 @@ function CardPage() {
                         sx={{
                           backgroundColor: `${theme.palette.background.main}`,
                           height: "150px",
-                          padding: "20px",
-                          boxSizing: "border-box",
+                          padding: "10px 20px",
                           borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                           overflow: "auto",
                           display: "flex",
@@ -216,70 +215,61 @@ function CardPage() {
                         }}
                       >
                         <FormControl>
-                          <Box sx={{
-                            display: "flex",
-                            alignItems: "flex-start",
-                            justifyContent: "flex-start",
-                            height: "110px",
-                            overflowY: "auto",
-                            width: "100%",
-                          }}>
-                            <RadioGroup
-                              row
-                              aria-labelledby="demo-row-radio-buttons-group-label"
-                              name="row-radio-buttons-group"
-                              sx={{
-                                display: "grid",
-                                gridAutoFlow: "row",
-                                alignItems: "center",
-                                height: "fit-content",
-                                overflow: "auto",
-                                padding: "5px",
-                              }}
-                              onChange={(e) =>
-                                handleAnswerChange(
-                                  cardIndex,
-                                  parseInt(e.target.value),
-                                  card.id
-                                )
-                              }
-                            >
-                              {card.options.map((option, optionIndex) => (
-                                <FormControlLabel
-                                  key={optionIndex}
-                                  value={optionIndex}
-                                  control={
-                                    <Radio
-                                      sx={{
-                                        color: theme.palette.primary.main,
-                                        width: "30px",
-                                        height: "30px",
-                                        alignSelf: "flex-start"
-                                      }}
-                                    />
-                                  }
-                                  label={
-                                    <Box
-                                      sx={{
-                                        display: "flex",
-                                        alignItems: "flex-start",
-                                        paddingLeft: "5px"
-                                      }}>
-                                      {option}
-                                    </Box>}
-                                  sx={{
-                                    margin: 0,
-                                    width: "100%",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    justifyContent: "flex-start",
-                                    height: "100%",
-                                    gap: "10px",
-                                  }}
-                                />
-                              ))}
-                            </RadioGroup>
-                          </Box>
+                          <RadioGroup
+                            row
+                            aria-labelledby="demo-row-radio-buttons-group-label"
+                            name="row-radio-buttons-group"
+                            sx={{
+                              display: "grid",
+                              gridAutoFlow: "row",
+                              alignItems: "center",
+                              height: "fit-content",
+                              overflow: "auto",
+                              padding: "5px",
+                            }}
+                            onChange={(e) =>
+                              handleAnswerChange(
+                                cardIndex,
+                                parseInt(e.target.value),
+                                card.id
+                              )
+                            }
+                          >
+                            {card.options.map((option, optionIndex) => (
+                              <FormControlLabel
+                                key={optionIndex}
+                                value={optionIndex}
+                                control={
+                                  <Radio
+                                    sx={{
+                                      color: theme.palette.primary.main,
+                                      width: "30px",
+                                      height: "30px",
+                                      alignSelf: "flex-start"
+                                    }}
+                                  />
+                                }
+                                label={
+                                  <Box
+                                    sx={{
+                                      display: "flex",
+                                      alignItems: "flex-start",
+                                      paddingLeft: "5px"
+                                    }}>
+                                    {option}
+                                  </Box>}
+                                sx={{
+                                  margin: 0,
+                                  width: "100%",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "flex-start",
+                                  height: "100%",
+                                  gap: "10px",
+                                }}
+                              />
+                            ))}
+                          </RadioGroup>
                         </FormControl>
                       </Box>
                     </Card>
@@ -391,32 +381,20 @@ function CardPage() {
                           <Box
                             sx={{
                               backgroundColor: `${theme.palette.background.main}`,
-                              width: "300px",
                               height: "150px",
                               padding: "20px",
-                              boxSizing: "border-box",
                               borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
+                              overflow: "auto",
                               display: "flex",
-                              alignItems: "flex-start",
-                              justifyContent: "flex-start",
-                              flexDirection: "column",
-                              overflow: "hidden",
-                            }}
-                          >
-                            <Box sx={{
-                              display: "grid",
                               alignItems: "center",
                               justifyContent: "center",
-                              justifyItems: "center",
-                              height: "110px",
-                              overflowY: "auto",
-                              width: "100%",
-                            }}>
-                              <CloseIcon
-                                sx={{ color: theme.palette.completion.poor }}
-                              />
-                              <p><span style={{ fontWeight: "bold" }}>Correct answer:</span> {feedback[cardIndex]?.correctAnswer}</p>
-                            </Box>
+                              flexDirection: "column",
+                            }}
+                          >
+                            <CloseIcon
+                              sx={{ color: theme.palette.completion.poor }}
+                            />
+                            <p><span style={{ fontWeight: "bold" }}>Correct answer:</span> {feedback[cardIndex]?.correctAnswer}</p>
                           </Box>
                         </Card>
                       </Grid>
