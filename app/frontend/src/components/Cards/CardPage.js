@@ -144,7 +144,7 @@ function CardPage() {
       <Container
         sx={{
           justifyContent: "center",
-          minHeight: "100vh",
+          // minHeight: "100vh",
           p: 2,
         }}
       >
@@ -152,11 +152,17 @@ function CardPage() {
           justifyContent="center"
           alignItems="center"
           sx={{
-            flexWrap: { md: "nowrap" }
+            display: "grid",
+            gridTemplateColumns: {
+              sm: "repeat(1, 1fr)",
+              lg: "repeat(3, 1fr)",
+            },
+            justifyContent: "center",
+            gap: "20px"
           }}>
           {cards.map((card, cardIndex) => (
             <React.Fragment key={card.id}>
-              <Grid item container>
+              <Grid item container justifyContent="center">
                 <Flippy
                   flipOnHover={false}
                   flipOnClick={false}
