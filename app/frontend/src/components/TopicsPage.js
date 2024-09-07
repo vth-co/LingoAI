@@ -115,7 +115,19 @@ function TopicsPage() {
         </Box>
       </Box>
 
-      <Grid container spacing={5} justifyContent='center' py={5}>
+      <Grid container
+        sx={{
+          display: 'grid',
+          justifyContent: 'center',
+          gridTemplateColumns: {
+            xs: "repeat(1, 1fr)",
+            sm: "repeat(2, 1fr)",
+            md: "repeat(3, 1fr)"
+          },
+          gap: "20px",
+          paddingTop: "40px"
+        }}
+      >
         {combinedTopics?.map(topic => {
           const topicPercentage = Math.round((topic.passes / 3) * 100)
 
@@ -124,10 +136,10 @@ function TopicsPage() {
             <>
 
               <Grid item key={topic.id}
-                xs={12} // Full width on extra small screens
-                sm={6}  // Half width on small screens
-                md={4}  // One-third width on medium screens
-                sx={{ padding: 0 }}
+              // xs={12} // Full width on extra small screens
+              // sm={6}  // Half width on small screens
+              // md={4}  // One-third width on medium screens
+              // sx={{ padding: 0 }}
               >
                 <Button component={NavLink}
                   to={`/concepts/${conceptId}/topics/${topic.id}/decks`}
@@ -143,7 +155,7 @@ function TopicsPage() {
                       display: "flex",
                       flexDirection: "column",
                       alignContent: "center",
-                      padding: "10px 20px",
+                      padding: "0px 20px",
                       width: "100%",
                       height: "200px"
                     }}>
@@ -162,11 +174,16 @@ function TopicsPage() {
                     </Box>
                     <Box
                       sx={{
-                        height: "50px"
+                        height: "40px"
                       }}>
                       {topic.description ? (<p>{topic.description}</p>) : (<p>&nbsp;</p>)}
                     </Box>
-                    <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%', margin: 'auto' }}>
+                    <Box sx={{
+                      position: 'relative',
+                      display: 'inline-flex',
+                      width: '100%',
+                      margin: 'auto',
+                    }}>
                       <LinearProgress
                         variant="determinate"
                         value={topicPercentage > 100 ? 100 : topicPercentage}
@@ -200,7 +217,7 @@ function TopicsPage() {
 
       </Grid>
 
-    </Container>
+    </Container >
   );
 }
 
