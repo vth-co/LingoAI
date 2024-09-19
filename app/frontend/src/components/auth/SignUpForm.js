@@ -232,17 +232,17 @@ const SignUpForm = ({ locale, setLocale }) => {
               <Tooltip
                 title={
                   <Typography>
-                    Beginner: Start here if you need to learn basic words, simple
+                    Beginner: You need to learn basic words, simple
                     sentences, and everyday phrases.
                     {
                       <Typography my={1}>
-                        Intermediate: Choose this if you can understand and use
+                        Intermediate: You can understand and use
                         common phrases and need to improve grammar and vocabulary.
                       </Typography>
                     }
                     {
                       <Typography>
-                        Advanced: Select this if you are comfortable with complex
+                        Advanced: You are comfortable with complex
                         sentences and want to master fluency and Advanced topics.
                       </Typography>
                     }
@@ -250,7 +250,7 @@ const SignUpForm = ({ locale, setLocale }) => {
                 }
                 arrow
               >
-                <InfoIcon color="divider" />
+                <InfoIcon color="action" sx={{ ml: -1, fontSize: 16 }} />
               </Tooltip>
             </Box>
             <Select
