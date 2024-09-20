@@ -12,6 +12,32 @@ const {
   setDoc,
 } = require("firebase/firestore");
 
+//service to count deck generation
+const canGenerateDeck = async (uid, isDemoUser) => {
+  try {
+    const userDocRef = doc(db, "user_limits", uid);
+    const userDoc = await getDoc(userDocRef);
+
+    const generationCount = userDoc.exists() ? userDoc.data().generationCount : 0;
+    const maxLimit = isDemoUser ? 50 : 10 // 50 for demo, 10 for regular
+
+    // if (generationCount < maxLimit) {
+    //   await setDoc(userDocRef, {
+    //     generationCount: generationCount + 1,
+    //     uid: uid
+    //   }, { merge: true });
+    // //   return true;
+    // } else {
+    //   return false;
+
+    return generationCount < maxLimit;
+
+  } catch (error) {
+    throw new Error("Error checking deck generation limit: " + error.message);
+  }
+}
+
+
 //service to view all decks
 const getDecksFromDB = async () => {
   try {
@@ -405,4 +431,5 @@ module.exports = {
   getAttemptByDeckIdFromDB,
   checkDeckIsInProgressFromDB,
   getUserDeckByIdFromDB,
+  canGenerateDeck
 };

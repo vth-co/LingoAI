@@ -3,7 +3,7 @@ const { sendEmailVerification } = require("firebase/auth");
 // Access your API key as an environment variable (see "Set up your API key" above)
 const apiKey = process.env.REACT_APP_API_KEY;
 
-const genAI = new GoogleGenerativeAI(apiKey);
+const genAI = new GoogleGenerativeAI("AIzaSyBdn2qaMgKSbEAzxaz39-vFa6JH0Rwj-Ho");
 
 //generate questions from ai based on different topic
 async function generateQuestionsByAI(
@@ -25,7 +25,7 @@ async function generateQuestionsByAI(
     model: "gemini-1.5-flash",
     generationConfig: { responseMimeType: "application/json" },
   });
-  
+
   let picked_concept = concept_name.toLowerCase().split(" ").join("")
   let picked_topic = topic.toLowerCase().split(" ").join("")
   const jsonschema = `JSON schema: { "type":"array", "properties": {"id": "integer", "question": "string",  "options": "array",  "answer": "string", "isAttempted": false }}.`;
@@ -213,7 +213,7 @@ async function generateQuestionsByAI(
 
     // Validate the generated questions to ensure they match the criteria
     jsonData.forEach((item) => {
-      const { question, options, answer  } = item;
+      const { question, options, answer } = item;
       if (!options.includes(answer)) {
         throw new Error(
           `Generated answer '${answer}' does not match any of the options for question: '${question}'`
