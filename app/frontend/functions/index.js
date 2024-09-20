@@ -27,7 +27,7 @@ exports.resetGenerationCounts = functions.pubsub
     .schedule("every day 00:00") // runs at midnight
     .timeZone("America/Los_Angeles") // Set your timezone here
     .onRun(async (context) => {
-      const userLimitsRef = admin.firestore().collection("userLimits");
+      const userLimitsRef = admin.firestore().collection("user_limits");
       const snapshot = await userLimitsRef.get();
 
       // Reset the count for all users

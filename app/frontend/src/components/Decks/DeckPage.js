@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDecks } from "../../store/decks";
 import { canGenerateDeck } from "../../services/deckService";
@@ -92,17 +92,19 @@ function DeckPage() {
     fetchData();
   }, [dispatch, user, topicId, isDemoUser]);
 
-  const checkCanGenerate = async () => {
+  const checkCanGenerate = useCallback(async () => {
     if (user) {
       const canGenerate = await canGenerateDeck(user.uid, isDemoUser);
       setCanGenerate(canGenerate);
-      setMessage(!canGenerate ? "You've reached the limit for generating new decks today. The limit will reset after 12:00am PST." : "");
+      if (!canGenerate) {
+        setMessage("This account has reached the limit for generating new decks today. The limit will reset after 12:00am PST.");
+      }
     }
-  };
+  }, [isDemoUser, user]);
 
   useEffect(() => {
     checkCanGenerate();
-  });
+  }, [checkCanGenerate, topicId]);
 
 
   console.log("DEMO USER?", isDemoUser);
@@ -114,12 +116,12 @@ function DeckPage() {
     try {
       const canGenerate = await canGenerateDeck(user.uid, isDemoUser);
       if (!canGenerate) {
-        setMessage("You've reached the limit for generating new decks today. The limit will reset after 12:00am PST.");
+        setMessage("This account has reached the limit for generating new decks today. The limit will reset after 12:00am PST.");
         setCanGenerate(false); // Update canGenerate state
         return;
       }
 
-      await dispatch(
+      const result = await dispatch(
         addQuestions(
           conceptFilter.concept_name,
           topic.topic_name,
@@ -129,8 +131,17 @@ function DeckPage() {
           user.uid
         )
       );
+
+
+      if (!result) {
+        setMessage("Oh no! Our AI appears to be sleeping right now. Please try again later.");
+        setCanGenerate(false);
+        return;
+      }
+
       checkCanGenerate();
       dispatch(fetchDecks(user.uid, topicId));
+
     } catch (error) {
       console.log("Error generating questions:", error.message);
     } finally {
