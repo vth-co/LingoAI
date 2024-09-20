@@ -2,8 +2,9 @@ import { addQuestionsToDB } from "../services/aiService";
 import { addCardsToDeckInDB, createDeckInDB } from "../services/deckService";
 
 const { db } = require("../firebase/firebaseConfig");
-const { collection, getDoc, doc, getDocs } = require("firebase/firestore");
+const { collection, getDoc, doc, getDocs, setDoc, increment } = require("firebase/firestore");
 const { generateQuestionsByAI } = require("../models/aiModel");
+
 
 export const LOAD_QUESTIONS = "questions/LOAD_QUESTIONS";
 export const ADD_QUESTION = "questions/ADD_QUESTION";
@@ -27,59 +28,68 @@ export const addQuestions =
     topicId,
     userId
   ) =>
-  async (dispatch) => {
-    try {
-      let questionData = await generateQuestionsByAI(
-        concept_name,
-        topic_name,
-        user_native_language,
-        concept_level,
-        topicId
-      );
-      console.log("questionData: ", questionData);
-
-      dispatch(
-        add({
+    async (dispatch) => {
+      try {
+        let questionData = await generateQuestionsByAI(
           concept_name,
           topic_name,
           user_native_language,
           concept_level,
-          topicId,
-        })
-      );
+          topicId
+        );
+        console.log("questionData: ", questionData);
 
-      if (questionData) {
-        const question_from_ai = await addQuestionsToDB(userId, {
-          questionData,
-        });
-        console.log("Created questions successfully:", question_from_ai);
-
-        // Create a new deck in the database
-        const deck = await createDeckInDB({
-          userId,
-          topic_id: topicId,
-          createdAt: new Date(),
-          archived: false,
-        });
-
-        console.log("Deck created successfully:", deck);
-
-        // Add the generated questions as cards to the deck
-        const cardsAdded = await addCardsToDeckInDB(
-          deck.id,
-          userId,
-          question_from_ai
+        dispatch(
+          add({
+            concept_name,
+            topic_name,
+            user_native_language,
+            concept_level,
+            topicId,
+          })
         );
 
-        console.log("Cards added to deck successfully:", cardsAdded);
+        if (questionData) {
+          const question_from_ai = await addQuestionsToDB(userId, {
+            questionData,
+          });
+          console.log("Created questions successfully:", question_from_ai);
 
-        return cardsAdded;
+          // Create a new deck in the database
+          const deck = await createDeckInDB({
+            userId,
+            topic_id: topicId,
+            createdAt: new Date(),
+            archived: false,
+          });
+
+          console.log("Deck created successfully:", deck);
+
+          // Add the generated questions as cards to the deck
+          const cardsAdded = await addCardsToDeckInDB(
+            deck.id,
+            userId,
+            question_from_ai
+          );
+
+          console.log("Cards added to deck successfully:", cardsAdded);
+
+          const userDocRef = doc(db, "user_limits", userId);
+          await setDoc(
+            userDocRef,
+            {
+              generationCount: increment(1), // Use the imported increment function
+            },
+            { merge: true }
+          );
+
+          return cardsAdded;
+        }
+      } catch (error) {
+        console.error("Error during sign up:", error);
+        throw error;
       }
-    } catch (error) {
-      console.error("Error during sign up:", error);
-      throw error;
-    }
-  };
+    };
 
 const initialState = {};
 

@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchDecks } from "../../store/decks";
+import { canGenerateDeck } from "../../services/deckService";
 import { useParams } from "react-router-dom";
 import {
   Container,
@@ -31,21 +32,96 @@ function DeckPage() {
   const conceptFilter = concepts.find((concept) => conceptId === concept.id);
   const decksFilter = decks?.filter((deck) => topicId === deck.topic_id);
   const theme = useTheme();
+  const [canGenerate, setCanGenerate] = useState(false);
+  const [message, setMessage] = useState("");
+  const isDemoUser = user?.uid === "XfvjHvAySVSRdcOriaASlrnoma13";
+
+  // useEffect(() => {
+  //   if (user && topicId) {
+  //     setLoading(true);
+  //     dispatch(fetchDecks(user.uid, topicId)).finally(() => setLoading(false));
+  //     dispatch(fetchOneTopic(topicId));
+  //     dispatch(fetchUserConcepts(user.uid));
+  //   }
+  // }, [dispatch, user, topicId]);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     if (user && topicId) {
+  //       setLoading(true);
+
+  //       // Fetch decks
+  //       await dispatch(fetchDecks(user.uid, topicId));
+
+  //       // Check if the user can generate a new deck
+  //       const canGenerate = await canGenerateDeck(user.uid, isDemoUser);
+  //       setCanGenerate(canGenerate)
+
+  //       setLoading(false);
+
+  //       if (canGenerate) {
+  //         console.log("User can generate a new deck");
+  //       } else {
+  //         console.log("User cannot generate a new deck");
+  //       }
+
+  //       // Fetch topic and user concepts
+  //       dispatch(fetchOneTopic(topicId));
+  //       dispatch(fetchUserConcepts(user.uid));
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [dispatch, user, topicId, isDemoUser]);
 
   useEffect(() => {
-    if (user && topicId) {
-      setLoading(true);
-      dispatch(fetchDecks(user.uid, topicId)).finally(() => setLoading(false));
-      dispatch(fetchOneTopic(topicId));
-      dispatch(fetchUserConcepts(user.uid));
-    }
-  }, [dispatch, user, topicId]);
+    const fetchData = async () => {
+      if (user && topicId) {
+        setLoading(true);
 
+        // Fetch decks
+        await dispatch(fetchDecks(user.uid, topicId));
+
+        // Fetch topic and user concepts
+        dispatch(fetchOneTopic(topicId));
+        dispatch(fetchUserConcepts(user.uid));
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, user, topicId, isDemoUser]);
+
+  const checkCanGenerate = useCallback(async () => {
+    if (user) {
+      const canGenerate = await canGenerateDeck(user.uid, isDemoUser);
+      setCanGenerate(canGenerate);
+      if (!canGenerate) {
+        setMessage("This account has reached the limit for generating new decks today. The limit will reset after 12:00am PST.");
+      }
+    }
+  }, [isDemoUser, user]);
+
+  useEffect(() => {
+    checkCanGenerate();
+  }, [checkCanGenerate, topicId]);
+
+
+  console.log("DEMO USER?", isDemoUser);
   const handleGenerateQuestions = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setMessage("");
+
     try {
-      await dispatch(
+      const canGenerate = await canGenerateDeck(user.uid, isDemoUser);
+      if (!canGenerate) {
+        setMessage("This account has reached the limit for generating new decks today. The limit will reset after 12:00am PST.");
+        setCanGenerate(false); // Update canGenerate state
+        return;
+      }
+
+      const result = await dispatch(
         addQuestions(
           conceptFilter.concept_name,
           topic.topic_name,
@@ -55,7 +131,17 @@ function DeckPage() {
           user.uid
         )
       );
+
+
+      if (!result) {
+        setMessage("Oh no! Our AI appears to be sleeping right now. Please try again later.");
+        setCanGenerate(false);
+        return;
+      }
+
+      checkCanGenerate();
       dispatch(fetchDecks(user.uid, topicId));
+
     } catch (error) {
       console.log("Error generating questions:", error.message);
     } finally {
@@ -114,9 +200,11 @@ function DeckPage() {
           <Container sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
             <Box
               sx={{
-                display: "flex",
+                display: "grid",
                 justifyContent: "center",
+                justifyItems: "center",
                 mb: 2, // margin bottom
+                rowGap: "15px"
               }}
             >
               <Button
@@ -127,11 +215,18 @@ function DeckPage() {
                   borderRadius: "3px",
                   border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                     }`,
-                  width: { xs: "100%", sm: "auto" }, // Full width on mobile
+                  width: { xs: "100%", sm: "fit-content" }, // Full width on mobile
                 }}
+                disabled={!canGenerate}
               >
                 Generate New Deck
               </Button>
+              {message && (<Typography sx={{
+                backgroundColor: `${theme.palette.primary.main}`,
+                color: `${theme.palette.primary.contrastText}`,
+                padding: "3px 5px",
+                fontWeight: "bold"
+              }}>{message}</Typography>)}
             </Box>
             <Grid container spacing={2} justifyContent="center" paddingTop="20px">
               <Grid item xs={12} sm={12} md={6}>

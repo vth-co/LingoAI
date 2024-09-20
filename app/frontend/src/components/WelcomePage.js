@@ -1,7 +1,7 @@
 import { Link, Container, Box, Typography, Button } from "@mui/material";
 import React from "react";
 import LanguageSelector from "./LanguageSelector";
-import InfiniteLangScroll from "./InfiniteLanguage";
+import InfiniteLangScroll from "./InfiniteLanguage.js";
 import { Link as RouterLink } from 'react-router-dom';
 // import InfiniteScroll from "./InfiniteLogIn";
 // import { NavLink } from "react-router-dom";
