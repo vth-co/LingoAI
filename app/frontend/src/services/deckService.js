@@ -19,7 +19,7 @@ const canGenerateDeck = async (uid, isDemoUser) => {
     const userDoc = await getDoc(userDocRef);
 
     const generationCount = userDoc.exists() ? userDoc.data().generationCount : 0;
-    const maxLimit = isDemoUser ? 50 : 2 // 50 for demo, 10 for regular
+    const maxLimit = isDemoUser ? 50 : 10 // 50 for demo, 10 for regular
 
     // if (generationCount < maxLimit) {
     //   await setDoc(userDocRef, {
