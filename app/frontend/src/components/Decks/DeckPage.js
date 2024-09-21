@@ -10,7 +10,8 @@ import {
   Button,
   Grid,
   CircularProgress,
-  Tooltip
+  Tooltip,
+  Alert
 } from "@mui/material";
 import { addQuestions } from "../../store/questions";
 import { fetchOneTopic } from "../../store/topics";
@@ -221,12 +222,11 @@ function DeckPage() {
               >
                 Generate New Deck
               </Button>
-              {message && (<Typography sx={{
-                backgroundColor: `${theme.palette.primary.main}`,
-                color: `${theme.palette.primary.contrastText}`,
-                padding: "3px 5px",
-                fontWeight: "bold"
-              }}>{message}</Typography>)}
+              {message && (
+                <Alert severity="error" sx={{ mb: 2 }}>
+                  {message}
+                </Alert>
+              )}
             </Box>
             <Grid container spacing={2} justifyContent="center" paddingTop="20px">
               <Grid item xs={12} sm={12} md={6}>
