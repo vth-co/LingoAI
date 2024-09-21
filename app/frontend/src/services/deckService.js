@@ -10,28 +10,65 @@ const {
   where,
   Timestamp,
   setDoc,
+  runTransaction,
+  increment
 } = require("firebase/firestore");
 
 //service to count deck generation
+// const canGenerateDeck = async (uid, isDemoUser) => {
+//   try {
+//     const userDocRef = doc(db, "user_limits", uid);
+//     const userDoc = await getDoc(userDocRef);
+
+//     const generationCount = userDoc.exists() ? userDoc.data().generationCount : 0;
+//     const maxLimit = isDemoUser ? 50 : 10 // 50 for demo, 10 for regular
+
+//     // if (generationCount < maxLimit) {
+//     //   await setDoc(userDocRef, {
+//     //     generationCount: generationCount + 1,
+//     //     uid: uid
+//     //   }, { merge: true });
+//     // //   return true;
+//     // } else {
+//     //   return false;
+
+//     return generationCount < maxLimit;
+
+//   } catch (error) {
+//     throw new Error("Error checking deck generation limit: " + error.message);
+//   }
+// }
+
 const canGenerateDeck = async (uid, isDemoUser) => {
   try {
     const userDocRef = doc(db, "user_limits", uid);
-    const userDoc = await getDoc(userDocRef);
+    const globalCountRef = doc(db, "request_limits", "daily_count");
+
+    // Get user and global request counts in a transaction
+    const [userDoc, globalDoc] = await Promise.all([
+      getDoc(userDocRef),
+      getDoc(globalCountRef)
+    ]);
+
+    if (!userDoc.exists()) {
+      await setDoc(userDocRef, { generationCount: 0 });
+    }
 
     const generationCount = userDoc.exists() ? userDoc.data().generationCount : 0;
-    const maxLimit = isDemoUser ? 50 : 10 // 50 for demo, 10 for regular
+    const maxLimit = isDemoUser ? 20 : 5;
+    const totalRequests = globalDoc.exists() ? globalDoc.data().totalRequests : 0;
 
-    // if (generationCount < maxLimit) {
-    //   await setDoc(userDocRef, {
-    //     generationCount: generationCount + 1,
-    //     uid: uid
-    //   }, { merge: true });
-    // //   return true;
-    // } else {
-    //   return false;
+    // Check if overall requests have hit the limit
+    if (totalRequests >= 50) {
+      return { canGenerate: false, message: "Lingo.ai's daily limit for generating new decks has been reached. Please try again after 12:00am PST." };
+    }
 
-    return generationCount < maxLimit;
+    // Check individual user limit
+    if (generationCount >= maxLimit) {
+      return { canGenerate: false, message: "This account has reached the daily limit for generating new decks. Please try again after 12:00am PST." };
+    }
 
+    return { canGenerate: true };
   } catch (error) {
     throw new Error("Error checking deck generation limit: " + error.message);
   }

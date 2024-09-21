@@ -37,14 +37,6 @@ function DeckPage() {
   const [message, setMessage] = useState("");
   const isDemoUser = user?.uid === "XfvjHvAySVSRdcOriaASlrnoma13";
 
-  // useEffect(() => {
-  //   if (user && topicId) {
-  //     setLoading(true);
-  //     dispatch(fetchDecks(user.uid, topicId)).finally(() => setLoading(false));
-  //     dispatch(fetchOneTopic(topicId));
-  //     dispatch(fetchUserConcepts(user.uid));
-  //   }
-  // }, [dispatch, user, topicId]);
 
   // useEffect(() => {
   //   const fetchData = async () => {
@@ -54,21 +46,10 @@ function DeckPage() {
   //       // Fetch decks
   //       await dispatch(fetchDecks(user.uid, topicId));
 
-  //       // Check if the user can generate a new deck
-  //       const canGenerate = await canGenerateDeck(user.uid, isDemoUser);
-  //       setCanGenerate(canGenerate)
-
-  //       setLoading(false);
-
-  //       if (canGenerate) {
-  //         console.log("User can generate a new deck");
-  //       } else {
-  //         console.log("User cannot generate a new deck");
-  //       }
-
   //       // Fetch topic and user concepts
   //       dispatch(fetchOneTopic(topicId));
   //       dispatch(fetchUserConcepts(user.uid));
+  //       setLoading(false);
   //     }
   //   };
 
@@ -86,19 +67,30 @@ function DeckPage() {
         // Fetch topic and user concepts
         dispatch(fetchOneTopic(topicId));
         dispatch(fetchUserConcepts(user.uid));
+
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [dispatch, user, topicId, isDemoUser]);
+  }, [dispatch, user, topicId]);
+
+  // const checkCanGenerate = useCallback(async () => {
+  //   if (user) {
+  //     const canGenerate = await canGenerateDeck(user.uid, isDemoUser);
+  //     setCanGenerate(canGenerate);
+  //     if (!canGenerate) {
+  //       setMessage("This account has reached the limit for generating new decks today. The limit will reset after 12:00am PST.");
+  //     }
+  //   }
+  // }, [isDemoUser, user]);
 
   const checkCanGenerate = useCallback(async () => {
     if (user) {
-      const canGenerate = await canGenerateDeck(user.uid, isDemoUser);
+      const { canGenerate, message } = await canGenerateDeck(user.uid, isDemoUser);
       setCanGenerate(canGenerate);
       if (!canGenerate) {
-        setMessage("This account has reached the limit for generating new decks today. The limit will reset after 12:00am PST.");
+        setMessage(message);
       }
     }
   }, [isDemoUser, user]);
@@ -115,10 +107,19 @@ function DeckPage() {
     setMessage("");
 
     try {
-      const canGenerate = await canGenerateDeck(user.uid, isDemoUser);
+
+      // const totalRequests = await getTotalRequests();
+      // console.log("TOTALREQUESTS", totalRequests);
+      // if (totalRequests >= 50) {
+      //   setMessage("Lingo.ai's daily limit for generating new decks has been reached. Please try again after 12:00am PST.");
+      //   setCanGenerate(false)
+      //   return;
+      // }
+
+      const { canGenerate, message } = await canGenerateDeck(user.uid, isDemoUser);
       if (!canGenerate) {
-        setMessage("This account has reached the limit for generating new decks today. The limit will reset after 12:00am PST.");
-        setCanGenerate(false); // Update canGenerate state
+        setMessage(message);
+        setCanGenerate(false);
         return;
       }
 

@@ -1,9 +1,10 @@
 import { addQuestionsToDB } from "../services/aiService";
-import { addCardsToDeckInDB, createDeckInDB } from "../services/deckService";
+import { addCardsToDeckInDB, createDeckInDB, canGenerateDeck } from "../services/deckService";
 
 const { db } = require("../firebase/firebaseConfig");
-const { collection, getDoc, doc, getDocs, setDoc, increment } = require("firebase/firestore");
+const { collection, getDoc, doc, getDocs, setDoc, increment, runTransaction } = require("firebase/firestore");
 const { generateQuestionsByAI } = require("../models/aiModel");
+
 
 
 export const LOAD_QUESTIONS = "questions/LOAD_QUESTIONS";
@@ -19,6 +20,7 @@ const add = (question) => ({
   question,
 });
 
+
 export const addQuestions =
   (
     concept_name,
@@ -30,6 +32,12 @@ export const addQuestions =
   ) =>
     async (dispatch) => {
       try {
+        const isDemoUser = userId === "XfvjHvAySVSRdcOriaASlrnoma13";
+        const { canGenerate, message } = await canGenerateDeck(userId, isDemoUser);
+        if (!canGenerate) {
+          throw new Error(message); // Error if limit reached
+        }
+
         let questionData = await generateQuestionsByAI(
           concept_name,
           topic_name,
@@ -74,14 +82,26 @@ export const addQuestions =
 
           console.log("Cards added to deck successfully:", cardsAdded);
 
-          const userDocRef = doc(db, "user_limits", userId);
-          await setDoc(
-            userDocRef,
-            {
-              generationCount: increment(1), // Use the imported increment function
-            },
-            { merge: true }
-          );
+          // const userDocRef = doc(db, "user_limits", userId);
+          // await setDoc(
+          //   userDocRef,
+          //   {
+          //     generationCount: increment(1), // Use the imported increment function
+          //   },
+          //   { merge: true }
+          // );
+
+          await runTransaction(db, async (transaction) => {
+            const userDocRef = doc(db, "user_limits", userId);
+            const globalCountRef = doc(db, "request_limits", "daily_count");
+
+            transaction.update(userDocRef, {
+              generationCount: increment(1), // Increment user's generation count
+            });
+            transaction.update(globalCountRef, {
+              totalRequests: increment(1), // Increment global request count
+            });
+          });
 
           return cardsAdded;
         }

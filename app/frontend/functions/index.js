@@ -23,6 +23,24 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 // This function runs every day at midnight (00:00)
+// exports.resetGenerationCounts = functions.pubsub
+//     .schedule("every day 00:00") // runs at midnight
+//     .timeZone("America/Los_Angeles") // Set your timezone here
+//     .onRun(async (context) => {
+//       const userLimitsRef = admin.firestore().collection("user_limits");
+//       const snapshot = await userLimitsRef.get();
+
+//       // Reset the count for all users
+//       const batch = admin.firestore().batch();
+//       snapshot.forEach((doc) => {
+//         batch.update(doc.ref, {generationCount: 0});
+//       });
+
+//       await batch.commit();
+//       console.log("All user generation counts have been reset");
+//       return null;
+//     });
+
 exports.resetGenerationCounts = functions.pubsub
     .schedule("every day 00:00") // runs at midnight
     .timeZone("America/Los_Angeles") // Set your timezone here
@@ -36,7 +54,13 @@ exports.resetGenerationCounts = functions.pubsub
         batch.update(doc.ref, {generationCount: 0});
       });
 
+      // Reset the global request count
+      const globalCountRef = admin.firestore()
+          .collection("request_limits")
+          .doc("daily_count");
+      batch.update(globalCountRef, {totalRequests: 0});
+
       await batch.commit();
-      console.log("All user generation counts have been reset");
+      console.log("All counts have been reset");
       return null;
     });
