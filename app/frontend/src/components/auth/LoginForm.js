@@ -1,18 +1,36 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
+import { Alert, Box, Button, Container, setRef, TextField, Typography } from "@mui/material";
 import { login } from "../../store/session";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const [error, setError] = useState("");
 
   const onLogin = async (e) => {
     e.preventDefault();
-    await dispatch(login(email, password));
+    console.log("Login function called"); // Check if this logs
+
+    try {
+      await dispatch(login(email, password));
+      console.log("It tried"); // Check if this logs
+    } catch (error) {
+      console.error("Login error:", error); // Log the full error object
+
+      if (error.message.includes("auth/invalid-credential")) {
+        setError("Invalid email or password");
+      } else {
+        setError(error?.message || "An unknown error occurred.")
+      }
+      console.log("Current error state:", error); // Log the current error state
+    }
   };
+
+
+
 
   const handleDemoClick = async (e) => {
     e.preventDefault();
@@ -22,6 +40,8 @@ const LoginForm = () => {
 
     await dispatch(login(credential, password));
   };
+
+  console.log("ERRRRR", error)
 
   return (
     <Container
@@ -53,6 +73,11 @@ const LoginForm = () => {
           >
             Log In
           </Typography>
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
           <Box display="flex" flexDirection="column" p={1}>
             <Typography sx={{ fontWeight: "bold", my: 0.5, px: 1 }}>
               <FormattedMessage id="email" defaultMessage="Email" />

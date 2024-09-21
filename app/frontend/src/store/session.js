@@ -32,57 +32,58 @@ export const login = (email, password) => async (dispatch) => {
     dispatch(setUser(userCredential.user));
   } catch (error) {
     console.error("Error logging in:", error);
+    throw error;
   }
 };
 
 export const signUp =
   (email, password, username, first_name, last_name, locale, level) =>
-  async (dispatch) => {
-    try {
-      // Create user with Firebase Authentication
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const userId = userCredential.user.uid;
+    async (dispatch) => {
+      try {
+        // Create user with Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const userId = userCredential.user.uid;
 
-      // Update user profile with additional data
-      // await user.updateProfile({
-      //     displayName: username,
-      // });
+        // Update user profile with additional data
+        // await user.updateProfile({
+        //     displayName: username,
+        // });
 
-      const userRef = doc(db, "users", userId);
-      await setDoc(userRef, {
-        email,
-        username,
-        first_name,
-        last_name,
-        native_language: locale,
-        level,
-      });
-
-      await initializeUserProgress(userId);
-
-      // Set the user in Redux state
-      dispatch(
-        setUser({
-          // uid: user.uid,
+        const userRef = doc(db, "users", userId);
+        await setDoc(userRef, {
           email,
           username,
           first_name,
           last_name,
           native_language: locale,
           level,
-        })
-      );
+        });
 
-      // return user;
-    } catch (error) {
-      console.error("Error during sign up:", error);
-      throw error;
-    }
-  };
+        await initializeUserProgress(userId);
+
+        // Set the user in Redux state
+        dispatch(
+          setUser({
+            // uid: user.uid,
+            email,
+            username,
+            first_name,
+            last_name,
+            native_language: locale,
+            level,
+          })
+        );
+
+        // return user;
+      } catch (error) {
+        console.error("Error during sign up:", error);
+        throw error;
+      }
+    };
 
 export const logout = () => async (dispatch) => {
   try {
