@@ -101,10 +101,6 @@ export const addQuestions =
               if (lastReset && now - lastReset > 60000) {
                 timestamps = [];
                 lastReset = now;
-              } else {
-                if (timestamps.length >= 2) {
-                  throw new Error("Too many requests received in the last minute. Please try again in a minute.")
-                }
               }
             } else {
               timestamps = [];

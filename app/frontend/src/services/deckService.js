@@ -68,6 +68,25 @@ const canGenerateDeck = async (uid, isDemoUser) => {
       return { canGenerate: false, message: "This account has reached the daily limit for generating new decks. Please try again after 12:00am PST." };
     }
 
+    let timestamps = [];
+    let lastReset;
+
+    if (globalDoc.exists()) {
+      timestamps = globalDoc.data().timestamps || [];
+      lastReset = globalDoc.data().lastReset;
+    }
+
+    const now = Date.now();
+
+    if (lastReset && now - lastReset > 60000) {
+      timestamps = [];
+      lastReset = now;
+    } else {
+      if (timestamps.length >= 2) {
+        return { canGenerate: false, message: "We're currently experiencing high traffic. Please wait a minute before trying again." }
+      }
+    }
+
     return { canGenerate: true };
   } catch (error) {
     throw new Error("Error checking deck generation limit: " + error.message);
