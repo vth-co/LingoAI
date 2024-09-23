@@ -55,11 +55,11 @@ const canGenerateDeck = async (uid, isDemoUser) => {
     }
 
     const generationCount = userDoc.exists() ? userDoc.data().generationCount : 0;
-    const maxLimit = isDemoUser ? 20 : 5;
+    const maxLimit = isDemoUser ? 50 : 20;
     const totalRequests = globalDoc.exists() ? globalDoc.data().totalRequests : 0;
 
     // Check if overall requests have hit the limit
-    if (totalRequests >= 50) {
+    if (totalRequests >= 1500) {
       return { canGenerate: false, message: "Lingo.ai's daily limit for generating new decks has been reached. Please try again after 12:00am PST." };
     }
 
