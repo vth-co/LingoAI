@@ -82,13 +82,26 @@ export const createUserAttempt = (userId, deckId) => async (dispatch) => {
     // Get the new attempt ID (document ID)
     const newAttemptId = docRef.id;
 
-    // Update the deck's attemptId field
-    const deckDocRef = doc(userDocRef, "decks", deckId);
-    await updateDoc(deckDocRef, { attemptId: newAttemptId });
+    const deckDocRef = doc(db, "decks", deckId);
+    const deckDoc = await getDoc(deckDocRef);
 
-    // Dispatch the action to add the attempt to your Redux store
-    dispatch(addUserAttempt(newAttemptId));
-    return { payload: newAttemptId };
+    if (deckDoc.exists()) {
+      await updateDoc(deckDocRef, { attemptId: newAttemptId });
+      console.log("Deck updated with attempt ID:", newAttemptId);
+    } else {
+      console.error("Deck does not exist:", deckId)
+    }
+
+    dispatch(addUserAttempt({ id: newAttemptId, deckId }));
+    return { payload: newAttemptId }
+
+    // Update the deck's attemptId field
+    // const deckDocRef = doc(userDocRef, "decks", deckId);
+    // await updateDoc(deckDocRef, { attemptId: newAttemptId });
+
+    // // Dispatch the action to add the attempt to your Redux store
+    // dispatch(addUserAttempt(newAttemptId));
+    // return { payload: newAttemptId };
   } catch (error) {
     console.error("Error creating user attempt:", error);
     throw error; // Throw the error to handle it where the thunk is called
