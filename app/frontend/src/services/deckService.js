@@ -82,7 +82,7 @@ const canGenerateDeck = async (uid, isDemoUser) => {
       timestamps = [];
       lastReset = now;
     } else {
-      if (timestamps.length >= 2) {
+      if (timestamps.length >= 15) {
         return { canGenerate: false, message: "We're currently experiencing high traffic. Please wait a minute before trying again." }
       }
     }
