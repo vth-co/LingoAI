@@ -55,17 +55,36 @@ const canGenerateDeck = async (uid, isDemoUser) => {
     }
 
     const generationCount = userDoc.exists() ? userDoc.data().generationCount : 0;
-    const maxLimit = isDemoUser ? 20 : 5;
+    const maxLimit = isDemoUser ? 50 : 20;
     const totalRequests = globalDoc.exists() ? globalDoc.data().totalRequests : 0;
 
     // Check if overall requests have hit the limit
-    if (totalRequests >= 50) {
+    if (totalRequests >= 1500) {
       return { canGenerate: false, message: "Lingo.ai's daily limit for generating new decks has been reached. Please try again after 12:00am PST." };
     }
 
     // Check individual user limit
     if (generationCount >= maxLimit) {
       return { canGenerate: false, message: "This account has reached the daily limit for generating new decks. Please try again after 12:00am PST." };
+    }
+
+    let timestamps = [];
+    let lastReset;
+
+    if (globalDoc.exists()) {
+      timestamps = globalDoc.data().timestamps || [];
+      lastReset = globalDoc.data().lastReset;
+    }
+
+    const now = Date.now();
+
+    if (lastReset && now - lastReset > 60000) {
+      timestamps = [];
+      lastReset = now;
+    } else {
+      if (timestamps.length >= 15) {
+        return { canGenerate: false, message: "We're currently experiencing high traffic. Please wait a minute before trying again." }
+      }
     }
 
     return { canGenerate: true };

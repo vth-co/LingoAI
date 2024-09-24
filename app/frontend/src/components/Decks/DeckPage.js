@@ -118,6 +118,7 @@ function DeckPage() {
 
       const { canGenerate, message } = await canGenerateDeck(user.uid, isDemoUser);
       if (!canGenerate) {
+        console.log("CANGEN", canGenerate, message);
         setMessage(message);
         setCanGenerate(false);
         return;

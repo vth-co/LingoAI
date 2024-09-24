@@ -82,15 +82,6 @@ export const addQuestions =
 
           console.log("Cards added to deck successfully:", cardsAdded);
 
-          // const userDocRef = doc(db, "user_limits", userId);
-          // await setDoc(
-          //   userDocRef,
-          //   {
-          //     generationCount: increment(1), // Use the imported increment function
-          //   },
-          //   { merge: true }
-          // );
-
           await runTransaction(db, async (transaction) => {
             const userDocRef = doc(db, "user_limits", userId);
             const globalCountRef = doc(db, "request_limits", "daily_count");
@@ -98,9 +89,33 @@ export const addQuestions =
             transaction.update(userDocRef, {
               generationCount: increment(1), // Increment user's generation count
             });
-            transaction.update(globalCountRef, {
-              totalRequests: increment(1), // Increment global request count
-            });
+
+            const globalDoc = await getDoc(globalCountRef);
+            const now = Date.now();
+            let timestamps, lastReset;
+
+            if (globalDoc.exists()) {
+              timestamps = globalDoc.data().timestamps || [];
+              lastReset = globalDoc.data().lastReset;
+
+              if (lastReset && now - lastReset > 60000) {
+                timestamps = [];
+                lastReset = now;
+              }
+            } else {
+              timestamps = [];
+              lastReset = now;
+            }
+
+            timestamps.push(now);
+            transaction.set(globalCountRef, {
+              totalRequests: increment(1),
+              timestamps,
+              lastReset
+            }, { merge: true })
+            // transaction.update(globalCountRef, {
+            //   totalRequests: increment(1), // Increment global request count
+            // });
           });
 
           return cardsAdded;
