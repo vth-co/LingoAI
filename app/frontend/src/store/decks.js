@@ -29,7 +29,8 @@ const loadOneDeck = (deck) => ({
 
 const archiveDeckAction = (deckId) => ({
   type: ARCHIVE_DECK,
-  deckId
+  deckId,
+  archived: true
 })
 
 // Thunk Actions
@@ -84,6 +85,7 @@ export const updateDeckStatus = async (deckId, attemptId) => {
 
 export const createAttemptIfNotExists =
   (deckId, attemptId) => async (dispatch, getState) => {
+    console.log("ATTEMPTID", attemptId)
     if (!attemptId) {
       console.error("Invalid attemptId:", attemptId);
       throw new Error("Attempt ID is undefined or invalid.");
@@ -111,18 +113,17 @@ export const updateAttemptId = (deckId, attemptId) => async (dispatch) => {
 };
 
 export const archiveDeck = (deckId, userId) => async (dispatch) => {
+  // const userDocRef = doc(db, "users", userId);
+  // const deckDocRef = doc(userDocRef, "decks", deckId);
+  const deckDocRef = doc(db, "decks", deckId);
   try {
-    const userDocRef = doc(db, "users", userId);
-    const deckDocRef = doc(userDocRef, "decks", deckId);
-
     await updateDoc(deckDocRef, {
-      archived: true
+      archived: true,
     });
-
     const updatedDeckSnapshot = await getDoc(deckDocRef);
     if (updatedDeckSnapshot.exists()) {
       const updatedDeck = { id: updatedDeckSnapshot.id, ...updatedDeckSnapshot.data() };
-      dispatch(loadOneDeck(updatedDeck)); // Ensure Redux state is updated
+      // dispatch(loadOneDeck(updatedDeck)); // Ensure Redux state is updated
       console.log("Updated deck after archiving:", updatedDeck);
     }
 
@@ -150,19 +151,20 @@ const decksReducer = (state = initialState, action) => {
         selectedDeck: action.deck,
       };
     case ARCHIVE_DECK:
-      // return {
-      //   ...state,
-      //   decks: state.decks.filter(deck => deck.id !== action.deckId)
+      // if (state.selectedDeck?.id === action.deckId) {
+      //   return {
+      //     ...state,
+      //     selectedDeck: {
+      //       ...state.selectedDeck,
+      //       archived: true,
+      //     },
+      //   };
       // }
 
-      if (state.selectedDeck?.id === action.deckId) {
-        return {
-          ...state,
-          selectedDeck: {
-            ...state.selectedDeck,
-            archived: true,
-          },
-        };
+      return {
+        ...state,
+        decks: state.decks.map(deck => deck.id === action.deckId ? { ...deck, archived: true } : deck),
+        selectedDeck: state.selectedDeck?.id === action.deckId ? { ...state.selectedDeck, archived: true } : state.selectedDeck,
       }
     default:
       return state;

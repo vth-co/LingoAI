@@ -167,8 +167,10 @@ function DeckPage() {
     }
   };
 
+  // console.log("DECKFILTER", decksFilter)
+
   const getAllDecks = () => {
-    return decksFilter?.filter((deck) => !deck.attemptId && !deck.isArchived) || [];
+    return decksFilter?.filter((deck) => !deck.attemptId && !deck.archived) || [];
   };
 
   const getInProgressDecks = () => {
@@ -393,7 +395,7 @@ function DeckPage() {
                         <Box key={deck.id} sx={{ margin: 1 }}>
                           <Button
                             component={NavLink}
-                            to={`/decks/${deck.id}/archived`}
+                            to={`/decks/${deck.id}`}
                             variant="contained"
                             color="divider"
                             sx={{

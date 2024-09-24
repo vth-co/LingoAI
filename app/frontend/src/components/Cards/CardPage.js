@@ -42,6 +42,7 @@ function CardPage() {
   const topicName = deck?.cards?.[0]?.questionData?.topic;
   const topicLevel = deck?.level;
   const [loading, setLoading] = useState(false);
+  const [deckArchived, setDeckArchived] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,7 +55,6 @@ function CardPage() {
     fetchData();
 
   }, [dispatch, deckId, attemptId]);
-
 
   const handleAnswerChange = async (cardIndex, optionIndex, questionId) => {
     const selectedOption = cards[cardIndex].options[optionIndex];
@@ -107,11 +107,15 @@ function CardPage() {
       //   });
       // }
 
-      const allQuestionsAttempted = Object.keys(selectedAnswers).length === cards.length - 1;
+      // const allQuestionsAttempted = Object.keys(selectedAnswers).length + 1 === cards.length;
 
-      if (allQuestionsAttempted) {
+      cards[cardIndex].isAttempted = true;
+      const allQuestionsAttempted = cards.every(card => card.isAttempted === true);
+      console.log("All Questions Attempted:", allQuestionsAttempted);
+
+      if (allQuestionsAttempted && !deckArchived) {
         await dispatch(archiveDeck(deckId, user.uid));
-        // await dispatch(fetchOneDeck(deckId))
+        setDeckArchived(true);
         console.log("Deck archived")
       }
     } catch (error) {
