@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { FormattedMessage } from "react-intl";
 import { useHistory } from "react-router-dom";
 import {
+  Alert,
   Box,
   Button,
   Container,
@@ -18,10 +19,12 @@ import { login, signUp } from "../../store/session";
 const SignUpForm = ({ locale, setLocale }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [username, setUsername] = useState("");
   const [first_name, setFirstName] = useState("");
   const [last_name, setLastName] = useState("");
   const [level, setLevel] = useState("");
+  const [error, setError] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -46,17 +49,36 @@ const SignUpForm = ({ locale, setLocale }) => {
 
   const onSignUp = async (e) => {
     e.preventDefault();
+
+    // Password validation before API call
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
     try {
+      // Try to sign up the user only after password validation
       await dispatch(
         signUp(email, password, username, first_name, last_name, locale, level)
       );
       console.log("Signed up successfully");
       history.push("/home");
     } catch (error) {
-      console.log("SIGNUP", email, password, username, first_name, last_name, locale, level);
-      console.error("Error signing up:", error.message);
+      // Catch the Firebase error and check if it's "email already in use"
+      console.log("error", error.message);
+      if (error.message.includes("auth/email-already-in-use")) {
+        setError("Email is already in use");
+      } else {
+        setError("Error signing up: " + error.message);
+      }
     }
   };
+
 
   const defaultMessages = {
     email: "Email",
@@ -126,7 +148,11 @@ const SignUpForm = ({ locale, setLocale }) => {
               Create Your Account
             </Typography>
           </Box>
-
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
           <Box display="flex" flexDirection="row" p={1} columnGap="15px">
             <Box display="flex" flexDirection="column">
               {getFieldLabel("firstName")}
@@ -200,7 +226,7 @@ const SignUpForm = ({ locale, setLocale }) => {
               id="outlined-confirm-password-input"
               type="password"
               autoComplete="new-password"
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               size="small"
               InputProps={{ sx: { borderRadius: 1.5 } }}
               required
@@ -214,6 +240,7 @@ const SignUpForm = ({ locale, setLocale }) => {
               onChange={handleLanguageChange}
               sx={{ borderRadius: 1.5 }}
               size="small"
+              required
             >
               <MenuItem value="en">English</MenuItem>
               <MenuItem value="fr">Français</MenuItem>
@@ -232,17 +259,17 @@ const SignUpForm = ({ locale, setLocale }) => {
               <Tooltip
                 title={
                   <Typography>
-                    Beginner: Start here if you need to learn basic words, simple
+                    Beginner: You need to learn basic words, simple
                     sentences, and everyday phrases.
                     {
                       <Typography my={1}>
-                        Intermediate: Choose this if you can understand and use
+                        Intermediate: You can understand and use
                         common phrases and need to improve grammar and vocabulary.
                       </Typography>
                     }
                     {
                       <Typography>
-                        Advanced: Select this if you are comfortable with complex
+                        Advanced: You are comfortable with complex
                         sentences and want to master fluency and Advanced topics.
                       </Typography>
                     }
@@ -250,7 +277,7 @@ const SignUpForm = ({ locale, setLocale }) => {
                 }
                 arrow
               >
-                <InfoIcon color="divider" />
+                <InfoIcon color="action" sx={{ ml: -1, fontSize: 16 }} />
               </Tooltip>
             </Box>
             <Select
@@ -258,6 +285,7 @@ const SignUpForm = ({ locale, setLocale }) => {
               onChange={handleLevelChange}
               sx={{ borderRadius: 1.5 }}
               size="small"
+              required
             >
               <MenuItem value="Beginner">Beginner</MenuItem>
               <MenuItem value="Intermediate">Intermediate</MenuItem>
