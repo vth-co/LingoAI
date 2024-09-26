@@ -1,4 +1,5 @@
-import { checkDeckIsInProgressFromDB } from "../services/deckService";
+import { getAttemptByDeckIdFromDB, checkDeckIsInProgressFromDB } from "../services/deckService";
+import { fetchUserAttempt } from "./attempt";
 
 const { db } = require("../firebase/firebaseConfig");
 const {
@@ -34,20 +35,59 @@ const archiveDeckAction = (deckId) => ({
 })
 
 // Thunk Actions
+// export const fetchDecks = (userId, topicId) => async (dispatch) => {
+//   try {
+//     const userDocRef = doc(db, "users", userId);
+//     const userDoc = await getDoc(userDocRef);
+//     if (!userDoc.exists()) {
+//       throw new Error("User not found");
+//     }
+//     const userDecksCollectionRef = collection(userDocRef, "decks");
+//     const userDecksSnapshot = await getDocs(userDecksCollectionRef);
+//     const userDecks = userDecksSnapshot.docs.map((doc) => ({
+//       id: doc.id,
+//       ...doc.data(),
+//     }));
+
+//     dispatch(loadDecks(userDecks));
+//   } catch (error) {
+//     console.error("Error fetching decks:", error);
+//   }
+// };
+
 export const fetchDecks = (userId, topicId) => async (dispatch) => {
   try {
     const userDocRef = doc(db, "users", userId);
     const userDoc = await getDoc(userDocRef);
+
     if (!userDoc.exists()) {
       throw new Error("User not found");
     }
+
     const userDecksCollectionRef = collection(userDocRef, "decks");
     const userDecksSnapshot = await getDocs(userDecksCollectionRef);
-    const userDecks = userDecksSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
+
+    console.log("Fetched user decks snapshot:", userDecksSnapshot); // Log snapshot for debugging
+
+    const userDecks = await Promise.all(userDecksSnapshot.docs.map(async (doc) => {
+      const deckData = { id: doc.id, ...doc.data() };
+
+      // Fetch attempt data if necessary
+      let attemptId = null;
+      try {
+        const attempt = await getAttemptByDeckIdFromDB(deckData.id);
+        attemptId = attempt ? attempt.id : null; // Use null if no attempt is found
+      } catch (err) {
+        console.error(`Failed to fetch attempt for deck ${deckData.id}:`, err);
+      }
+
+      return {
+        ...deckData,
+        attemptId, // Include attemptId or null
+      };
     }));
 
+    console.log("Final user decks:", userDecks); // Log final decks data
     dispatch(loadDecks(userDecks));
   } catch (error) {
     console.error("Error fetching decks:", error);
@@ -104,9 +144,16 @@ export const createAttemptIfNotExists =
 
 export const updateAttemptId = (deckId, attemptId) => async (dispatch) => {
   try {
+    console.log(`Attempting to update attempt ID for deck ${deckId} with attempt ID ${attemptId}`); // Log the parameters
+
     const deckDocRef = doc(db, "decks", deckId);
     await updateDoc(deckDocRef, { attemptId });
-    dispatch(fetchOneDeck(deckId)); // Optionally refresh the deck data
+
+    console.log(`Successfully updated attempt ID for deck ${deckId}`); // Log success message
+
+    // Optionally refresh the deck data
+    dispatch(fetchOneDeck(deckId));
+    console.log(`Fetching updated deck data for deck ${deckId}`); // Log fetching action
   } catch (error) {
     console.error("Error updating attempt ID:", error);
   }

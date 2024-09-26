@@ -3,6 +3,7 @@ import {
   checkAnswerInDB,
 } from "../services/attemptService";
 import { getAttemptByDeckIdFromDB } from "../services/deckService";
+import { updateAttemptId } from "./decks";
 
 // Action Types
 
@@ -93,6 +94,7 @@ export const createUserAttempt = (userId, deckId) => async (dispatch) => {
     }
 
     dispatch(addUserAttempt({ id: newAttemptId, deckId }));
+    dispatch(updateAttemptId(deckId, newAttemptId))
     return { payload: newAttemptId }
 
     // Update the deck's attemptId field
@@ -135,6 +137,7 @@ const initialState = {
 const userAttemptsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_USER_ATTEMPT:
+      console.log("USER ATTEMPT ACTION", action)
       return {
         ...state,
         attempts: state.attempts.map((attempt) =>
