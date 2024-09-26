@@ -33,7 +33,7 @@ function CardPage() {
   const user = useSelector((state) => state.session.user);
   const deck = useSelector((state) => state.decks.selectedDeck);
   const cards = deck?.cards?.[0]?.questionData?.jsonData || [];
-  const attempt = useSelector((state) => state.attempts);
+  // const attempt = useSelector((state) => state.decks.selectedDeck.cards);
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [feedback, setFeedback] = useState({});
   const [flipped, setFlipped] = useState({})
@@ -43,11 +43,12 @@ function CardPage() {
   const topicLevel = deck?.level;
   const [loading, setLoading] = useState(false);
   const [deckArchived, setDeckArchived] = useState(false);
-
+  console.log("attempt", cards);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
       await dispatch(fetchOneDeck(deckId));
+      await dispatch(fetchUserAttempt(deckId));
       setTimeout(() => {
         setLoading(false);
       }, 500);
@@ -194,6 +195,12 @@ function CardPage() {
                         border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                       }}
                     >
+
+                      {cards[cardIndex] && cards[cardIndex].isAttempted && (
+                        <Box sx={{ position: "absolute", width: "100%", height: "100%", background: "rgba(0, 0, 0, 0.5)", color: "white", zIndex: 10, display: "flex", justifyContent: "center", alignItems: "center", padding: "20px", textAlign: "center" }}>
+                          <Typography variant="h6">Already answered! <br /> Try the next one.</Typography>
+                        </Box>
+                      )}
                       <Box
                         sx={{
                           backgroundColor: `${theme.palette.divider.main}`,
@@ -409,7 +416,7 @@ function CardPage() {
                               justifyContent: "flex-start",
                               height: "110px",
                               overflowY: "auto",
-                              width: "100%",
+                              width: "auto",
                             }}>
                               <CloseIcon
                                 sx={{ color: theme.palette.completion.poor }}
