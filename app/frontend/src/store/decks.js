@@ -111,7 +111,7 @@ export const fetchOneDeck = (deckId) => async (dispatch) => {
       const deckData = { id: deckSnapshot.id, ...deckSnapshot.data() };
       dispatch(loadOneDeck(deckData));
     } else {
-      console.log("No such deck found!");
+      console.error("No such deck found!");
     }
   } catch (error) {
     console.error("Error fetching deck:", error);
@@ -125,7 +125,7 @@ export const updateDeckStatus = async (deckId, attemptId) => {
       status: "in_progress",
       currentAttemptId: attemptId,
     });
-    console.log("Deck status updated to in_progress");
+    // console.log("Deck status updated to in_progress");
   } catch (error) {
     throw new Error("Error updating deck status: " + error.message);
   }
@@ -133,7 +133,7 @@ export const updateDeckStatus = async (deckId, attemptId) => {
 
 export const createAttemptIfNotExists =
   (deckId, attemptId) => async (dispatch, getState) => {
-    console.log("ATTEMPTID", attemptId)
+    // console.log("ATTEMPTID", attemptId)
     if (!attemptId) {
       console.error("Invalid attemptId:", attemptId);
       throw new Error("Attempt ID is undefined or invalid.");
@@ -143,7 +143,7 @@ export const createAttemptIfNotExists =
 
     try {
       await setDoc(docRef, { attemptId }, { merge: true });
-      console.log("Attempt ID set successfully in deck:", deckId);
+      // console.log("Attempt ID set successfully in deck:", deckId);
     } catch (error) {
       console.error("Error setting attempt ID:", error);
       throw error;
@@ -152,24 +152,22 @@ export const createAttemptIfNotExists =
 
 export const updateAttemptId = (deckId, attemptId) => async (dispatch) => {
   try {
-    console.log(`Attempting to update attempt ID for deck ${deckId} with attempt ID ${attemptId}`); // Log the parameters
+    // console.log(`Attempting to update attempt ID for deck ${deckId} with attempt ID ${attemptId}`); // Log the parameters
 
     const deckDocRef = doc(db, "decks", deckId);
     await updateDoc(deckDocRef, { attemptId });
 
-    console.log(`Successfully updated attempt ID for deck ${deckId}`); // Log success message
+    // console.log(`Successfully updated attempt ID for deck ${deckId}`); // Log success message
 
     // Optionally refresh the deck data
     dispatch(fetchOneDeck(deckId));
-    console.log(`Fetching updated deck data for deck ${deckId}`); // Log fetching action
+    // console.log(`Fetching updated deck data for deck ${deckId}`); // Log fetching action
   } catch (error) {
     console.error("Error updating attempt ID:", error);
   }
 };
 
 export const archiveDeck = (deckId, userId) => async (dispatch) => {
-  // const userDocRef = doc(db, "users", userId);
-  // const deckDocRef = doc(userDocRef, "decks", deckId);
   const deckDocRef = doc(db, "decks", deckId);
   try {
     await updateDoc(deckDocRef, {
@@ -178,7 +176,6 @@ export const archiveDeck = (deckId, userId) => async (dispatch) => {
     const updatedDeckSnapshot = await getDoc(deckDocRef);
     if (updatedDeckSnapshot.exists()) {
       const updatedDeck = { id: updatedDeckSnapshot.id, ...updatedDeckSnapshot.data() };
-      // dispatch(loadOneDeck(updatedDeck)); // Ensure Redux state is updated
       console.log("Updated deck after archiving:", updatedDeck);
     }
 

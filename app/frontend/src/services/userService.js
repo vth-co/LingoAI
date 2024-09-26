@@ -37,7 +37,7 @@ const addUserToDB = async ({
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   });
-  console.log("database", db);
+  // console.log("database", db);
 };
 
 const setUserLevel = async (uid, level) => {
@@ -89,7 +89,7 @@ const getUserByIdFromDB = async (id) => {
 
 // Service to get user progress
 const getProgressFromDB = async (uid) => {
-  console.log("get progress route is hit", uid);
+  // console.log("get progress route is hit", uid);
   try {
     const progressDocRef = doc(db, "progress", uid);
     const userDocRef = doc(db, "users", uid);
@@ -99,12 +99,12 @@ const getProgressFromDB = async (uid) => {
     // Access the 'concepts' subcollection
     const conceptsCollectionRef = collection(progressDocRef, "concepts");
     const conceptsSnapshot = await getDocs(conceptsCollectionRef);
-    console.log("Concepts snapshot:", conceptsSnapshot);
+    // console.log("Concepts snapshot:", conceptsSnapshot);
     const concepts = conceptsSnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
-    console.log("Concepts:", concepts);
+    // console.log("Concepts:", concepts);
     return {
       uid,
       username: userDoc.data().username,
@@ -117,7 +117,7 @@ const getProgressFromDB = async (uid) => {
 };
 
 const initializeUserProgress = async (uid, level = null) => {
-  console.log("initialize user progress route is hit", uid);
+  // console.log("initialize user progress route is hit", uid);
   try {
     const userDocRef = doc(db, "progress", uid);
     const userInfoRef = doc(db, "users", uid);
@@ -128,14 +128,14 @@ const initializeUserProgress = async (uid, level = null) => {
     }
     // Create the 'concepts' subcollection
     const conceptsCollectionRef = collection(userDocRef, "concepts");
-    console.log("Concepts collection ref:", conceptsCollectionRef);
+    // console.log("Concepts collection ref:", conceptsCollectionRef);
     const userInfo = userInfoSnap.data();
-    console.log("User info:", userInfo);
+    // console.log("User info:", userInfo);
     const currentLevel = level || userInfo.level;
 
     // Fetch existing concepts progress
     const existingConceptsSnapshot = await getDocs(conceptsCollectionRef);
-    console.log("Existing concepts snapshot:", existingConceptsSnapshot);
+    // console.log("Existing concepts snapshot:", existingConceptsSnapshot);
     const existingConcepts = existingConceptsSnapshot.docs.reduce(
       (acc, doc) => {
         acc[doc.id] = doc.data();
@@ -143,7 +143,7 @@ const initializeUserProgress = async (uid, level = null) => {
       },
       {}
     );
-    console.log("Existing concepts:", existingConcepts);
+    // console.log("Existing concepts:", existingConcepts);
     let concepts = [];
     if (currentLevel === "Advanced") {
       const [AdvancedConcepts, IntermediateConcepts, BeginnerConcepts] =
@@ -185,13 +185,13 @@ const initializeUserProgress = async (uid, level = null) => {
         return existingTopic
           ? existingTopic // Preserve existing topic progress
           : {
-              id: topic.id || "",
-              topic_name: topic.topic_name || "",
-              conceptId: topic.concept_id || "",
-              topic_description: topic.description || "",
-              status: false,
-              passes: 0,
-            };
+            id: topic.id || "",
+            topic_name: topic.topic_name || "",
+            conceptId: topic.concept_id || "",
+            topic_description: topic.description || "",
+            status: false,
+            passes: 0,
+          };
       });
       const topicsPassedDecimal =
         topics.length > 0 ? topicsPassedCount / topics.length : 0;
@@ -241,7 +241,7 @@ const updateUserProgressFromDB = async (uid, topic_id) => {
         }
 
         if (topic.id === topic_id && topic.passes >= 3 && !topic.status) {
-          console.log("User has passed this topic.");
+          // console.log("User has passed this topic.");
           topic.status = true;
           topicsUpdated = true;
           topicsPassedCount++;
@@ -252,8 +252,8 @@ const updateUserProgressFromDB = async (uid, topic_id) => {
       const topicsPassedDecimal =
         conceptData.topics.length > 0
           ? parseFloat(
-              (topicsPassedCount / conceptData.topics.length).toFixed(1)
-            )
+            (topicsPassedCount / conceptData.topics.length).toFixed(1)
+          )
           : 0.0;
 
       // Update if any changes detected
@@ -262,13 +262,13 @@ const updateUserProgressFromDB = async (uid, topic_id) => {
           topics: updatedTopics,
           topicsPassed: topicsPassedDecimal,
         });
-        console.log("Updated concept with topicsPassed:", topicsPassedDecimal);
+        // console.log("Updated concept with topicsPassed:", topicsPassedDecimal);
       }
 
       const conceptPassed = updatedTopics.every((topic) => topic.status);
       if (conceptPassed && conceptData.status !== true) {
         await updateDoc(conceptDoc.ref, { status: true });
-        console.log("Concept status updated successfully in Firestore");
+        // console.log("Concept status updated successfully in Firestore");
       }
 
       // Track if all concepts are passed

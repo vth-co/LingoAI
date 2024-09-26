@@ -44,7 +44,7 @@ function CardPage() {
   const topicLevel = deck?.level;
   const [loading, setLoading] = useState(false);
   const [deckArchived, setDeckArchived] = useState(false);
-  console.log("attempt", cards);
+  // console.log("attempt", cards);
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true)
@@ -113,18 +113,18 @@ function CardPage() {
 
       cards[cardIndex].isAttempted = true;
       const allQuestionsAttempted = cards.every(card => card.isAttempted === true);
-      console.log("All Questions Attempted:", allQuestionsAttempted);
+      // console.log("All Questions Attempted:", allQuestionsAttempted);
 
       if (allQuestionsAttempted && !deckArchived) {
         await dispatch(archiveDeck(deckId, user.uid));
         setDeckArchived(true);
-        console.log("Deck archived")
+        // console.log("Deck archived")
       }
     } catch (error) {
       console.error("Error modifying user attempt:", error);
     }
   };
-  console.log("DECK?", deck);
+  // console.log("DECK?", deck);
   const handleFlip = (cardIndex) => {
     if (!flipped[cardIndex]) {
       setFlipped((prevState) => ({

@@ -35,7 +35,7 @@ export const fetchUserConcepts = (userId) => async (dispatch) => {
       ...doc.data(),
     }));
 
-    console.log("concept ", concepts);
+    // console.log("concept ", concepts);
 
     dispatch(loadConcepts(concepts));
   } catch (error) {
@@ -61,10 +61,10 @@ export const fetchOneConcept = (conceptId) => async (dispatch) => {
 };
 
 export const fetchTopicsByConcept = (conceptId) => async (dispatch) => {
-  console.log("CONCEPTIDHERE", conceptId);
+  // console.log("CONCEPTIDHERE", conceptId);
   try {
     const response = await fetch(`/api/concepts/${conceptId}/topics`);
-    console.log("CONCEPTID", response);
+    // console.log("CONCEPTID", response);
     if (response.ok) {
       const topics = await response.json();
       dispatch(loadConceptTopics(conceptId, topics));
@@ -100,7 +100,7 @@ const conceptsReducer = (state = initialState, action) => {
     //     concepts: filteredConcepts,
     //   };
     case LOAD_CONCEPTS: {
-      console.log("ACTION", action);
+      // console.log("ACTION", action);
       const newState = { ...state };
       action.concepts.forEach((concept) => {
         newState[concept.id] = concept;

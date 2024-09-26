@@ -45,7 +45,7 @@ export const addQuestions =
           concept_level,
           topicId
         );
-        console.log("questionData: ", questionData);
+        // console.log("questionData: ", questionData);
 
         dispatch(
           add({
@@ -61,7 +61,7 @@ export const addQuestions =
           const question_from_ai = await addQuestionsToDB(userId, {
             questionData,
           });
-          console.log("Created questions successfully:", question_from_ai);
+          // console.log("Created questions successfully:", question_from_ai);
 
           // Create a new deck in the database
           const deck = await createDeckInDB({
@@ -71,7 +71,7 @@ export const addQuestions =
             archived: false,
           });
 
-          console.log("Deck created successfully:", deck);
+          // console.log("Deck created successfully:", deck);
 
           // Add the generated questions as cards to the deck
           const cardsAdded = await addCardsToDeckInDB(
@@ -80,7 +80,7 @@ export const addQuestions =
             question_from_ai
           );
 
-          console.log("Cards added to deck successfully:", cardsAdded);
+          // console.log("Cards added to deck successfully:", cardsAdded);
 
           await runTransaction(db, async (transaction) => {
             const userDocRef = doc(db, "user_limits", userId);

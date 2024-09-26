@@ -5,19 +5,19 @@ const { initializeUserProgress } = require('../services/userService');
 
 // Register user
 const registerUser = async (req, res) => {
-        const { email, password, username, first_name, last_name, native_language, level } = req.body;
+    const { email, password, username, first_name, last_name, native_language, level } = req.body;
 
-        // Validate level
-        const validLevels = ['Beginner', 'Intermediate', 'Advanced'];
-        if (!validLevels.includes(level)) {
+    // Validate level
+    const validLevels = ['Beginner', 'Intermediate', 'Advanced'];
+    if (!validLevels.includes(level)) {
         return res.status(400).json({ message: 'Invalid level. Must be one of: Beginner, Intermediate, Advanced.' });
-        }
+    }
 
-        try {
+    try {
         // Create user with Firebase Auth
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const userId = userCredential.user.uid;
-        console.log('userCredential: ', userCredential, userId);
+        // console.log('userCredential: ', userCredential, userId);
         // Save additional user data to Firestore
         await addUserToDB({ uid: userId, email, username, first_name, last_name, native_language, level });
 
@@ -28,10 +28,10 @@ const registerUser = async (req, res) => {
         await initializeUserProgress(userId);
 
         res.status(201).json({ message: 'User registered', uid: userId, loginCredential: userCredential });
-        } catch (error) {
+    } catch (error) {
         res.status(500).json({ message: error.message });
-        }
-    };
+    }
+};
 
 // Login user
 const loginUser = async (req, res) => {

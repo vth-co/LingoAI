@@ -57,13 +57,13 @@ const checkAttemptInDB = async (userId, attemptId) => {
       const percentagePassed = (passes / totalQuestions) * 100;
 
       if (percentagePassed >= 80) {
-        console.log("Attempt passes with 80% or more:", percentagePassed);
+        // console.log("Attempt passes with 80% or more:", percentagePassed);
         return { ...attemptData, percentagePassed, meetsThreshold: true };
       } else {
-        console.log(
-          "Attempt does not pass with 80% or more:",
-          percentagePassed
-        );
+        // console.log(
+        //   "Attempt does not pass with 80% or more:",
+        //   percentagePassed
+        // );
         return { ...attemptData, percentagePassed, meetsThreshold: false };
       }
     } else {

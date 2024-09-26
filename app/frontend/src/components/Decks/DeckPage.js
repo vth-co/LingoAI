@@ -124,7 +124,7 @@ function DeckPage() {
       dispatch(fetchDecks(user.uid, topicId));
 
     } catch (error) {
-      console.log("Error generating questions:", error.message);
+      console.error("Error generating questions:", error.message);
     } finally {
       setLoading(false);
     }

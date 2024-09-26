@@ -66,11 +66,11 @@ const SignUpForm = ({ locale, setLocale }) => {
       await dispatch(
         signUp(email, password, username, first_name, last_name, locale, level)
       );
-      console.log("Signed up successfully");
+      // console.log("Signed up successfully");
       history.push("/home");
     } catch (error) {
       // Catch the Firebase error and check if it's "email already in use"
-      console.log("error", error.message);
+      console.error("error", error.message);
       if (error.message.includes("auth/email-already-in-use")) {
         setError("Email is already in use");
       } else {

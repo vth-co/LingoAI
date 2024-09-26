@@ -44,7 +44,7 @@ const updateUserAttempt = (id, checkAttempt) => ({
 export const fetchUserAttempt = (deckId) => async (dispatch) => {
   try {
     const attempt = await getAttemptByDeckIdFromDB(deckId);
-    console.log("Fetched attempt:", attempt); // Log fetched data
+    // console.log("Fetched attempt:", attempt); // Log fetched data
     dispatch(loadUserAttempt(attempt || {})); // Handle empty attempts
   } catch (error) {
     console.error("Error fetching user attempt:", error);
@@ -88,7 +88,7 @@ export const createUserAttempt = (userId, deckId) => async (dispatch) => {
 
     if (deckDoc.exists()) {
       await updateDoc(deckDocRef, { attemptId: newAttemptId });
-      console.log("Deck updated with attempt ID:", newAttemptId);
+      // console.log("Deck updated with attempt ID:", newAttemptId);
     } else {
       console.error("Deck does not exist:", deckId)
     }
@@ -137,7 +137,7 @@ const initialState = {
 const userAttemptsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_USER_ATTEMPT:
-      console.log("USER ATTEMPT ACTION", action)
+      // console.log("USER ATTEMPT ACTION", action)
       return {
         ...state,
         attempts: state.attempts.map((attempt) =>

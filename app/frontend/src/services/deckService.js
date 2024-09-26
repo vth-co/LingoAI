@@ -213,16 +213,16 @@ const getUserDeckByIdFromDB = async (uid, deckId) => {
 
 //service to create a deck (empty)
 const createDeckInDB = async ({ userId, topic_id, createdAt, archived }) => {
-  console.log(
-    "userId: ",
-    userId,
-    "topic_id: ",
-    topic_id,
-    "createdAt: ",
-    createdAt,
-    "archived: ",
-    archived
-  );
+  // console.log(
+  //   "userId: ",
+  //   userId,
+  //   "topic_id: ",
+  //   topic_id,
+  //   "createdAt: ",
+  //   createdAt,
+  //   "archived: ",
+  //   archived
+  // );
   try {
     const topicRef = doc(db, "topics", topic_id);
     const topicDoc = await getDoc(topicRef);
@@ -231,13 +231,13 @@ const createDeckInDB = async ({ userId, topic_id, createdAt, archived }) => {
       throw new Error("Topic not found");
     }
     let conceptId = topicDoc.data().concept_id;
-    console.log("conceptId: ", conceptId);
+    // console.log("conceptId: ", conceptId);
     const conceptRef = doc(db, "concepts", conceptId);
     const conceptDoc = await getDoc(conceptRef);
     if (!conceptDoc.exists()) {
       throw new Error("Concept not found");
     }
-    console.log("hit here", conceptDoc.data().level);
+    // console.log("hit here", conceptDoc.data().level);
     const level = conceptDoc.data().level;
     const docRef = await addDoc(collection(db, "decks"), {
       userId,
@@ -257,7 +257,7 @@ const createDeckInDB = async ({ userId, topic_id, createdAt, archived }) => {
       archived,
       attemptId: null,
     };
-    console.log("deck check: ", deck);
+    // console.log("deck check: ", deck);
     const userDecksCollectionRef = collection(
       doc(db, "users", userId),
       "decks"
@@ -294,7 +294,7 @@ const addCardsToDeckInDB = async (deckId, userId, aiGeneratedRequestId) => {
     }
 
     const questionData = aiGeneratedRequestDoc.data().questionData;
-    console.log("questionData: ", questionData);
+    // console.log("questionData: ", questionData);
     const deckLevel = deckDoc.data().level;
     const deckTopicId = deckDoc.data().topic_id;
 
@@ -304,10 +304,10 @@ const addCardsToDeckInDB = async (deckId, userId, aiGeneratedRequestId) => {
       throw new Error("Topic not found");
     }
     const topicName = topicDoc.data().topic_name;
-    console.log("------: ", questionData.topic);
-    console.log("------: ", topicName);
-    console.log("------: ", questionData.level);
-    console.log("------: ", deckLevel);
+    // console.log("------: ", questionData.topic);
+    // console.log("------: ", topicName);
+    // console.log("------: ", questionData.level);
+    // console.log("------: ", deckLevel);
 
     // Check if the question data matches the deck's topic and level
     if (questionData.topic === topicName) {
@@ -316,7 +316,7 @@ const addCardsToDeckInDB = async (deckId, userId, aiGeneratedRequestId) => {
 
     // Update the deck with the new cards
     await setDoc(deckRef, { ...deckDoc.data(), cards: deck }, { merge: true });
-    console.log("deckdeckdeck", deck);
+    // console.log("deckdeckdeck", deck);
     return deck;
   } catch (error) {
     throw new Error("Error adding card to deck: " + error.message);
@@ -354,7 +354,7 @@ const getArchivedStatusByDeckIdFromDB = async (deckId) => {
 
 //service to archive a deck
 const archiveDeckInDB = async (deckId, uid) => {
-  console.log("archiveDeckInDB: ", deckId, uid);
+  // console.log("archiveDeckInDB: ", deckId, uid);
   try {
     // Get the deck data
     const deckRef = doc(db, "decks", deckId);
@@ -363,7 +363,7 @@ const archiveDeckInDB = async (deckId, uid) => {
     if (!deckDoc.exists()) {
       throw new Error("Deck not found");
     }
-    console.log("check if archived: ", deckDoc.data().archived);
+    // console.log("check if archived: ", deckDoc.data().archived);
     // Check if the deck is already archived
     if (deckDoc.data().archived) {
       return { success: false, message: "Deck is already archived." };
@@ -381,13 +381,13 @@ const archiveDeckInDB = async (deckId, uid) => {
 
     // Check if all cards in the deck have isAttempted set to true
     for (const card of deckData.cards) {
-      console.log("Checking card:", card);
+      // console.log("Checking card:", card);
       for (const question of card.questionData.jsonData) {
-        console.log("Checking question:", question);
+        // console.log("Checking question:", question);
         if (!question.isAttempted) {
-          console.log(
-            `Question with id ${question.id} is not attempted. Archiving will not proceed.`
-          );
+          // console.log(
+          //   `Question with id ${question.id} is not attempted. Archiving will not proceed.`
+          // );
           return {
             success: false,
             message: "Not all cards are attempted. Deck will not be archived.",
