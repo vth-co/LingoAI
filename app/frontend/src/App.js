@@ -72,9 +72,6 @@ function App({ locale, setLocale }) {
         <Route path='/main'>
           {currentUser ? <MainPage /> : <WelcomePage setLocale={setLocale} />}
         </Route>
-        <Route path='/decks/:deckId/archived'>
-          <ArchivedCardPage />
-        </Route>
         <Route path='/decks/:deckId'>
           <CardPage />
         </Route>
