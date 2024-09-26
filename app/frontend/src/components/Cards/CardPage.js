@@ -172,7 +172,7 @@ function CardPage() {
                   flipOnClick={false}
                   flipDirection="horizontal"
                   isFlipped={flipped[cardIndex] || feedback[cardIndex] !== undefined}
-                  onClick={() => handleFlip(cardIndex)}
+                // onClick={() => handleFlip(cardIndex)}
                 >
                   <FrontSide
                     style={{
@@ -249,6 +249,7 @@ function CardPage() {
                               <FormControlLabel
                                 key={optionIndex}
                                 value={optionIndex}
+                                onChange={() => handleFlip(cardIndex)}
                                 control={
                                   <Radio
                                     sx={{
