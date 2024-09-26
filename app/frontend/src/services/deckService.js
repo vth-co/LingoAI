@@ -335,6 +335,23 @@ const getArchivedDecksFromDB = async () => {
   }
 };
 
+const getArchivedStatusByDeckIdFromDB = async (deckId) => {
+  try {
+    const deckRef = doc(db, "decks", deckId);
+    const deckDoc = await getDoc(deckRef);
+
+    if (!deckDoc.exists()) {
+      throw new Error("Deck not found");
+    }
+
+    // Return the archived status
+    return deckDoc.data().archived;
+  } catch (error) {
+    throw new Error("Error fetching archived status by deckId: " + error.message);
+  }
+};
+
+
 //service to archive a deck
 const archiveDeckInDB = async (deckId, uid) => {
   console.log("archiveDeckInDB: ", deckId, uid);
@@ -487,5 +504,6 @@ module.exports = {
   getAttemptByDeckIdFromDB,
   checkDeckIsInProgressFromDB,
   getUserDeckByIdFromDB,
-  canGenerateDeck
+  canGenerateDeck,
+  getArchivedStatusByDeckIdFromDB
 };

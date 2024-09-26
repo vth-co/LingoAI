@@ -1,4 +1,4 @@
-import { getAttemptByDeckIdFromDB, checkDeckIsInProgressFromDB } from "../services/deckService";
+import { getAttemptByDeckIdFromDB, getArchivedStatusByDeckIdFromDB, getArchivedDecksFromDB, checkDeckIsInProgressFromDB } from "../services/deckService";
 import { fetchUserAttempt } from "./attempt";
 
 const { db } = require("../firebase/firebaseConfig");
@@ -67,7 +67,7 @@ export const fetchDecks = (userId, topicId) => async (dispatch) => {
     const userDecksCollectionRef = collection(userDocRef, "decks");
     const userDecksSnapshot = await getDocs(userDecksCollectionRef);
 
-    console.log("Fetched user decks snapshot:", userDecksSnapshot); // Log snapshot for debugging
+    // console.log("Fetched user decks snapshot:", userDecksSnapshot); // Log snapshot for debugging
 
     const userDecks = await Promise.all(userDecksSnapshot.docs.map(async (doc) => {
       const deckData = { id: doc.id, ...doc.data() };
@@ -77,17 +77,25 @@ export const fetchDecks = (userId, topicId) => async (dispatch) => {
       try {
         const attempt = await getAttemptByDeckIdFromDB(deckData.id);
         attemptId = attempt ? attempt.id : null; // Use null if no attempt is found
+      } catch {
+      }
+
+      // Fetch archived status
+      let archivedStatus = null;
+      try {
+        archivedStatus = await getArchivedStatusByDeckIdFromDB(deckData.id);
       } catch (err) {
-        console.error(`Failed to fetch attempt for deck ${deckData.id}:`, err);
+        console.error(`Failed to fetch archived status for deck ${deckData.id}:`, err);
       }
 
       return {
         ...deckData,
-        attemptId, // Include attemptId or null
+        attemptId,      // Include attemptId or null
+        archived: archivedStatus // Include archived status
       };
     }));
 
-    console.log("Final user decks:", userDecks); // Log final decks data
+    // console.log("Final user decks:", userDecks); // Log final decks data
     dispatch(loadDecks(userDecks));
   } catch (error) {
     console.error("Error fetching decks:", error);
