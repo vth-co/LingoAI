@@ -32,29 +32,22 @@ function DeckPage() {
   const concepts = Object.values(useSelector((state) => state.concepts));
   const conceptFilter = concepts.find((concept) => conceptId === concept.id);
   const decksFilter = decks?.filter((deck) => topicId === deck.topic_id);
+  const getAllDecks = () => {
+    return decksFilter?.filter((deck) => !deck.attemptId && !deck.archived) || [];
+  };
+
+  const getInProgressDecks = () => {
+    return decksFilter?.filter((deck) => deck.attemptId && !deck.archived) || [];
+  };
+
+  const getArchivedDecks = () => {
+    return decksFilter?.filter((deck) => deck.archived) || [];
+  };
+  const newDecks = getAllDecks().length;
   const theme = useTheme();
   const [canGenerate, setCanGenerate] = useState(false);
   const [message, setMessage] = useState("");
   const isDemoUser = user?.uid === "XfvjHvAySVSRdcOriaASlrnoma13";
-
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (user && topicId) {
-  //       setLoading(true);
-
-  //       // Fetch decks
-  //       await dispatch(fetchDecks(user.uid, topicId));
-
-  //       // Fetch topic and user concepts
-  //       dispatch(fetchOneTopic(topicId));
-  //       dispatch(fetchUserConcepts(user.uid));
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [dispatch, user, topicId, isDemoUser]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,50 +68,35 @@ function DeckPage() {
     fetchData();
   }, [dispatch, user, topicId]);
 
-  // const checkCanGenerate = useCallback(async () => {
-  //   if (user) {
-  //     const canGenerate = await canGenerateDeck(user.uid, isDemoUser);
-  //     setCanGenerate(canGenerate);
-  //     if (!canGenerate) {
-  //       setMessage("This account has reached the limit for generating new decks today. The limit will reset after 12:00am PST.");
-  //     }
-  //   }
-  // }, [isDemoUser, user]);
-
   const checkCanGenerate = useCallback(async () => {
     if (user) {
+
+      if (newDecks >= 3) {
+        setMessage("Please review the new decks before generating another one.");
+        setCanGenerate(false);
+        return;
+      }
       const { canGenerate, message } = await canGenerateDeck(user.uid, isDemoUser);
       setCanGenerate(canGenerate);
       if (!canGenerate) {
         setMessage(message);
       }
     }
-  }, [isDemoUser, user]);
+  }, [isDemoUser, user, newDecks]);
 
   useEffect(() => {
     checkCanGenerate();
   }, [checkCanGenerate, topicId]);
 
-
-  console.log("DEMO USER?", isDemoUser);
   const handleGenerateQuestions = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
     try {
-
-      // const totalRequests = await getTotalRequests();
-      // console.log("TOTALREQUESTS", totalRequests);
-      // if (totalRequests >= 50) {
-      //   setMessage("Lingo.ai's daily limit for generating new decks has been reached. Please try again after 12:00am PST.");
-      //   setCanGenerate(false)
-      //   return;
-      // }
-
       const { canGenerate, message } = await canGenerateDeck(user.uid, isDemoUser);
+
       if (!canGenerate) {
-        console.log("CANGEN", canGenerate, message);
         setMessage(message);
         setCanGenerate(false);
         return;
@@ -161,24 +139,10 @@ function DeckPage() {
         pathname: `/decks/${deckId}`,
         state: { attemptId: newAttemptId },
       });
-      console.log("Attempt started successfully:", newAttemptId);
+      // console.log("Attempt started successfully:", newAttemptId);
     } catch (error) {
       console.error("Error starting attempt:", error);
     }
-  };
-
-  // console.log("DECKFILTER", decksFilter)
-
-  const getAllDecks = () => {
-    return decksFilter?.filter((deck) => !deck.attemptId && !deck.archived) || [];
-  };
-
-  const getInProgressDecks = () => {
-    return decksFilter?.filter((deck) => deck.attemptId && !deck.archived) || [];
-  };
-
-  const getArchivedDecks = () => {
-    return decksFilter?.filter((deck) => deck.archived) || [];
   };
 
   return (

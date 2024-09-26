@@ -139,7 +139,7 @@ function CardPage() {
   }
 
   return (
-    deck.archived ? (<ArchivedCardPage />) : (
+    deck?.archived ? (<ArchivedCardPage />) : (
       <Container
         sx={{
           padding: "0 5vw 0 5vw"
