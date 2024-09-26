@@ -136,16 +136,10 @@ function CardPage() {
     }
   }
 
-  // useEffect(() => {
-  //   if (justFinished) {
-  //     setJustFinished(false);
-  //   }
-  // }, [justFinished]);
-
   if (loading) {
     return <LinearProgress />;
   }
-  console.log("deckArchived", deck)
+
   if (deck?.archived && !justFinished) {
     return <ArchivedCardPage />;
   }
@@ -158,7 +152,7 @@ function CardPage() {
     >
       <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topicName}</h1>
       <h3 style={{ textAlign: "center", marginTop: 0 }}>{topicLevel}</h3>
-      <p style={{ textAlign: "center" }}>Each card contains four options. Select your answer to see if it's correct.</p>
+      {deck?.archived ? (<p style={{ textAlign: "center" }}>This deck has been archived!</p>) : (<p style={{ textAlign: "center" }}>Each card contains four options. Select your answer to see if it's correct.</p>)}
       <Container
         sx={{
           justifyContent: "center",

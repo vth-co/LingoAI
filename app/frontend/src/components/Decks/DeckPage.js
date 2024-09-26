@@ -44,6 +44,7 @@ function DeckPage() {
     return decksFilter?.filter((deck) => deck.archived) || [];
   };
   const newDecks = getAllDecks().length;
+  const inProgressDecks = getInProgressDecks().length;
   const theme = useTheme();
   const [canGenerate, setCanGenerate] = useState(false);
   const [message, setMessage] = useState("");
@@ -71,8 +72,8 @@ function DeckPage() {
   const checkCanGenerate = useCallback(async () => {
     if (user) {
 
-      if (newDecks >= 3) {
-        setMessage("Please review the new decks before generating another one.");
+      if (newDecks >= 3 || inProgressDecks >= 3) {
+        setMessage("Please review the current decks before generating another one.");
         setCanGenerate(false);
         return;
       }
