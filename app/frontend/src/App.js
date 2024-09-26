@@ -16,12 +16,12 @@ import { authenticate } from './store/session'
 import DeckPage from './components/Decks/DeckPage'
 import CardPage from './components/Cards/CardPage'
 import { LinearProgress } from '@mui/material'
-import ArchivedCardPage from './components/Cards/ArchivedCardPage'
 
 function App({ locale, setLocale }) {
   const [loaded, setLoaded] = useState(false)
   const [currentUser, setCurrentUser] = useState(null)
   const dispatch = useDispatch()
+
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async user => {
