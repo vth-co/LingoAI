@@ -49,6 +49,9 @@ function DeckPage() {
   const [canGenerate, setCanGenerate] = useState(false);
   const [message, setMessage] = useState("");
   const isDemoUser = user?.uid === "XfvjHvAySVSRdcOriaASlrnoma13";
+  const [displayedArchivedDecks, setDisplayedArchivedDecks] = useState(12);
+  const archivedDecks = getArchivedDecks();
+  const DECKS_PER_PAGE = 12
 
   useEffect(() => {
     const fetchData = async () => {
@@ -145,6 +148,10 @@ function DeckPage() {
       console.error("Error starting attempt:", error);
     }
   };
+
+  const handleShowMore = () => {
+    setDisplayedArchivedDecks((prev) => prev + DECKS_PER_PAGE);
+  }
 
   return (
     <Box
@@ -335,7 +342,7 @@ function DeckPage() {
                   <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
                 </Tooltip>
               </h2>
-              {getArchivedDecks().length > 0 ? (
+              {archivedDecks.length > 0 ? (
                 <Grid container spacing={2} justifyContent="center">
                   <Grid item xs={12} md={12}>
                     <Box
@@ -356,7 +363,7 @@ function DeckPage() {
                         justifyContent: "center",
                       }}
                     >
-                      {getArchivedDecks().map((deck) => (
+                      {archivedDecks.slice(0, displayedArchivedDecks).map((deck) => (
                         <Box key={deck.id} sx={{ margin: 1 }}>
                           <Button
                             component={NavLink}
@@ -377,6 +384,23 @@ function DeckPage() {
                           </Button>
                         </Box>
                       ))}
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center", // Centers the button horizontally
+                        mt: 2, // Add top margin if needed
+                      }}
+                    >
+                      {displayedArchivedDecks < archivedDecks.length && (
+                        <Button
+                          onClick={handleShowMore}
+                          variant="outlined"
+                          sx={{ mt: 2 }}
+                        >
+                          Show More
+                        </Button>
+                      )}
                     </Box>
                   </Grid>
                 </Grid>
