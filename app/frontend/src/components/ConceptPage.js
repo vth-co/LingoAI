@@ -108,8 +108,18 @@ function ConceptPage() {
           </Box>
         </Box>
       </Box>
-      <Grid container justifyContent='center'
-        py={5} spacing={5}
+      <Grid container
+        sx={{
+          display: 'grid',
+          justifyContent: 'center',
+          gridTemplateColumns: {
+            xs: "repeat(1, 1fr)",
+            sm: "repeat(2, 1fr)",
+            md: "repeat(3, 1fr)"
+          },
+          gap: "20px",
+          padding: "40px 0px"
+        }}
       >
         {currentConcepts?.map(concept => {
           const isConceptUnlocked = previousConceptPassed || concept.concept_name === "Vocabulary";
@@ -117,10 +127,10 @@ function ConceptPage() {
 
           return (
             <Grid item key={concept.id}
-              xs={12} // Full width on extra small screens
-              sm={6}  // Half width on small screens
-              md={4}  // One-third width on medium screens
-              sx={{ padding: 0 }}
+            // xs={12} // Full width on extra small screens
+            // sm={6}  // Half width on small screens
+            // md={4}  // One-third width on medium screens
+            // sx={{ padding: 0 }}
             >
               <Button
                 component={NavLink}
@@ -140,7 +150,7 @@ function ConceptPage() {
                     display: "flex",
                     flexDirection: "column",
                     alignContent: "center",
-                    padding: "10px 20px",
+                    padding: "10px 20px 0px 20px",
                     width: "100%",
                     height: "200px",
                   }}>
@@ -148,38 +158,48 @@ function ConceptPage() {
                     sx={{
                       display: "flex",
                       alignItems: "start",
-                      height: "100px"
+                      height: "80px"
                     }}>
                     <Box
                       sx={{
-                        width: "100%",
                         display: "flex",
-                        alignItems: "center"
+                        alignItems: "flex-end",
+                        alignSelf: "center",
+                        // height: "80px"
                       }}>
                       <h3>{concept.concept_name}</h3>
+
                     </Box>
                   </Box>
-                  <p>{concept.level}</p>
-                  <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%', margin: 'auto' }}>
-                    <LinearProgress
-                      variant="determinate"
-                      value={concept.topicsPassed * 100}
-                      sx={{ height: 25, width: '100%', borderRadius: '3px' }}
-                      color='divider'
-                    />
-                    <Box
-                      sx={{
-                        top: 0,
-                        left: 0,
-                        bottom: 0,
-                        right: 0,
-                        position: 'absolute',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Typography fontSize="small" fontWeight="bold" color="textSecondary">{`${Math.round(concept.topicsPassed * 100)}%`}</Typography>
+                  <Box
+                    sx={{
+                      height: "100%",
+                      display: "grid",
+                      alignItems: "flex-end",
+                      paddingBottom: "17px"
+                    }}>
+                    <p>{concept.level}</p>
+                    <Box sx={{ position: 'relative', display: 'inline-flex', width: '100%', margin: 'auto' }}>
+                      <LinearProgress
+                        variant="determinate"
+                        value={concept.topicsPassed * 100}
+                        sx={{ height: 25, width: '100%', borderRadius: '3px' }}
+                        color='divider'
+                      />
+                      <Box
+                        sx={{
+                          top: 0,
+                          left: 0,
+                          bottom: 0,
+                          right: 0,
+                          position: 'absolute',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Typography fontSize="small" fontWeight="bold" color="textSecondary">{`${Math.round(concept.topicsPassed * 100)}%`}</Typography>
+                      </Box>
                     </Box>
                   </Box>
                 </Box>

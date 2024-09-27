@@ -88,7 +88,7 @@ const checkTopicProgression = async (uid, topicId, isPassing, currentLevel) => {
     });
 
     // Log the result for debugging
-    console.log("Updated topics for concept:", conceptData.concept_name);
+    // console.log("Updated topics for concept:", conceptData.concept_name);
   } catch (error) {
     throw new Error("Error updating topic: " + error.message);
   }

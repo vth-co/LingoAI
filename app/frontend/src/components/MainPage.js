@@ -21,7 +21,7 @@ function MainPage() {
   const { topicId } = useParams();
   const user = useSelector((state) => state.session.user);
 
-  
+
 
   const handleGenerateQuestions = async (e) => {
     e.preventDefault();
@@ -32,7 +32,7 @@ function MainPage() {
       );
       history.push("/deck");
     } catch (error) {
-      console.log("Error generating questions:", error.message);
+      console.error("Error generating questions:", error.message);
     }
   };
 

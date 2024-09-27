@@ -1,4 +1,5 @@
-import { checkDeckIsInProgressFromDB } from "../services/deckService";
+import { getAttemptByDeckIdFromDB, getArchivedStatusByDeckIdFromDB, getArchivedDecksFromDB, checkDeckIsInProgressFromDB } from "../services/deckService";
+import { fetchUserAttempt } from "./attempt";
 
 const { db } = require("../firebase/firebaseConfig");
 const {
@@ -29,24 +30,72 @@ const loadOneDeck = (deck) => ({
 
 const archiveDeckAction = (deckId) => ({
   type: ARCHIVE_DECK,
-  deckId
+  deckId,
+  archived: true
 })
 
 // Thunk Actions
+// export const fetchDecks = (userId, topicId) => async (dispatch) => {
+//   try {
+//     const userDocRef = doc(db, "users", userId);
+//     const userDoc = await getDoc(userDocRef);
+//     if (!userDoc.exists()) {
+//       throw new Error("User not found");
+//     }
+//     const userDecksCollectionRef = collection(userDocRef, "decks");
+//     const userDecksSnapshot = await getDocs(userDecksCollectionRef);
+//     const userDecks = userDecksSnapshot.docs.map((doc) => ({
+//       id: doc.id,
+//       ...doc.data(),
+//     }));
+
+//     dispatch(loadDecks(userDecks));
+//   } catch (error) {
+//     console.error("Error fetching decks:", error);
+//   }
+// };
+
 export const fetchDecks = (userId, topicId) => async (dispatch) => {
   try {
     const userDocRef = doc(db, "users", userId);
     const userDoc = await getDoc(userDocRef);
+
     if (!userDoc.exists()) {
       throw new Error("User not found");
     }
+
     const userDecksCollectionRef = collection(userDocRef, "decks");
     const userDecksSnapshot = await getDocs(userDecksCollectionRef);
-    const userDecks = userDecksSnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
+
+    // console.log("Fetched user decks snapshot:", userDecksSnapshot); // Log snapshot for debugging
+
+    const userDecks = await Promise.all(userDecksSnapshot.docs.map(async (doc) => {
+      const deckData = { id: doc.id, ...doc.data() };
+
+      // Fetch attempt data if necessary
+      let attemptId = null;
+      try {
+        const attempt = await getAttemptByDeckIdFromDB(deckData.id);
+        attemptId = attempt ? attempt.id : null; // Use null if no attempt is found
+      } catch {
+      }
+
+      // Fetch archived status
+      let archivedStatus = null;
+      try {
+        archivedStatus = await getArchivedStatusByDeckIdFromDB(deckData.id);
+      } catch (err) {
+        console.error(`Failed to fetch archived status for deck ${deckData.id}:`, err);
+      }
+
+      return {
+        ...deckData,
+        attemptId,      // Include attemptId or null
+        archived: archivedStatus // Include archived status
+      };
     }));
 
+    // console.log("Final user decks:", userDecks); // Log final decks data
     dispatch(loadDecks(userDecks));
   } catch (error) {
     console.error("Error fetching decks:", error);
@@ -62,7 +111,7 @@ export const fetchOneDeck = (deckId) => async (dispatch) => {
       const deckData = { id: deckSnapshot.id, ...deckSnapshot.data() };
       dispatch(loadOneDeck(deckData));
     } else {
-      console.log("No such deck found!");
+      console.error("No such deck found!");
     }
   } catch (error) {
     console.error("Error fetching deck:", error);
@@ -76,7 +125,7 @@ export const updateDeckStatus = async (deckId, attemptId) => {
       status: "in_progress",
       currentAttemptId: attemptId,
     });
-    console.log("Deck status updated to in_progress");
+    // console.log("Deck status updated to in_progress");
   } catch (error) {
     throw new Error("Error updating deck status: " + error.message);
   }
@@ -84,6 +133,7 @@ export const updateDeckStatus = async (deckId, attemptId) => {
 
 export const createAttemptIfNotExists =
   (deckId, attemptId) => async (dispatch, getState) => {
+    // console.log("ATTEMPTID", attemptId)
     if (!attemptId) {
       console.error("Invalid attemptId:", attemptId);
       throw new Error("Attempt ID is undefined or invalid.");
@@ -93,7 +143,7 @@ export const createAttemptIfNotExists =
 
     try {
       await setDoc(docRef, { attemptId }, { merge: true });
-      console.log("Attempt ID set successfully in deck:", deckId);
+      // console.log("Attempt ID set successfully in deck:", deckId);
     } catch (error) {
       console.error("Error setting attempt ID:", error);
       throw error;
@@ -102,27 +152,30 @@ export const createAttemptIfNotExists =
 
 export const updateAttemptId = (deckId, attemptId) => async (dispatch) => {
   try {
+    // console.log(`Attempting to update attempt ID for deck ${deckId} with attempt ID ${attemptId}`); // Log the parameters
+
     const deckDocRef = doc(db, "decks", deckId);
     await updateDoc(deckDocRef, { attemptId });
-    dispatch(fetchOneDeck(deckId)); // Optionally refresh the deck data
+
+    // console.log(`Successfully updated attempt ID for deck ${deckId}`); // Log success message
+
+    // Optionally refresh the deck data
+    dispatch(fetchOneDeck(deckId));
+    // console.log(`Fetching updated deck data for deck ${deckId}`); // Log fetching action
   } catch (error) {
     console.error("Error updating attempt ID:", error);
   }
 };
 
 export const archiveDeck = (deckId, userId) => async (dispatch) => {
+  const deckDocRef = doc(db, "decks", deckId);
   try {
-    const userDocRef = doc(db, "users", userId);
-    const deckDocRef = doc(userDocRef, "decks", deckId);
-
     await updateDoc(deckDocRef, {
-      archived: true
+      archived: true,
     });
-
     const updatedDeckSnapshot = await getDoc(deckDocRef);
     if (updatedDeckSnapshot.exists()) {
       const updatedDeck = { id: updatedDeckSnapshot.id, ...updatedDeckSnapshot.data() };
-      dispatch(loadOneDeck(updatedDeck)); // Ensure Redux state is updated
       console.log("Updated deck after archiving:", updatedDeck);
     }
 
@@ -150,19 +203,20 @@ const decksReducer = (state = initialState, action) => {
         selectedDeck: action.deck,
       };
     case ARCHIVE_DECK:
-      // return {
-      //   ...state,
-      //   decks: state.decks.filter(deck => deck.id !== action.deckId)
+      // if (state.selectedDeck?.id === action.deckId) {
+      //   return {
+      //     ...state,
+      //     selectedDeck: {
+      //       ...state.selectedDeck,
+      //       archived: true,
+      //     },
+      //   };
       // }
 
-      if (state.selectedDeck?.id === action.deckId) {
-        return {
-          ...state,
-          selectedDeck: {
-            ...state.selectedDeck,
-            archived: true,
-          },
-        };
+      return {
+        ...state,
+        decks: state.decks.map(deck => deck.id === action.deckId ? { ...deck, archived: true } : deck),
+        selectedDeck: state.selectedDeck?.id === action.deckId ? { ...state.selectedDeck, archived: true } : state.selectedDeck,
       }
     default:
       return state;

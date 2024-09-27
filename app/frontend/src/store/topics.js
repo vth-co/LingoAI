@@ -46,7 +46,7 @@ export const fetchTopicsThroughProgress = (userId) => async (dispatch) => {
       ...doc.data(),
     }));
 
-    console.log("topics", topics);
+    // console.log("topics", topics);
 
     dispatch(loadTopics(topics));
   } catch (error) {

@@ -32,29 +32,26 @@ function DeckPage() {
   const concepts = Object.values(useSelector((state) => state.concepts));
   const conceptFilter = concepts.find((concept) => conceptId === concept.id);
   const decksFilter = decks?.filter((deck) => topicId === deck.topic_id);
+  const getAllDecks = () => {
+    return decksFilter?.filter((deck) => !deck.attemptId && !deck.archived) || [];
+  };
+
+  const getInProgressDecks = () => {
+    return decksFilter?.filter((deck) => deck.attemptId && !deck.archived) || [];
+  };
+
+  const getArchivedDecks = () => {
+    return decksFilter?.filter((deck) => deck.archived) || [];
+  };
+  const newDecks = getAllDecks().length;
+  const inProgressDecks = getInProgressDecks().length;
   const theme = useTheme();
   const [canGenerate, setCanGenerate] = useState(false);
   const [message, setMessage] = useState("");
   const isDemoUser = user?.uid === "XfvjHvAySVSRdcOriaASlrnoma13";
-
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     if (user && topicId) {
-  //       setLoading(true);
-
-  //       // Fetch decks
-  //       await dispatch(fetchDecks(user.uid, topicId));
-
-  //       // Fetch topic and user concepts
-  //       dispatch(fetchOneTopic(topicId));
-  //       dispatch(fetchUserConcepts(user.uid));
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   fetchData();
-  // }, [dispatch, user, topicId, isDemoUser]);
+  const [displayedArchivedDecks, setDisplayedArchivedDecks] = useState(12);
+  const archivedDecks = getArchivedDecks();
+  const DECKS_PER_PAGE = 12
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,50 +72,35 @@ function DeckPage() {
     fetchData();
   }, [dispatch, user, topicId]);
 
-  // const checkCanGenerate = useCallback(async () => {
-  //   if (user) {
-  //     const canGenerate = await canGenerateDeck(user.uid, isDemoUser);
-  //     setCanGenerate(canGenerate);
-  //     if (!canGenerate) {
-  //       setMessage("This account has reached the limit for generating new decks today. The limit will reset after 12:00am PST.");
-  //     }
-  //   }
-  // }, [isDemoUser, user]);
-
   const checkCanGenerate = useCallback(async () => {
     if (user) {
+
+      if (newDecks >= 3 || inProgressDecks >= 3) {
+        setMessage("Please review the current decks before generating another one.");
+        setCanGenerate(false);
+        return;
+      }
       const { canGenerate, message } = await canGenerateDeck(user.uid, isDemoUser);
       setCanGenerate(canGenerate);
       if (!canGenerate) {
         setMessage(message);
       }
     }
-  }, [isDemoUser, user]);
+  }, [isDemoUser, user, newDecks]);
 
   useEffect(() => {
     checkCanGenerate();
   }, [checkCanGenerate, topicId]);
 
-
-  console.log("DEMO USER?", isDemoUser);
   const handleGenerateQuestions = async (e) => {
     e.preventDefault();
     setLoading(true);
     setMessage("");
 
     try {
-
-      // const totalRequests = await getTotalRequests();
-      // console.log("TOTALREQUESTS", totalRequests);
-      // if (totalRequests >= 50) {
-      //   setMessage("Lingo.ai's daily limit for generating new decks has been reached. Please try again after 12:00am PST.");
-      //   setCanGenerate(false)
-      //   return;
-      // }
-
       const { canGenerate, message } = await canGenerateDeck(user.uid, isDemoUser);
+
       if (!canGenerate) {
-        console.log("CANGEN", canGenerate, message);
         setMessage(message);
         setCanGenerate(false);
         return;
@@ -146,7 +128,7 @@ function DeckPage() {
       dispatch(fetchDecks(user.uid, topicId));
 
     } catch (error) {
-      console.log("Error generating questions:", error.message);
+      console.error("Error generating questions:", error.message);
     } finally {
       setLoading(false);
     }
@@ -161,23 +143,15 @@ function DeckPage() {
         pathname: `/decks/${deckId}`,
         state: { attemptId: newAttemptId },
       });
-      console.log("Attempt started successfully:", newAttemptId);
+      // console.log("Attempt started successfully:", newAttemptId);
     } catch (error) {
       console.error("Error starting attempt:", error);
     }
   };
 
-  const getAllDecks = () => {
-    return decksFilter?.filter((deck) => !deck.attemptId && !deck.isArchived) || [];
-  };
-
-  const getInProgressDecks = () => {
-    return decksFilter?.filter((deck) => deck.attemptId && !deck.archived) || [];
-  };
-
-  const getArchivedDecks = () => {
-    return decksFilter?.filter((deck) => deck.archived) || [];
-  };
+  const handleShowMore = () => {
+    setDisplayedArchivedDecks((prev) => prev + DECKS_PER_PAGE);
+  }
 
   return (
     <Box
@@ -248,11 +222,18 @@ function DeckPage() {
                     <Grid item xs={12} md={6}>
                       <Box
                         sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          flexWrap: "wrap",
-                          justifyContent: "space-between",
+                          // display: "flex",
+                          // flexDirection: "row",
+                          // flexWrap: "wrap",
+                          // justifyContent: "space-between",
+                          // gap: 2,
+                          display: "grid",
+                          gridTemplateColumns: {
+                            xs: "repeat(2, 1fr)",
+                            sm: "repeat(3, 1fr)",
+                          },
                           gap: 2,
+                          justifyContent: "center",
                         }}
                       >
                         {getAllDecks().map((deck) => (
@@ -302,11 +283,18 @@ function DeckPage() {
                     <Grid item xs={12}>
                       <Box
                         sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          flexWrap: "wrap",
-                          justifyContent: "space-between",
+                          // display: "flex",
+                          // flexDirection: "row",
+                          // flexWrap: "wrap",
+                          // justifyContent: "flex-start",
+                          // gap: 2,
+                          display: "grid",
+                          gridTemplateColumns: {
+                            xs: "repeat(2, 1fr)",
+                            sm: "repeat(3, 1fr)",
+                          },
                           gap: 2,
+                          justifyContent: "center",
                         }}
                       >
                         {getInProgressDecks().map((deck) => (
@@ -354,19 +342,28 @@ function DeckPage() {
                   <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
                 </Tooltip>
               </h2>
-              {getArchivedDecks().length > 0 ? (
+              {archivedDecks.length > 0 ? (
                 <Grid container spacing={2} justifyContent="center">
                   <Grid item xs={12} md={12}>
                     <Box
                       sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "wrap",
-                        justifyContent: "space-between",
+                        // display: "flex",
+                        // flexDirection: "row",
+                        // flexWrap: "wrap",
+                        // justifyContent: "space-between",
+                        // gap: 2,
+                        display: "grid",
+                        gridTemplateColumns: {
+                          xs: "repeat(2, 1fr)",
+                          sm: "repeat(4, 1fr)",
+                          md: "repeat(5, 1fr)",
+                          lg: "repeat(6, 1fr)",
+                        },
                         gap: 2,
+                        justifyContent: "center",
                       }}
                     >
-                      {getArchivedDecks().map((deck) => (
+                      {archivedDecks.slice(0, displayedArchivedDecks).map((deck) => (
                         <Box key={deck.id} sx={{ margin: 1 }}>
                           <Button
                             component={NavLink}
@@ -387,6 +384,23 @@ function DeckPage() {
                           </Button>
                         </Box>
                       ))}
+                    </Box>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center", // Centers the button horizontally
+                        mt: 2, // Add top margin if needed
+                      }}
+                    >
+                      {displayedArchivedDecks < archivedDecks.length && (
+                        <Button
+                          onClick={handleShowMore}
+                          variant="outlined"
+                          sx={{ mt: 2 }}
+                        >
+                          Show More
+                        </Button>
+                      )}
                     </Box>
                   </Grid>
                 </Grid>

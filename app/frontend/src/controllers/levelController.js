@@ -11,10 +11,10 @@ const getAllUserLevels = async (req, res) => {
 
 const getUserLevel = async (req, res) => {
     const { uid } = req.params;
-    console.log('uid: ', uid);
+    // console.log('uid: ', uid);
     try {
         const userLevel = await getUserLevelFromDB(uid);
-        if(!userLevel) {
+        if (!userLevel) {
             res.status(404).json({ message: 'User level not found' });
             return;
         }

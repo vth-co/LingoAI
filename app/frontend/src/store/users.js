@@ -82,7 +82,7 @@ export const fetchUserProgress = (uid) => async (dispatch) => {
       concepts,
     };
 
-    console.log("This is the data:", progressData);
+    // console.log("This is the data:", progressData);
 
     // Dispatch the combined progress data to the Redux store
     dispatch(loadUserProgress(progressData));

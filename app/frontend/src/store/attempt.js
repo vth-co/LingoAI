@@ -3,6 +3,7 @@ import {
   checkAnswerInDB,
 } from "../services/attemptService";
 import { getAttemptByDeckIdFromDB } from "../services/deckService";
+import { updateAttemptId } from "./decks";
 
 // Action Types
 
@@ -43,7 +44,7 @@ const updateUserAttempt = (id, checkAttempt) => ({
 export const fetchUserAttempt = (deckId) => async (dispatch) => {
   try {
     const attempt = await getAttemptByDeckIdFromDB(deckId);
-    console.log("Fetched attempt:", attempt); // Log fetched data
+    // console.log("Fetched attempt:", attempt); // Log fetched data
     dispatch(loadUserAttempt(attempt || {})); // Handle empty attempts
   } catch (error) {
     console.error("Error fetching user attempt:", error);
@@ -82,13 +83,27 @@ export const createUserAttempt = (userId, deckId) => async (dispatch) => {
     // Get the new attempt ID (document ID)
     const newAttemptId = docRef.id;
 
-    // Update the deck's attemptId field
-    const deckDocRef = doc(userDocRef, "decks", deckId);
-    await updateDoc(deckDocRef, { attemptId: newAttemptId });
+    const deckDocRef = doc(db, "decks", deckId);
+    const deckDoc = await getDoc(deckDocRef);
 
-    // Dispatch the action to add the attempt to your Redux store
-    dispatch(addUserAttempt(newAttemptId));
-    return { payload: newAttemptId };
+    if (deckDoc.exists()) {
+      await updateDoc(deckDocRef, { attemptId: newAttemptId });
+      // console.log("Deck updated with attempt ID:", newAttemptId);
+    } else {
+      console.error("Deck does not exist:", deckId)
+    }
+
+    dispatch(addUserAttempt({ id: newAttemptId, deckId }));
+    dispatch(updateAttemptId(deckId, newAttemptId))
+    return { payload: newAttemptId }
+
+    // Update the deck's attemptId field
+    // const deckDocRef = doc(userDocRef, "decks", deckId);
+    // await updateDoc(deckDocRef, { attemptId: newAttemptId });
+
+    // // Dispatch the action to add the attempt to your Redux store
+    // dispatch(addUserAttempt(newAttemptId));
+    // return { payload: newAttemptId };
   } catch (error) {
     console.error("Error creating user attempt:", error);
     throw error; // Throw the error to handle it where the thunk is called
@@ -122,6 +137,7 @@ const initialState = {
 const userAttemptsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_USER_ATTEMPT:
+      // console.log("USER ATTEMPT ACTION", action)
       return {
         ...state,
         attempts: state.attempts.map((attempt) =>

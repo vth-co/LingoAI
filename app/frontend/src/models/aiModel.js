@@ -13,13 +13,13 @@ async function generateQuestionsByAI(
   level,
   topic_id
 ) {
-  console.log(
-    "am i hitting generateVocabularyQuestionsByAI functions and check the user level: ",
-    concept_name,
-    topic,
-    native_language,
-    level
-  );
+  // console.log(
+  //   "am i hitting generateVocabularyQuestionsByAI functions and check the user level: ",
+  //   concept_name,
+  //   topic,
+  //   native_language,
+  //   level
+  // );
   // The Gemini 1.5 models are versatile and work with both text-only and multimodal prompts
   const model = genAI.getGenerativeModel({
     model: "gemini-1.5-flash",
@@ -206,7 +206,7 @@ async function generateQuestionsByAI(
   // Generate content from the AI model
   try {
     const result = await model.generateContent(prompt);
-    console.log("Generated result: ", result);
+    // console.log("Generated result: ", result);
 
     const jsonString = result.response.text();
     let jsonData = JSON.parse(jsonString);

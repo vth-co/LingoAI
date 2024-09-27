@@ -12,11 +12,11 @@ const LoginForm = () => {
 
   const onLogin = async (e) => {
     e.preventDefault();
-    console.log("Login function called"); // Check if this logs
+    // console.log("Login function called"); // Check if this logs
 
     try {
       await dispatch(login(email, password));
-      console.log("It tried"); // Check if this logs
+      // console.log("It tried"); // Check if this logs
     } catch (error) {
       console.error("Login error:", error); // Log the full error object
 
@@ -25,7 +25,7 @@ const LoginForm = () => {
       } else {
         setError(error?.message || "An unknown error occurred.")
       }
-      console.log("Current error state:", error); // Log the current error state
+      // console.log("Current error state:", error); // Log the current error state
     }
   };
 
@@ -40,8 +40,6 @@ const LoginForm = () => {
 
     await dispatch(login(credential, password));
   };
-
-  console.log("ERRRRR", error)
 
   return (
     <Container
