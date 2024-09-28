@@ -308,6 +308,7 @@ function CardPage() {
                       width: "300px",
                       height: "450px",
                       padding: 0,
+                      margin: 0,
                     }}
                   >
                     {feedback[cardIndex]?.isCorrect && (
@@ -331,37 +332,35 @@ function CardPage() {
                             }}
                           >
                             <Typography variant="h2">{card.question}</Typography>
-                            <FormLabel disabled>
-                              <Typography
-                                sx={{ color: theme.palette.text.primary, mt: 2 }}
-                              >
-                                Correct!
-                              </Typography>
-                              <Typography
-                                sx={{ color: theme.palette.text.primary, mt: 2 }}
-                              >
-                                {card.explanation}
-                              </Typography>
-                            </FormLabel>
                           </Box>
                           <Box
                             sx={{
                               backgroundColor: `${theme.palette.background.main}`,
                               height: "150px",
-                              padding: "20px",
+                              // padding: "20px",
                               borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                               overflow: "auto",
                               display: "flex",
                               alignContent: "center",
                               justifyContent: "center",
                               flexDirection: "column",
+                              alignItems: "stretch",
                             }}
                           >
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
-                              <CheckIcon
-                                sx={{ color: theme.palette.completion.good }}
-                              />
-                              <Typography sx={{ ml: 2 }}>{card.answer}</Typography>
+                            <Box sx={{
+                              display: "grid",
+                              overflowY: "auto",
+                              padding: "20px",
+                              rowGap: "10px"
+                            }}>
+                              <Box sx={{ display: "flex", alignItems: "center", }}>
+                                <CheckIcon
+                                  sx={{ color: theme.palette.completion.good }}
+                                />
+                                <Typography sx={{ ml: 1 }}>Correct!</Typography>
+                              </Box>
+                              <Typography><span style={{ fontWeight: "bold" }}>Correct Answer:</span> {card.answer}</Typography>
+                              <Typography><span style={{ fontWeight: "bold" }}>Explanation:</span> {card.explanation}</Typography>
                             </Box>
                           </Box>
                         </Card>
@@ -390,7 +389,7 @@ function CardPage() {
                             }}
                           >
                             <Typography variant="h2">{card.question}</Typography>
-                            <FormLabel disabled>
+                            {/* <FormLabel disabled>
                               <Typography
                                 sx={{ color: theme.palette.text.primary, mt: 2 }}
                               >
@@ -401,34 +400,36 @@ function CardPage() {
                               >
                                 {card.explanation}
                               </Typography>
-                            </FormLabel>
+                            </FormLabel> */}
                           </Box>
                           <Box
                             sx={{
                               backgroundColor: `${theme.palette.background.main}`,
                               height: "150px",
-                              padding: "20px",
+                              // padding: "20px",
                               borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
                               overflow: "auto",
                               display: "flex",
                               alignItems: "center",
                               justifyContent: "center",
                               flexDirection: "column",
+                              alignItems: "stretch",
                             }}
                           >
                             <Box sx={{
                               display: "grid",
-                              alignItems: "flex-start",
-                              justifyItems: "center",
-                              justifyContent: "flex-start",
-                              height: "110px",
                               overflowY: "auto",
-                              width: "auto",
+                              padding: "20px",
+                              rowGap: "10px"
                             }}>
-                              <CloseIcon
-                                sx={{ color: theme.palette.completion.poor }}
-                              />
-                              <p><span style={{ fontWeight: "bold" }}>Correct answer:</span> {feedback[cardIndex]?.correctAnswer}</p>
+                              <Box sx={{ display: "flex", alignItems: "center" }}>
+                                <CheckIcon
+                                  sx={{ color: theme.palette.completion.poor }}
+                                />
+                                <Typography sx={{ ml: 2 }}>Incorrect!</Typography>
+                              </Box>
+                              <Typography><span style={{ fontWeight: "bold" }}>Correct Answer:</span> {feedback[cardIndex]?.correctAnswer}</Typography>
+                              <Typography><span style={{ fontWeight: "bold" }}>Explanation:</span> {card.explanation}</Typography>
                             </Box>
                           </Box>
                         </Card>

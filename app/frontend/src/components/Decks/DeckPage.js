@@ -31,7 +31,7 @@ function DeckPage() {
   const [loading, setLoading] = useState(false);
   const concepts = Object.values(useSelector((state) => state.concepts));
   const conceptFilter = concepts.find((concept) => conceptId === concept.id);
-  const decksFilter = decks?.filter((deck) => topicId === deck.topic_id);
+  const decksFilter = decks?.filter((deck) => topicId === deck.topic_id).sort((a, b) => a.createdAt.seconds - b.createdAt.seconds);
   const getAllDecks = () => {
     return decksFilter?.filter((deck) => !deck.attemptId && !deck.archived) || [];
   };

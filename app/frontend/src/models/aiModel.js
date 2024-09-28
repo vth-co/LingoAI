@@ -28,8 +28,8 @@ async function generateQuestionsByAI(
 
   let picked_concept = concept_name.toLowerCase().split(" ").join("")
   let picked_topic = topic.toLowerCase().split(" ").join("")
-  const jsonschema = `JSON schema: { "type":"array", "properties": {"id": "integer", "question": "string",  "options": "array",  "answer": "string", "isAttempted": false }}.`;
-  const role = `You're an English teacher. Your task is to create language-learning questions.`;
+  const jsonschema = `JSON schema: { "type":"array", "properties": {"id": "integer", "question": "string",  "options": "array",  "answer": "string", "explanation": "string", "isAttempted": false }}.`;
+  const role = `You're an English teacher. Your task is to create questions and answers  that help non-native English speakers earn and enhance their English skills. Consider various contexts and attributes relevant to each category, and don't hesitate to include examples that span basic to advanced levels, incorporating different nuances, descriptions, and sensory experiences. Your aim is to foster a rich understanding of the language and its diverse applications.`;
 
   const vocabulary_nouns_content = {
     Beginner: "Everyday objects such as house, car, book, chair, table.",
@@ -46,44 +46,47 @@ async function generateQuestionsByAI(
   };
 
   const vocabulary_adjectives_content = {
-    Beginner: "Simple adjectives describing colors, sizes, and basic emotions (e.g., happy, sad, big, small).",
-    Intermediate: "Comparative and superlative adjectives (e.g., bigger, happiest) and more descriptive terms (e.g., fascinating, terrifying).",
-    Advanced: "Advanced descriptive language (e.g., intricate, minuscule, volatile)."
+    // Beginner: "Simple adjectives describing colors, sizes, and basic emotions (e.g., happy, sad, big, small).",
+    // Intermediate: "Comparative and superlative adjectives (e.g., bigger, happiest) and more descriptive terms (e.g., fascinating, terrifying).",
+    // Advanced: "Advanced descriptive language (e.g., intricate, minuscule, volatile)."
+    Beginner: "Simple adjectives",
+    Intermediate: "Comparative and superlative adjectives ",
+    Advanced: "Advanced descriptive language"
   };
 
   const vocabulary_pronouns_content = {
-    Beginner: "Basic pronouns like I, you, he, she, it, we, they.",
-    Intermediate: "Reflexive pronouns (myself, yourself) and relative pronouns (who, which, that).",
-    Advanced: "Indefinite pronouns (someone, anybody) and complex relative pronouns (whomever, whichever)."
+    Beginner: "Basic pronouns",
+    Intermediate: "Reflexive pronouns, relative pronouns",
+    Advanced: "Indefinite pronouns, complex relative pronouns"
   };
 
   const grammar_sentence_structure_question = {
     Beginner: "Basic SVO (Subject-Verb-Object) sentence structure.",
-    Intermediate: "Compound and complex sentences (e.g., I went home because it was raining).",
-    Advanced: "Use of subordinate clauses and participle clauses (e.g., Even though it was late, they continued working)."
+    Intermediate: "Compound and complex sentences",
+    Advanced: "Use of subordinate clauses and participle clauses "
   };
 
   const grammar_tense_question = {
-    Beginner: "Present Simple Tense: Basic statements and questions (e.g., I eat, Do you eat?).",
-    Intermediate: "Past Tense: Past Simple, Past Continuous (e.g., I was eating, He ate).",
-    Advanced: "Future Tense: Future Simple, Future Continuous (e.g., I will eat, He will be eating)."
+    Beginner: "Present Simple Tense: Basic statements and questions",
+    Intermediate: "Past Tense: Past Simple, Past Continuous",
+    Advanced: "Future Tense: Future Simple, Future Continuous"
   };
 
   const grammar_prepositions_question = {
-    Beginner: "Basic prepositions (in, on, at, under, over, beside).",
-    Intermediate: "Complex prepositions (despite, during, among).",
-    Advanced: "Advanced prepositional use in idiomatic expressions (e.g., in light of, in accordance with)."
+    Beginner: "Basic prepositions.",
+    Intermediate: "Complex prepositions",
+    Advanced: "Advanced prepositional use in idiomatic expressions"
   };
 
   const grammar_articles_question = {
-    Beginner: "Basic use of 'a', 'an', 'the'.",
-    Intermediate: "Specific and general use of articles, and when to omit them.",
-    Advanced: "Nuanced article usage, such as in academic writing (e.g., The significance of a study)."
+    Beginner: "Basic use of 'a', 'an', 'the'",
+    Intermediate: "Specific and general use of articles, and when to omit them",
+    Advanced: "Nuanced article usage"
   };
 
   const everyday_situations_introductions_question = {
-    Beginner: "Basic self-introductions (e.g., name, age, origin).",
-    Intermediate: "Detailed personal introductions, including hobbies and interests.",
+    Beginner: "Basic self-introductions",
+    Intermediate: "Detailed personal introductions",
     Advanced: "Professional introductions, networking, and formal settings."
   };
 
@@ -100,9 +103,9 @@ async function generateQuestionsByAI(
   };
 
   const everyday_situations_shopping_question = {
-    Beginner: "Asking for prices, describing items.",
-    Intermediate: "Bargaining, asking for recommendations, and product details.",
-    Advanced: "Discussing consumer rights, returning items, and making complaints."
+    Beginner: "Asking for prices, sizes, and colors; simple requests for availability; asking where items are located in the store",
+    Intermediate: "Comparing products; Asking for suggestions or alternatives;Discussing sales, promotions, or discounts",
+    Advanced: "Handling returns and exchanges, explaining reasons for dissatisfaction; Inquiring about warranties, refunds, or product defects; Asking about consumer policies"
   };
 
   let prompt;
@@ -112,87 +115,73 @@ async function generateQuestionsByAI(
     if (picked_concept === "vocabulary") {
       if (picked_topic === "nouns") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on the topic '${vocabulary_nouns_content[level]}'. Ensure that:
-                  - Each question has 4 distinct answer options in English with translations in ${native_language}.
-                  - Only one answer is correct with a clear explanation provided in ${native_language}.
-                  - Avoid any overlap between the answer options.
-                  - Ensure all answer options are grammatically correct and contextually appropriate.
+                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Generated answers match one of the provided options. 
+                  - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "verbs") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on the topic '${vocabulary_verbs_content[level]}'. Ensure that:
-                  - Each question has 4 distinct answer options in English with translations in ${native_language}.
-                  - Only one answer is correct with a clear explanation provided in ${native_language}.
-                  - Avoid any overlap between the answer options.
-                  - Ensure all answer options are grammatically correct and contextually appropriate.
-                  ${jsonschema}`;
+                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+        ${jsonschema}`;
+
       } else if (picked_topic === "adjectives") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on the topic '${vocabulary_adjectives_content[level]}'. Ensure that:
-                  - Each question has 4 distinct answer options in English with translations in ${native_language}.
-                  - Only one answer is correct with a clear explanation provided in ${native_language}.
-                  - Avoid any overlap between the answer options.
-                  - Ensure all answer options are grammatically correct and contextually appropriate.
+                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "pronouns") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on the topic '${vocabulary_pronouns_content[level]}'. Ensure that:
-                  - Each question has 4 distinct answer options in English with translations in ${native_language}.
-                  - Only one answer is correct with a clear explanation provided in ${native_language}.
-                  - Avoid any overlap between the answer options.
-                  - Ensure all answer options are grammatically correct and contextually appropriate.
+                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       }
     } else if (picked_concept === "grammar") {
       if (picked_topic === "sentencestructure") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on sentence structure. '${grammar_sentence_structure_question[level]}'. Ensure that:
-                  - Each question has 4 distinct answer options in English.
-                  - Only one answer is correct with a clear explanation provided in ${native_language}.
-                  - Avoid any ambiguity where multiple answers could be considered correct.
+                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "tense") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions focusing on tenses. '${grammar_tense_question[level]}'. Ensure that:
-                  - Each question has 4 distinct answer options in English.
-                  - Only one answer is correct with a clear explanation provided in ${native_language}.
-                  - Avoid any ambiguity where multiple answers could be considered correct.
+                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "prepositions") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on prepositions. '${grammar_prepositions_question[level]}'. Ensure that:
-                  - Each question has 4 distinct answer options in English.
-                  - Only one answer is correct with a clear explanation provided in ${native_language}.
-                  - Avoid any ambiguity where multiple answers could be considered correct.
+                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "articles") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on articles. '${grammar_articles_question[level]}'. Ensure that:
-                  - Each question has 4 distinct answer options in English.
-                  - Only one answer is correct with a clear explanation provided in ${native_language}.
-                  - Avoid any ambiguity where multiple answers could be considered correct.
+                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       }
     } else if (picked_concept === "everydaysituations") {
       if (picked_topic === "introductions") {
         prompt = `${role} For a ${level} learner, create 3 unique questions involving dialogues related to introductions. '${everyday_situations_introductions_question[level]}'. Ensure that:
-                  - Each question presents a scenario with a fill-in-the-blank format.
-                  - Provide 4 distinct and contextually appropriate answer options in English.
-                  - Only one answer is correct with a clear explanation provided in ${native_language}.
-                  - Avoid any overlap or ambiguity in the answer options.
+                  - Each question presents a realistic scenario with a fill-in-the-blank format.
+                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "familyandfriends") {
         prompt = `${role} For a ${level} learner, create 3 unique questions involving dialogues related to family and friends. '${everyday_situations_familyandfriends_question[level]}'. Ensure that:
-                  - Each question presents a scenario with a fill-in-the-blank format.
-                  - Provide 4 distinct and contextually appropriate answer options in English.
-                  - Only one answer is correct with a clear explanation provided in ${native_language}.
-                  - Avoid any overlap or ambiguity in the answer options.
+                  - Each question presents a realistic scenario with a fill-in-the-blank format.
+                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "dailyroutines") {
         prompt = `${role} For a ${level} learner, create 3 unique questions involving dialogues related to daily routines. '${everyday_situations_dailyroutines_question[level]}'. Ensure that:
-                  - Each question presents a scenario with a fill-in-the-blank format.
-                  - Provide 4 distinct and contextually appropriate answer options in English.
-                  - Only one answer is correct with a clear explanation provided in ${native_language}.
-                  - Avoid any overlap or ambiguity in the answer options.
+                  - Each question presents a realistic scenario with a fill-in-the-blank format.
+                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "shopping") {
         prompt = `${role} For a ${level} learner, create 3 unique questions involving dialogues related to shopping. '${everyday_situations_shopping_question[level]}'. Ensure that:
-                  - Each question presents a scenario with a fill-in-the-blank format.
-                  - Provide 4 distinct and contextually appropriate answer options in English.
-                  - Only one answer is correct with a clear explanation provided in ${native_language}.
-                  - Avoid any overlap or ambiguity in the answer options.
+                  - Each question presents a realistic scenario with a fill-in-the-blank format.
+                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       }
     } else {
@@ -212,14 +201,33 @@ async function generateQuestionsByAI(
     let jsonData = JSON.parse(jsonString);
 
     // Validate the generated questions to ensure they match the criteria
+    // jsonData.forEach((item) => {
+    //   const { question, options, answer } = item;
+    //   if (!options.includes(answer)) {
+    //     throw new Error(
+    //       `Generated answer '${answer}' does not match any of the options for question: '${question}'`
+    //     );
+    //   }
+    // });
+
     jsonData.forEach((item) => {
       const { question, options, answer } = item;
-      if (!options.includes(answer)) {
+
+      // Normalize the answer and options for consistent comparison
+      const normalizedAnswer = answer.trim().toLowerCase();
+      const normalizedOptions = options.map(option => option.trim().toLowerCase());
+
+      // Check for match
+      if (!normalizedOptions.includes(normalizedAnswer)) {
+        console.log("Question:", question);
+        console.log("Options:", normalizedOptions);
+        console.log("Generated Answer:", normalizedAnswer);
         throw new Error(
           `Generated answer '${answer}' does not match any of the options for question: '${question}'`
         );
       }
     });
+
 
     return { topic_id, topic, level, jsonData };
   } catch (error) {
