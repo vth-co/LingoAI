@@ -43,8 +43,11 @@ _Check out the [Lingo.ai Wiki](https://github.com/athena-codes/a-A-summer-hackat
 ### Topics Page
 [![image](https://github.com/user-attachments/assets/ec844b0e-c16c-42b2-a5b4-7c17aa82185f)](https://lingo-ai-app.vercel.app/concepts/slXLuVF45Qi1awSR0isu)
 
+### Deck Page
+[![image](https://github.com/user-attachments/assets/d928de01-7eb5-402a-827c-63e50edd8f7c)](https://lingo-ai-app.vercel.app/concepts/slXLuVF45Qi1awSR0isu/topics/GAakbJy9YcPKy9gRCg4R/decks)
+
 ### Card Page
-![lingo-card-ezgif com-optimize](https://github.com/user-attachments/assets/94a1ac1d-15df-4ccb-ae3d-4b6db3ae75fb)
+<img src="https://github.com/user-attachments/assets/94a1ac1d-15df-4ccb-ae3d-4b6db3ae75fb" width="1012px">
 
 ## Getting Started
 
