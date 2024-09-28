@@ -8,11 +8,11 @@
 Designed and developed by [Athena Chiarello](https://github.com/athena-codes), [Carmen Shiu](https://github.com/craftycarmen), [Geryko Menta](https://github.com/glmenta), [Penny Wang](https://github.com/pennywangpw), and [Vu Co](https://github.com/vth-co).
 
 ## Features
-- User-Friendly Setup: Users can easily select their native language and English proficiency level through an intuitive interface built with React and Material UI, ensuring a smooth onboarding experience.
-- Dynamic Learning Paths: After choosing a concept and topic, users can dive into focused learning sessions, with data managed efficiently using Redux for optimal performance.
-- Interactive Flashcards: The application employs Gemini AI to generate interactive questions, providing instant feedback to users, which enhances their understanding and retention of the material.
-- Progress Tracking: Users can review their decks, monitor their progress through various levels, and earn Lingo.ai Champion Badges, motivating them to continue learning.
-- Robust Backend: Supported by Firebase and Express, Lingo.ai ensures a smooth backend experience, handling user authentication and data management seamlessly.
+- **User-Friendly Setup:** Users can easily select their native language and English proficiency level through an intuitive interface built with React and Material UI, ensuring a smooth onboarding experience.
+- **Dynamic Learning Paths:** After choosing a concept and topic, users can dive into focused learning sessions, with data managed efficiently using Redux for optimal performance.
+- **Interactive Flashcards:** The application employs Gemini AI to generate interactive questions, providing instant feedback to users, which enhances their understanding and retention of the material.
+- **Progress Tracking:** Users can review their decks, monitor their progress through various levels, and earn Lingo.ai Champion Badges, motivating them to continue learning.
+- **Robust Backend:** Supported by Firebase and Express, Lingo.ai ensures a smooth backend experience, handling user authentication and data management seamlessly.
 
 ## Tech Stack
 ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
