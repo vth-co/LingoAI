@@ -70,7 +70,7 @@ function TopicsPage() {
       <Box>
         <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center"
           textAlign="center">
-          <h1>Select {currentConcept?.concept_name} Topic</h1>
+          <Typography variant="h1">Select {currentConcept?.concept_name} Topic</Typography>
           <p>
             Select any topic to begin. In order to pass a topic, you must score
             at least 80% three times.
@@ -165,7 +165,7 @@ function TopicsPage() {
                       alignSelf: "start",
                       height: "80px"
                     }}>
-                    <h3>{topic.topic_name}</h3>
+                    <Typography variant="h3">{topic.topic_name}</Typography>
                     {/* {topic.passes === 3 && <CheckIcon sx={{
                     ml: 1,
                     color: `${theme.palette.completion.good}`,

@@ -55,8 +55,8 @@ function ArchivedCardPage() {
                 padding: "0 5vw 0 5vw"
             }}
         >
-            <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topicName}</h1>
-            <h3 style={{ textAlign: "center", marginTop: 0 }}>{topicLevel}</h3>
+            <Typography variant="h1" sx={{ textAlign: "center" }}>{topicName}</Typography>
+            <Typography variant="h3" sx={{ textAlign: "center" }}>{topicLevel}</Typography>
             <Container
                 sx={{
                     justifyContent: "center",
@@ -93,7 +93,7 @@ function ArchivedCardPage() {
                                             overflow: "auto",
                                         }}
                                     >
-                                        <h2 style={{ margin: "0" }}>{card.question}</h2>
+                                        <Typography variant="h2">{card.question}</Typography>
                                         <FormLabel disabled>
                                             <Typography
                                                 sx={{ color: theme.palette.text.primary, mt: 2 }}

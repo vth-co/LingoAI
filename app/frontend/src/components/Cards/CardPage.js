@@ -150,8 +150,8 @@ function CardPage() {
         padding: "0 5vw 0 5vw"
       }}
     >
-      <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topicName}</h1>
-      <h3 style={{ textAlign: "center", marginTop: 0 }}>{topicLevel}</h3>
+      <Typography variant="h1" sx={{ textAlign: "center" }}>{topicName}</Typography>
+      <Typography variant="h3" sx={{ textAlign: "center" }}>{topicLevel}</Typography>
       {deck?.archived ? (<p style={{ textAlign: "center" }}>This deck has been archived!</p>) : (<p style={{ textAlign: "center" }}>Each card contains four options. Select your answer to see if it's correct.</p>)}
       <Container
         sx={{
@@ -216,14 +216,14 @@ function CardPage() {
                           overflow: "auto",
                         }}
                       >
-                        <h2
+                        <Typography variant="h2"
                           style={{ margin: "0" }}
                           dangerouslySetInnerHTML={{
                             __html: card.question.split('\n')
                               .map(line => `<div style="margin: 0; padding: 0; margin-bottom: 10px;">${line}</div>`)
                               .join('')
                           }}
-                        />
+                        ></Typography>
                       </Box>
                       <Box
                         sx={{
@@ -330,7 +330,7 @@ function CardPage() {
                               overflow: "auto",
                             }}
                           >
-                            <h2 style={{ margin: "0" }}>{card.question}</h2>
+                            <Typography variant="h2">{card.question}</Typography>
                             <FormLabel disabled>
                               <Typography
                                 sx={{ color: theme.palette.text.primary, mt: 2 }}
@@ -389,7 +389,7 @@ function CardPage() {
                               overflow: "auto",
                             }}
                           >
-                            <h2 style={{ margin: "0" }}>{card.question}</h2>
+                            <Typography variant="h2">{card.question}</Typography>
                             <FormLabel disabled>
                               <Typography
                                 sx={{ color: theme.palette.text.primary, mt: 2 }}

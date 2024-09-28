@@ -172,8 +172,8 @@ function DeckPage() {
         </Box>
       ) : (
         <>
-          <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topic ? topic.topic_name : "Loading topic..."}</h1>
-          <h3 style={{ textAlign: "center", marginTop: 0 }}>{conceptFilter?.level}</h3>
+          <Typography variant="h1" sx={{ textAlign: "center" }}>{topic ? topic.topic_name : "Loading topic..."}</Typography>
+          <Typography variant="h3" sx={{ textAlign: "center" }}>{conceptFilter?.level}</Typography>
           <Container sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
             <Box
               sx={{
@@ -181,7 +181,8 @@ function DeckPage() {
                 justifyContent: "center",
                 justifyItems: "center",
                 mb: 2, // margin bottom
-                rowGap: "15px"
+                rowGap: "15px",
+                mt: 2,
               }}
             >
               <Button
@@ -206,7 +207,7 @@ function DeckPage() {
             </Box>
             <Grid container spacing={2} justifyContent="center" paddingTop="20px">
               <Grid item xs={12} sm={12} md={6}>
-                <h2>
+                <Typography variant="h2" sx={{ padding: "20px 0" }}>
                   New
                   <Tooltip
                     title={
@@ -214,20 +215,14 @@ function DeckPage() {
                     }
                     arrow
                   >
-                    <InfoIcon color="action" sx={{ fontSize: 16 }} />
+                    <InfoIcon color="action" sx={{ fontSize: 16, position: "relative", top: '-5px', left: '1px' }} />
                   </Tooltip>
-                </h2>
+                </Typography>
                 {getAllDecks().length > 0 ? (
                   <Grid container spacing={2} justifyContent="center">
                     <Grid item xs={12} md={12}>
                       <Box
                         sx={{
-
-                          // display: "flex",
-                          // flexDirection: "row",
-                          // flexWrap: "wrap",
-                          // justifyContent: "space-between",
-                          // gap: 2,
                           display: "grid",
                           gridTemplateColumns: {
                             xs: "repeat(2, 1fr)",
@@ -253,9 +248,9 @@ function DeckPage() {
                               }}
                               onClick={() => handleStartAttempt(deck.id)}
                             >
-                              <h3>
+                              <Typography variant="h3">
                                 {`Deck ${deck.deck_name}`}
-                              </h3>
+                              </Typography>
                             </Button>
                           </Box>
                         ))}
@@ -268,7 +263,7 @@ function DeckPage() {
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>
-                <h2>
+                <Typography variant="h2" sx={{ padding: "20px 0" }}>
                   In Progress
                   <Tooltip
                     title={
@@ -276,19 +271,14 @@ function DeckPage() {
                     }
                     arrow
                   >
-                    <InfoIcon color="action" sx={{ fontSize: 16 }} />
+                    <InfoIcon color="action" sx={{ fontSize: 16, position: "relative", top: '-5px', left: '1px' }} />
                   </Tooltip>
-                </h2>
+                </Typography>
                 {getInProgressDecks().length > 0 ? (
                   <Grid container spacing={2} justifyContent="center">
                     <Grid item xs={12} md={12}>
                       <Box
                         sx={{
-                          // display: "flex",
-                          // flexDirection: "row",
-                          // flexWrap: "wrap",
-                          // justifyContent: "flex-start",
-                          // gap: 2,
                           display: "grid",
                           gridTemplateColumns: {
                             xs: "repeat(2, 1fr)",
@@ -316,9 +306,9 @@ function DeckPage() {
                                   }`,
                               }}
                             >
-                              <h3>
+                              <Typography variant="h3">
                                 {`Deck ${deck.deck_name}`}
-                              </h3>
+                              </Typography>
                             </Button>
                           </Box>
                         ))}
@@ -332,7 +322,7 @@ function DeckPage() {
             </Grid>
 
             <Box mt={4}>
-              <h2>
+              <Typography variant="h2" sx={{ padding: "20px 0" }}>
                 Archived
                 <Tooltip
                   title={
@@ -340,9 +330,9 @@ function DeckPage() {
                   }
                   arrow
                 >
-                  <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+                  <InfoIcon color="action" sx={{ fontSize: 16, position: "relative", top: '-5px', left: '1px' }} />
                 </Tooltip>
-              </h2>
+              </Typography>
               {archivedDecks.length > 0 ? (
                 <Grid container spacing={2} justifyContent="center">
                   <Grid item xs={12} md={12}>
@@ -379,9 +369,9 @@ function DeckPage() {
                                 }`,
                             }}
                           >
-                            <h3>
+                            <Typography variant="h3">
                               {`Deck ${deck.deck_name}`}
-                            </h3>
+                            </Typography>
                           </Button>
                         </Box>
                       ))}
