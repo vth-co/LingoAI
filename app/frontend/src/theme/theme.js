@@ -28,6 +28,23 @@ export const lightTheme = createTheme({
       poor: "#f44336",
     },
   },
+  typography: {
+    h1: {
+      fontSize: 32,
+      fontWeight: 800,
+      lineHeight: 1.2,
+    },
+    h2: {
+      fontSize: 24,
+      fontWeight: 800,
+      lineHeight: 1.3,
+    },
+    h3: {
+      fontSize: 18,
+      fontWeight: 800,
+      lineHeight: 1.4,
+    },
+  },
 });
 
 export const darkTheme = createTheme({
@@ -57,6 +74,23 @@ export const darkTheme = createTheme({
     completion: {
       good: "#4caf50",
       poor: "#f44336",
+    },
+  },
+  typography: {
+    h1: {
+      fontSize: '2em',
+      fontWeight: 'bold',
+      lineHeight: 1.2,
+    },
+    h2: {
+      fontSize: '24px',
+      fontWeight: 'bold',
+      lineHeight: 1.3,
+    },
+    h3: {
+      fontSize: '18px',
+      fontWeight: 'normal',
+      lineHeight: 1.4,
     },
   },
 });

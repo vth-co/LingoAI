@@ -152,7 +152,7 @@ function BeginnerConcepts({ user, concepts }) {
                                                 alignItems: "flex-end",
                                                 alignSelf: "center",
                                             }}>
-                                            <h3>{concept.concept_name}</h3>
+                                            <Typography variant="h3">{concept.concept_name}</Typography>
                                         </Box>
                                     </Box>
                                     <Box

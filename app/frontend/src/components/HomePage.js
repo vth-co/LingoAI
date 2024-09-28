@@ -315,7 +315,7 @@ function HomePage() {
           justifyContent="center"
           alignItems="center"
         >
-          <h1>Welcome, {user.username}!</h1>
+          <Typography variant="h1">Welcome, {user.username}!</Typography>
           <Link href="/concepts">
             <Button
               variant="contained"
@@ -324,12 +324,13 @@ function HomePage() {
                 borderRadius: "3px",
                 border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
                   }`,
+                marginTop: "20px"
               }}
             >
-              Start Learning Now
+              Start Leveling Up Now
             </Button>
           </Link>
-          <h2 style={{ padding: "16px 0px" }}>Your Latest Lingo.ai Progress</h2>
+          <Typography variant="h2" sx={{ padding: "20px 0" }}>Your Latest Lingo.ai Progress</Typography>
         </Box>
         {user.badges?.length === 3 && (
           <Box
@@ -343,7 +344,7 @@ function HomePage() {
               width: "100%",
             }}
           >
-            <h3> Congratulations! You're the ultimate Lingo.ai champ.</h3>
+            <Typography variant="h3" sx={{ padding: "20px 0" }}>Congratulations! You're the ultimate Lingo.ai champ.</Typography>
             <span>
               The Lingo.ai team is working on adding more content. Stay tuned!
             </span>

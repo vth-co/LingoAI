@@ -44,7 +44,7 @@ const LoginForm = () => {
   return (
     <Container
       sx={{
-        padding: "5vw"
+        padding: "2vw 5vw"
       }}
     >
       <form onSubmit={onLogin}>

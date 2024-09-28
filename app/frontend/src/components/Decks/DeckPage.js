@@ -11,7 +11,8 @@ import {
   Grid,
   CircularProgress,
   Tooltip,
-  Alert
+  Alert,
+  LinearProgress
 } from "@mui/material";
 import { addQuestions } from "../../store/questions";
 import { fetchOneTopic } from "../../store/topics";
@@ -31,7 +32,7 @@ function DeckPage() {
   const [loading, setLoading] = useState(false);
   const concepts = Object.values(useSelector((state) => state.concepts));
   const conceptFilter = concepts.find((concept) => conceptId === concept.id);
-  const decksFilter = decks?.filter((deck) => topicId === deck.topic_id);
+  const decksFilter = decks?.filter((deck) => topicId === deck.topic_id).sort((a, b) => a.createdAt.seconds - b.createdAt.seconds);
   const getAllDecks = () => {
     return decksFilter?.filter((deck) => !deck.attemptId && !deck.archived) || [];
   };
@@ -172,8 +173,8 @@ function DeckPage() {
         </Box>
       ) : (
         <>
-          <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topic ? topic.topic_name : "Loading topic..."}</h1>
-          <h3 style={{ textAlign: "center", marginTop: 0 }}>{conceptFilter?.level}</h3>
+          <Typography variant="h1" sx={{ textAlign: "center" }}>{topic ? topic.topic_name : "Loading topic..."}</Typography>
+          <Typography variant="h3" sx={{ textAlign: "center" }}>{conceptFilter?.level}</Typography>
           <Container sx={{ display: "flex", flexDirection: "column", flex: 1 }}>
             <Box
               sx={{
@@ -181,7 +182,8 @@ function DeckPage() {
                 justifyContent: "center",
                 justifyItems: "center",
                 mb: 2, // margin bottom
-                rowGap: "15px"
+                rowGap: "15px",
+                mt: 2,
               }}
             >
               <Button
@@ -206,7 +208,7 @@ function DeckPage() {
             </Box>
             <Grid container spacing={2} justifyContent="center" paddingTop="20px">
               <Grid item xs={12} sm={12} md={6}>
-                <h2>
+                <Typography variant="h2" sx={{ padding: "20px 0" }}>
                   New
                   <Tooltip
                     title={
@@ -214,61 +216,60 @@ function DeckPage() {
                     }
                     arrow
                   >
-                    <InfoIcon color="action" sx={{ fontSize: 16 }} />
+                    <InfoIcon color="action" sx={{ fontSize: 16, position: "relative", top: '-5px', left: '1px' }} />
                   </Tooltip>
-                </h2>
-                {getAllDecks().length > 0 ? (
-                  <Grid container spacing={2} justifyContent="center">
-                    <Grid item xs={12} md={12}>
-                      <Box
-                        sx={{
+                </Typography>
+                {loading ? (
+                  <CircularProgress />) : getAllDecks().length > 0 ?
+                  (
 
-                          // display: "flex",
-                          // flexDirection: "row",
-                          // flexWrap: "wrap",
-                          // justifyContent: "space-between",
-                          // gap: 2,
-                          display: "grid",
-                          gridTemplateColumns: {
-                            xs: "repeat(2, 1fr)",
-                            sm: "repeat(3, 1fr)",
-                          },
-                          gap: 2,
-                          justifyContent: "center",
-                        }}
-                      >
-                        {getAllDecks().map((deck) => (
-                          <Box key={deck.id} sx={{ margin: 1 }}>
-                            <Button
-                              component={NavLink}
-                              to={`/decks/${deck.id}`}
-                              variant="contained"
-                              color="primary"
-                              sx={{
-                                width: "150px",
-                                height: "225px",
-                                borderRadius: "3px",
-                                border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                                  }`,
-                              }}
-                              onClick={() => handleStartAttempt(deck.id)}
-                            >
-                              <h3>
-                                {`Deck ${deck.deck_name}`}
-                              </h3>
-                            </Button>
-                          </Box>
-                        ))}
-                      </Box>
+
+
+                    <Grid container spacing={2} justifyContent="center">
+                      <Grid item xs={12} md={12}>
+                        <Box
+                          sx={{
+                            display: "grid",
+                            gridTemplateColumns: {
+                              xs: "repeat(2, 1fr)",
+                              sm: "repeat(3, 1fr)",
+                            },
+                            gap: 2,
+                            justifyContent: "center",
+                          }}
+                        >
+                          {getAllDecks().map((deck) => (
+                            <Box key={deck.id} sx={{ margin: 1 }}>
+                              <Button
+                                component={NavLink}
+                                to={`/decks/${deck.id}`}
+                                variant="contained"
+                                color="primary"
+                                sx={{
+                                  width: "150px",
+                                  height: "225px",
+                                  borderRadius: "3px",
+                                  border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                                    }`,
+                                }}
+                                onClick={() => handleStartAttempt(deck.id)}
+                              >
+                                <Typography variant="h3">
+                                  {`Deck ${deck.deck_name}`}
+                                </Typography>
+                              </Button>
+                            </Box>
+                          ))}
+                        </Box>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                ) : (
-                  <Typography>You currently do not have any new decks.</Typography>
-                )}
+                  ) : (
+                    <Typography>You currently do not have any new decks.</Typography>
+                  )}
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>
-                <h2>
+                <Typography variant="h2" sx={{ padding: "20px 0" }}>
                   In Progress
                   <Tooltip
                     title={
@@ -276,19 +277,14 @@ function DeckPage() {
                     }
                     arrow
                   >
-                    <InfoIcon color="action" sx={{ fontSize: 16 }} />
+                    <InfoIcon color="action" sx={{ fontSize: 16, position: "relative", top: '-5px', left: '1px' }} />
                   </Tooltip>
-                </h2>
+                </Typography>
                 {getInProgressDecks().length > 0 ? (
                   <Grid container spacing={2} justifyContent="center">
                     <Grid item xs={12} md={12}>
                       <Box
                         sx={{
-                          // display: "flex",
-                          // flexDirection: "row",
-                          // flexWrap: "wrap",
-                          // justifyContent: "flex-start",
-                          // gap: 2,
                           display: "grid",
                           gridTemplateColumns: {
                             xs: "repeat(2, 1fr)",
@@ -316,9 +312,9 @@ function DeckPage() {
                                   }`,
                               }}
                             >
-                              <h3>
+                              <Typography variant="h3">
                                 {`Deck ${deck.deck_name}`}
-                              </h3>
+                              </Typography>
                             </Button>
                           </Box>
                         ))}
@@ -332,7 +328,7 @@ function DeckPage() {
             </Grid>
 
             <Box mt={4}>
-              <h2>
+              <Typography variant="h2" sx={{ padding: "20px 0" }}>
                 Archived
                 <Tooltip
                   title={
@@ -340,9 +336,9 @@ function DeckPage() {
                   }
                   arrow
                 >
-                  <InfoIcon color="action" sx={{ mt: -1, fontSize: 16 }} />
+                  <InfoIcon color="action" sx={{ fontSize: 16, position: "relative", top: '-5px', left: '1px' }} />
                 </Tooltip>
-              </h2>
+              </Typography>
               {archivedDecks.length > 0 ? (
                 <Grid container spacing={2} justifyContent="center">
                   <Grid item xs={12} md={12}>
@@ -379,9 +375,9 @@ function DeckPage() {
                                 }`,
                             }}
                           >
-                            <h3>
+                            <Typography variant="h3">
                               {`Deck ${deck.deck_name}`}
-                            </h3>
+                            </Typography>
                           </Button>
                         </Box>
                       ))}

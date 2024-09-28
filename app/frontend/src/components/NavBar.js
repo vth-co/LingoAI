@@ -136,10 +136,10 @@ const NavBar = () => {
                   Hello, {user.username}!
                 </Typography>
               </NoHoverMenuItem>
-              <MenuItem component={NavLink} to="/">
+              <MenuItem component={NavLink} to="/" onClick={handleClose}>
                 <Typography color="primary">Profile</Typography>
               </MenuItem>
-              <MenuItem component={NavLink} to="/concepts">
+              <MenuItem component={NavLink} to="/concepts" onClick={handleClose}>
                 <Typography color="primary">Concepts</Typography>
               </MenuItem>
               <NoHoverMenuItem>
@@ -148,10 +148,10 @@ const NavBar = () => {
             </Box>
           ) : (
             <Box>
-              <MenuItem component={NavLink} to="/login">
+              <MenuItem component={NavLink} to="/login" onClick={handleClose}>
                 <Typography color="primary">Log In</Typography>
               </MenuItem>
-              <MenuItem component={NavLink} to="/sign-up">
+              <MenuItem component={NavLink} to="/sign-up" onClick={handleClose}>
                 <Typography color="primary">Sign Up</Typography>
               </MenuItem>
             </Box>

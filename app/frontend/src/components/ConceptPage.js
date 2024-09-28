@@ -65,7 +65,7 @@ function ConceptPage() {
     <Container>
       <Box>
         <Box display='flex' flexDirection='column' alignItems='center' textAlign="center">
-          <h1>Select {user.level} Concept</h1>
+          <Typography variant="h1">Select {user.level} Concept</Typography>
           <p>These are the recommended concepts based on your current proficiency level.</p>
           {conceptPercentage === 100 ? (
             <p>Congratulations! You've earned the Lingo.ai {user.level} Champion Badge.</p>
@@ -167,7 +167,7 @@ function ConceptPage() {
                         alignSelf: "center",
                         // height: "80px"
                       }}>
-                      <h3>{concept.concept_name}</h3>
+                      <Typography variant="h3">{concept.concept_name}</Typography>
 
                     </Box>
                   </Box>
@@ -221,12 +221,12 @@ function ConceptPage() {
         <>
           <Divider />
           <Box>
-            <h2 style={{ textAlign: "center" }}>Available Concept Levels</h2>
+            <Typography variant="h2" sx={{ textAlign: "center", padding: "20px 0" }}>Available Concept Levels</Typography>
             {user?.level === "Advanced" && (
               <>
                 <Box display="flex" alignItems="center" onClick={handleIntermediateToggle} sx={{ cursor: 'pointer' }}>
                   <Box>
-                    <h3>Intermediate</h3>
+                    <Typography variant="h3" sx={{ padding: "20px 0" }}>Intermediate</Typography>
                   </Box>
                   <IconButton size="small">
                     <ExpandMoreIcon />
@@ -241,7 +241,7 @@ function ConceptPage() {
             )}
             <Box display="flex" alignItems="center" onClick={handleBeginnerToggle} sx={{ cursor: 'pointer' }}>
               <Box>
-                <h3>Beginner</h3>
+                <Typography variant="h3" sx={{ padding: "20px 0" }}>Beginner</Typography>
               </Box>
               <IconButton size="small">
                 <ExpandMoreIcon />

@@ -32,16 +32,35 @@ function ArchivedCardPage() {
     const topicLevel = deck?.level;
     const [loading, setLoading] = useState(false);
 
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         setLoading(true)
+    //         await dispatch(fetchOneDeck(deckId));
+    //         setTimeout(() => {
+    //             setLoading(false);
+    //         }, 500);
+    //     }
+    //     fetchData();
+
+    // }, [dispatch, deckId, attemptId]);
+
     useEffect(() => {
+        let isMounted = true; // Track whether the component is still mounted
+
         const fetchData = async () => {
-            setLoading(true)
+            setLoading(true);
             await dispatch(fetchOneDeck(deckId));
-            setTimeout(() => {
+
+            if (isMounted) { // Only update state if the component is still mounted
                 setLoading(false);
-            }, 500);
+            }
         }
+
         fetchData();
 
+        return () => {
+            isMounted = false; // Mark as unmounted when the component unmounts
+        };
     }, [dispatch, deckId, attemptId]);
 
 
@@ -55,8 +74,8 @@ function ArchivedCardPage() {
                 padding: "0 5vw 0 5vw"
             }}
         >
-            <h1 style={{ textAlign: "center", marginBottom: 0 }}>{topicName}</h1>
-            <h3 style={{ textAlign: "center", marginTop: 0 }}>{topicLevel}</h3>
+            <Typography variant="h1" sx={{ textAlign: "center" }}>{topicName}</Typography>
+            <Typography variant="h3" sx={{ textAlign: "center" }}>{topicLevel}</Typography>
             <Container
                 sx={{
                     justifyContent: "center",
@@ -86,49 +105,38 @@ function ArchivedCardPage() {
                                 >
                                     <Box
                                         sx={{
-                                            backgroundColor: `${theme.palette.secondary.main}`,
-                                            width: "300px",
+                                            backgroundColor: `${theme.palette.divider.main}`,
+                                            // width: "300px",
                                             height: "300px",
                                             padding: "20px",
                                             overflow: "auto",
                                         }}
                                     >
-                                        <h2 style={{ margin: "0" }}>{card.question}</h2>
-                                        <FormLabel disabled>
-                                            <Typography
-                                                sx={{ color: theme.palette.text.primary, mt: 2 }}
-                                            >
-                                                {card.explanation}
-                                            </Typography>
-                                        </FormLabel>
+                                        <Typography variant="h2">{card.question}</Typography>
                                     </Box>
                                     <Box
                                         sx={{
                                             backgroundColor: `${theme.palette.background.main}`,
-                                            width: "300px",
                                             height: "150px",
-                                            padding: "20px",
-                                            boxSizing: "border-box",
+                                            // padding: "20px",
                                             borderTop: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"}`,
+                                            overflow: "auto",
                                             display: "flex",
-                                            alignItems: "flex-start",
-                                            justifyContent: "flex-start",
+                                            alignItems: "center",
+                                            justifyContent: "center",
                                             flexDirection: "column",
-                                            overflow: "hidden",
+                                            alignItems: "stretch",
                                         }}
                                     >
                                         <Box sx={{
-                                            display: "flex",
-                                            alignItems: "flex-start",
-                                            justifyContent: "flex-start",
-                                            height: "110px",
+                                            display: "grid",
                                             overflowY: "auto",
-                                            width: "100%",
+                                            padding: "20px",
+                                            rowGap: "10px"
                                         }}>
-                                            <CheckIcon
-                                                sx={{ color: theme.palette.completion.good }}
-                                            />
-                                            <Typography sx={{ ml: 2 }}>{card.answer}</Typography>
+
+                                            <Typography><span style={{ fontWeight: "bold" }}>Answer:</span> {card.answer}</Typography>
+                                            <Typography><span style={{ fontWeight: "bold" }}>Explanation:</span> {card.explanation}</Typography>
                                         </Box>
                                     </Box>
                                 </Card>
