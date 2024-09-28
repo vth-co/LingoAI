@@ -86,7 +86,7 @@ function DeckPage() {
         setMessage(message);
       }
     }
-  }, [isDemoUser, user, newDecks]);
+  }, [isDemoUser, user, newDecks, inProgressDecks]);
 
   useEffect(() => {
     checkCanGenerate();
