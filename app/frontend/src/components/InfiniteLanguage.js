@@ -24,7 +24,7 @@ const InfiniteLangScroll = () => {
                         className="scroll-item"
                         variant="h3"
                         sx={{
-                            fontWeight: "200",
+                            fontWeight: "400",
                             paddingLeft: "60px",
                         }}
                     >
@@ -37,7 +37,7 @@ const InfiniteLangScroll = () => {
                         className="scroll-item"
                         variant="h3"
                         sx={{
-                            fontWeight: "200",
+                            fontWeight: "400",
                             paddingLeft: "60px",
                         }}
                     >
@@ -50,7 +50,7 @@ const InfiniteLangScroll = () => {
                         className="scroll-item"
                         variant="h3"
                         sx={{
-                            fontWeight: "200",
+                            fontWeight: "400",
                             paddingLeft: "60px",
                         }}
                     >
@@ -63,7 +63,7 @@ const InfiniteLangScroll = () => {
                         className="scroll-item"
                         variant="h3"
                         sx={{
-                            fontWeight: "200",
+                            fontWeight: "400",
                             paddingLeft: "60px",
                         }}
                     >

@@ -78,18 +78,18 @@ export const darkTheme = createTheme({
   },
   typography: {
     h1: {
-      fontSize: '2em',
-      fontWeight: 'bold',
+      fontSize: 32,
+      fontWeight: 800,
       lineHeight: 1.2,
     },
     h2: {
-      fontSize: '24px',
-      fontWeight: 'bold',
+      fontSize: 24,
+      fontWeight: 800,
       lineHeight: 1.3,
     },
     h3: {
-      fontSize: '18px',
-      fontWeight: 'normal',
+      fontSize: 18,
+      fontWeight: 800,
       lineHeight: 1.4,
     },
   },

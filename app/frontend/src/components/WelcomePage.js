@@ -3,19 +3,20 @@ import React from "react";
 import LanguageSelector from "./LanguageSelector";
 import InfiniteLangScroll from "./InfiniteLanguage.js";
 import { Link as RouterLink } from 'react-router-dom';
-import { useTheme } from "@mui/material/styles";
 // import InfiniteScroll from "./InfiniteLogIn";
 // import { NavLink } from "react-router-dom";
 
 function WelcomePage({ setLocale }) {
-  const theme = useTheme()
   return (
 
     <Box display="flex" alignItems="center" flexDirection="column" paddingLeft="5vw" paddingRight="5vw">
 
 
-      <Typography variant="h1" sx={{ textAlign: "center", padding: "40px 0px" }}>
-        Level Up Your English with Lingo.ai's AI-Powered Flashcards</Typography>
+      <Typography variant="h1" sx={{ textAlign: "center", padding: "20px 0" }}>
+        Level Up Your English with Lingo.ai</Typography>
+      <Typography variant="h3" sx={{ textAlign: "center", fontWeight: "400" }}>Using innovative AI-powered flashcards,
+        <br />
+        Lingo.ai helps you break through language barriers and enhance your English proficiency for better opportunities.</Typography>
 
       <Divider sx={{
         backgroundColor: (theme) => theme.palette.divider.main,
@@ -23,7 +24,7 @@ function WelcomePage({ setLocale }) {
         border: 'none',
         width: '100%',
         maxWidth: '1150px',
-        margin: '0 0 20px 0'
+        margin: '40px 0'
       }} />
 
       <Typography variant="h2">Select Your Language</Typography>
