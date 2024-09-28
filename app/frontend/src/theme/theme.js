@@ -30,18 +30,18 @@ export const lightTheme = createTheme({
   },
   typography: {
     h1: {
-      fontSize: '2.5rem',
-      fontWeight: 'bold',
+      fontSize: 32,
+      fontWeight: 800,
       lineHeight: 1.2,
     },
     h2: {
-      fontSize: '2rem',
-      fontWeight: 'bold',
+      fontSize: 24,
+      fontWeight: 800,
       lineHeight: 1.3,
     },
     h3: {
-      fontSize: '1.5rem',
-      fontWeight: 'normal',
+      fontSize: 18,
+      fontWeight: 400,
       lineHeight: 1.4,
     },
   },
@@ -78,17 +78,17 @@ export const darkTheme = createTheme({
   },
   typography: {
     h1: {
-      fontSize: '2.5rem',
+      fontSize: '2em',
       fontWeight: 'bold',
       lineHeight: 1.2,
     },
     h2: {
-      fontSize: '2rem',
+      fontSize: '24px',
       fontWeight: 'bold',
       lineHeight: 1.3,
     },
     h3: {
-      fontSize: '1.5rem',
+      fontSize: '18px',
       fontWeight: 'normal',
       lineHeight: 1.4,
     },

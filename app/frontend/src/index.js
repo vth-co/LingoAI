@@ -35,7 +35,7 @@ const Main = () => {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <App setLocale={setLocale} locale={locale} />
-            <div style={{ textAlign: "center", paddingTop: "100px" }}>
+            <div style={{ textAlign: "center", paddingTop: "75px" }}>
               <IconButton onClick={handleModeChange}>
                 {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
               </IconButton>

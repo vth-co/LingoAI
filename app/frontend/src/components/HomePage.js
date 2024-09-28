@@ -326,7 +326,7 @@ function HomePage() {
                   }`,
               }}
             >
-              Start Learning Now
+              Start Leveling Up Now
             </Button>
           </Link>
           <h2 style={{ padding: "16px 0px" }}>Your Latest Lingo.ai Progress</h2>
