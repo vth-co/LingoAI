@@ -84,8 +84,7 @@ export const fetchDecks = (userId, topicId) => async (dispatch) => {
       let archivedStatus = null;
       try {
         archivedStatus = await getArchivedStatusByDeckIdFromDB(deckData.id);
-      } catch (err) {
-        console.error(`Failed to fetch archived status for deck ${deckData.id}:`, err);
+      } catch {
       }
 
       return {

@@ -219,9 +219,10 @@ function DeckPage() {
                 </h2>
                 {getAllDecks().length > 0 ? (
                   <Grid container spacing={2} justifyContent="center">
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={12}>
                       <Box
                         sx={{
+
                           // display: "flex",
                           // flexDirection: "row",
                           // flexWrap: "wrap",
@@ -280,7 +281,7 @@ function DeckPage() {
                 </h2>
                 {getInProgressDecks().length > 0 ? (
                   <Grid container spacing={2} justifyContent="center">
-                    <Grid item xs={12}>
+                    <Grid item xs={12} md={12}>
                       <Box
                         sx={{
                           // display: "flex",
