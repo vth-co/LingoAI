@@ -11,7 +11,8 @@ import {
   Grid,
   CircularProgress,
   Tooltip,
-  Alert
+  Alert,
+  LinearProgress
 } from "@mui/material";
 import { addQuestions } from "../../store/questions";
 import { fetchOneTopic } from "../../store/topics";
@@ -218,48 +219,53 @@ function DeckPage() {
                     <InfoIcon color="action" sx={{ fontSize: 16, position: "relative", top: '-5px', left: '1px' }} />
                   </Tooltip>
                 </Typography>
-                {getAllDecks().length > 0 ? (
-                  <Grid container spacing={2} justifyContent="center">
-                    <Grid item xs={12} md={12}>
-                      <Box
-                        sx={{
-                          display: "grid",
-                          gridTemplateColumns: {
-                            xs: "repeat(2, 1fr)",
-                            sm: "repeat(3, 1fr)",
-                          },
-                          gap: 2,
-                          justifyContent: "center",
-                        }}
-                      >
-                        {getAllDecks().map((deck) => (
-                          <Box key={deck.id} sx={{ margin: 1 }}>
-                            <Button
-                              component={NavLink}
-                              to={`/decks/${deck.id}`}
-                              variant="contained"
-                              color="primary"
-                              sx={{
-                                width: "150px",
-                                height: "225px",
-                                borderRadius: "3px",
-                                border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
-                                  }`,
-                              }}
-                              onClick={() => handleStartAttempt(deck.id)}
-                            >
-                              <Typography variant="h3">
-                                {`Deck ${deck.deck_name}`}
-                              </Typography>
-                            </Button>
-                          </Box>
-                        ))}
-                      </Box>
+                {loading ? (
+                  <CircularProgress />) : getAllDecks().length > 0 ?
+                  (
+
+
+
+                    <Grid container spacing={2} justifyContent="center">
+                      <Grid item xs={12} md={12}>
+                        <Box
+                          sx={{
+                            display: "grid",
+                            gridTemplateColumns: {
+                              xs: "repeat(2, 1fr)",
+                              sm: "repeat(3, 1fr)",
+                            },
+                            gap: 2,
+                            justifyContent: "center",
+                          }}
+                        >
+                          {getAllDecks().map((deck) => (
+                            <Box key={deck.id} sx={{ margin: 1 }}>
+                              <Button
+                                component={NavLink}
+                                to={`/decks/${deck.id}`}
+                                variant="contained"
+                                color="primary"
+                                sx={{
+                                  width: "150px",
+                                  height: "225px",
+                                  borderRadius: "3px",
+                                  border: `1.5px solid ${theme.palette.mode === "light" ? "#160e0e" : "#f1e9e9"
+                                    }`,
+                                }}
+                                onClick={() => handleStartAttempt(deck.id)}
+                              >
+                                <Typography variant="h3">
+                                  {`Deck ${deck.deck_name}`}
+                                </Typography>
+                              </Button>
+                            </Box>
+                          ))}
+                        </Box>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                ) : (
-                  <Typography>You currently do not have any new decks.</Typography>
-                )}
+                  ) : (
+                    <Typography>You currently do not have any new decks.</Typography>
+                  )}
               </Grid>
 
               <Grid item xs={12} sm={12} md={6}>

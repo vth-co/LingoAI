@@ -32,17 +32,17 @@ async function generateQuestionsByAI(
   const role = `You're an English teacher. Your task is to create questions and answers  that help non-native English speakers earn and enhance their English skills. Consider various contexts and attributes relevant to each category, and don't hesitate to include examples that span basic to advanced levels, incorporating different nuances, descriptions, and sensory experiences. Your aim is to foster a rich understanding of the language and its diverse applications.`;
 
   const vocabulary_nouns_content = {
-    Beginner: "Everyday objects such as house, car, book, chair, table.",
-    Intermediate:
-      "Common objects used in specific contexts, like workplace items, hobby-related items, and travel essentials.",
-    Advanced:
-      "Specialized vocabulary including legal, medical, or technical terms.",
+    Beginner: "Everyday objects and common items encountered in daily life.",
+    Intermediate: "A variety of objects used in different contexts, including work, hobbies, and travel.",
+    Advanced: "Terms you might hear in professional or academic settings.",
   };
 
+
+
   const vocabulary_verbs_content = {
-    Beginner: "Basic verbs such as to be, to have, to do, to go, to eat.",
-    Intermediate: "Modal verbs (can, could, might, should) and common phrasal verbs (take off, put on, look after).",
-    Advanced: "Advanced verbs including those with nuanced meanings (e.g., to undertake, to facilitate, to decipher)."
+    Beginner: "Basic verbs",
+    Intermediate: "Modal verbs",
+    Advanced: "Advanced verbs including those with nuanced meanings"
   };
 
   const vocabulary_adjectives_content = {
@@ -103,10 +103,11 @@ async function generateQuestionsByAI(
   };
 
   const everyday_situations_shopping_question = {
-    Beginner: "Asking for prices, sizes, and colors; simple requests for availability; asking where items are located in the store",
-    Intermediate: "Comparing products; Asking for suggestions or alternatives;Discussing sales, promotions, or discounts",
-    Advanced: "Handling returns and exchanges, explaining reasons for dissatisfaction; Inquiring about warranties, refunds, or product defects; Asking about consumer policies"
+    Beginner: "Asking about prices, sizes, colors, and availability; simple questions about where to find items in the store.",
+    Intermediate: "Comparing products; asking for recommendations or alternatives; discussing sales and discounts.",
+    Advanced: "Navigating returns and exchanges; discussing product issues; inquiring about store policies and warranties."
   };
+
 
   let prompt;
 
@@ -116,23 +117,26 @@ async function generateQuestionsByAI(
       if (picked_topic === "nouns") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on the topic '${vocabulary_nouns_content[level]}'. Ensure that:
                   - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers match one of the provided options. 
+                  - Generated answers must match one of the provided options. 
                   - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "verbs") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on the topic '${vocabulary_verbs_content[level]}'. Ensure that:
                   - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Generated answers must match one of the provided options. 
                   - Include why answer is correct with a clear explanation provided in ${native_language}.
         ${jsonschema}`;
 
       } else if (picked_topic === "adjectives") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on the topic '${vocabulary_adjectives_content[level]}'. Ensure that:
                   - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Generated answers must match one of the provided options. 
                   - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "pronouns") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on the topic '${vocabulary_pronouns_content[level]}'. Ensure that:
                   - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Generated answers must match one of the provided options. 
                   - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       }
@@ -140,21 +144,25 @@ async function generateQuestionsByAI(
       if (picked_topic === "sentencestructure") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on sentence structure. '${grammar_sentence_structure_question[level]}'. Ensure that:
                   - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Generated answers must match one of the provided options. 
                   - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "tense") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions focusing on tenses. '${grammar_tense_question[level]}'. Ensure that:
                   - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Generated answers must match one of the provided options. 
                   - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "prepositions") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on prepositions. '${grammar_prepositions_question[level]}'. Ensure that:
                   - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Generated answers must match one of the provided options. 
                   - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "articles") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on articles. '${grammar_articles_question[level]}'. Ensure that:
                   - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Generated answers must match one of the provided options. 
                   - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       }
@@ -163,24 +171,28 @@ async function generateQuestionsByAI(
         prompt = `${role} For a ${level} learner, create 3 unique questions involving dialogues related to introductions. '${everyday_situations_introductions_question[level]}'. Ensure that:
                   - Each question presents a realistic scenario with a fill-in-the-blank format.
                   - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Generated answers must match one of the provided options. 
                   - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "familyandfriends") {
         prompt = `${role} For a ${level} learner, create 3 unique questions involving dialogues related to family and friends. '${everyday_situations_familyandfriends_question[level]}'. Ensure that:
                   - Each question presents a realistic scenario with a fill-in-the-blank format.
                   - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Generated answers must match one of the provided options. 
                   - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "dailyroutines") {
         prompt = `${role} For a ${level} learner, create 3 unique questions involving dialogues related to daily routines. '${everyday_situations_dailyroutines_question[level]}'. Ensure that:
                   - Each question presents a realistic scenario with a fill-in-the-blank format.
                   - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Generated answers must match one of the provided options. 
                   - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       } else if (picked_topic === "shopping") {
         prompt = `${role} For a ${level} learner, create 3 unique questions involving dialogues related to shopping. '${everyday_situations_shopping_question[level]}'. Ensure that:
                   - Each question presents a realistic scenario with a fill-in-the-blank format.
                   - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
+                  - Generated answers must match one of the provided options. 
                   - Include why answer is correct with a clear explanation provided in ${native_language}.
                   ${jsonschema}`;
       }
@@ -233,6 +245,7 @@ async function generateQuestionsByAI(
   } catch (error) {
     console.error("Error generating content or validating response:", error);
   }
+
 }
 
 module.exports = {
