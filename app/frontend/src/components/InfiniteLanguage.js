@@ -1,5 +1,6 @@
 import React from 'react';
 import { Typography } from '@mui/material';
+import { useTheme } from "@mui/material/styles";
 import "../styles/styles.css";
 
 const InfiniteLangScroll = () => {
@@ -12,6 +13,7 @@ const InfiniteLangScroll = () => {
         '选择您的语言',
         'اپنی زبان منتخب کریں۔',
     ];
+    const theme = useTheme()
 
     return (
         <div className="scroll-wrapper">
@@ -23,7 +25,7 @@ const InfiniteLangScroll = () => {
                         variant="h3"
                         sx={{
                             fontWeight: "200",
-                            paddingLeft: "60px"
+                            paddingLeft: "60px",
                         }}
                     >
                         {item}
@@ -36,7 +38,7 @@ const InfiniteLangScroll = () => {
                         variant="h3"
                         sx={{
                             fontWeight: "200",
-                            paddingLeft: "60px"
+                            paddingLeft: "60px",
                         }}
                     >
                         {item}
@@ -49,7 +51,7 @@ const InfiniteLangScroll = () => {
                         variant="h3"
                         sx={{
                             fontWeight: "200",
-                            paddingLeft: "60px"
+                            paddingLeft: "60px",
                         }}
                     >
                         {item}
@@ -62,7 +64,7 @@ const InfiniteLangScroll = () => {
                         variant="h3"
                         sx={{
                             fontWeight: "200",
-                            paddingLeft: "60px"
+                            paddingLeft: "60px",
                         }}
                     >
                         {item}
