@@ -143,7 +143,7 @@ const NavBar = () => {
                 <Typography color="primary">Concepts</Typography>
               </MenuItem>
               <NoHoverMenuItem>
-                <LogoutButton />
+                <LogoutButton handleClose={handleClose} />
               </NoHoverMenuItem>
             </Box>
           ) : (
