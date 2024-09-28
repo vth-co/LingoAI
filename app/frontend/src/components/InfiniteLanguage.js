@@ -1,4 +1,5 @@
 import React from 'react';
+import { Typography } from '@mui/material';
 import "../styles/styles.css";
 
 const InfiniteLangScroll = () => {
@@ -16,25 +17,56 @@ const InfiniteLangScroll = () => {
         <div className="scroll-wrapper">
             <div className="scroll-container">
                 {items.map((item, index) => (
-                    <p key={index} className="scroll-item">
+                    <Typography
+                        key={index}
+                        className="scroll-item"
+                        variant="h3"
+                        sx={{
+                            fontWeight: "200",
+                            paddingLeft: "60px"
+                        }}
+                    >
                         {item}
-                    </p>
-                ))}
-                {/* Repeat the list to make the scroll effect more seamless */}
-                {items.map((item, index) => (
-                    <p key={`repeat-${index}`} className="scroll-item">
-                        {item}
-                    </p>
-                ))}
-                {items.map((item, index) => (
-                    <p key={`repeat-${index + items.length}`} className="scroll-item">
-                        {item}
-                    </p>
+                    </Typography>
                 ))}
                 {items.map((item, index) => (
-                    <p key={`repeat-${index + 2 * items.length}`} className="scroll-item">
+                    <Typography
+                        key={`repeat-${index}`}
+                        className="scroll-item"
+                        variant="h3"
+                        sx={{
+                            fontWeight: "200",
+                            paddingLeft: "60px"
+                        }}
+                    >
                         {item}
-                    </p>
+                    </Typography>
+                ))}
+                {items.map((item, index) => (
+                    <Typography
+                        key={`repeat-${index + items.length}`}
+                        className="scroll-item"
+                        variant="h3"
+                        sx={{
+                            fontWeight: "200",
+                            paddingLeft: "60px"
+                        }}
+                    >
+                        {item}
+                    </Typography>
+                ))}
+                {items.map((item, index) => (
+                    <Typography
+                        key={`repeat-${index + 2 * items.length}`}
+                        className="scroll-item"
+                        variant="h3"
+                        sx={{
+                            fontWeight: "200",
+                            paddingLeft: "60px"
+                        }}
+                    >
+                        {item}
+                    </Typography>
                 ))}
             </div>
             <div className="scroll-mask"></div>

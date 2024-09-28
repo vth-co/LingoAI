@@ -315,7 +315,7 @@ function HomePage() {
           justifyContent="center"
           alignItems="center"
         >
-          <h1>Welcome, {user.username}!</h1>
+          <h1>Hello, {user.username}!</h1>
           <Link href="/concepts">
             <Button
               variant="contained"
