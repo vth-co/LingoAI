@@ -24,6 +24,8 @@ Designed and developed by [Athena Chiarello](https://github.com/athena-codes), [
 ![Firebase](https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black)
 ![Google Gemini](https://img.shields.io/badge/Google%20Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)
 
+_Check out the [Lingo.ai Wiki](https://github.com/athena-codes/a-A-summer-hackathon/wiki/Database-Schema) for initial database schema, pitch deck, user stories, and wireframe._
+
 ## Preview
 
 ### Landing Page
