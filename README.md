@@ -1,5 +1,5 @@
 # Lingo.ai
-<img alt="lingoai" src="https://github.com/user-attachments/assets/a93b8eaa-cf21-4729-ab66-e5d010911b67">
+[![image](https://github.com/user-attachments/assets/54aaf7e4-5824-47b5-a438-bfabcb074add)](https://lingo-ai-app.vercel.app/)
 
 [Lingo.ai](https://lingo-ai-app.vercel.app/) is an innovative LLM-powered flashcard web application designed to help non-native English speakers enhance their language skills through interactive and personalized learning experiences. By leveraging advanced AI technology, Gemini, Lingo.ai generates tailored questions that engage users in their language learning journey.
 
@@ -29,13 +29,13 @@ _Check out the [Lingo.ai Wiki](https://github.com/athena-codes/a-A-summer-hackat
 ## Preview
 
 ### Landing Page
-[![Screenshot 2024-09-27 at 5 42 50 PM](https://github.com/user-attachments/assets/36b84b7e-162a-487d-8c10-15b8ef308a20)](https://lingo-ai-app.vercel.app/)
+[![image](https://github.com/user-attachments/assets/80d328fd-d40c-4289-a81d-d97d68454edf)](https://lingo-ai-app.vercel.app/)
 
 ### Sign-Up Page
-[![image](https://github.com/user-attachments/assets/fb69ce7b-2228-4a02-905a-cf25424c0be1)](https://lingo-ai-app.vercel.app/sign-up)
+[![image](https://github.com/user-attachments/assets/5dce923f-b313-4d9d-bce0-cb7ea992203a)](https://lingo-ai-app.vercel.app/sign-up)
 
 ### Home Page (Logged in as Demo)
-[![image](https://github.com/user-attachments/assets/8e2e3342-59ae-47d1-a96a-71643d8f4412)](https://lingo-ai-app.vercel.app/)
+[![image](https://github.com/user-attachments/assets/54aaf7e4-5824-47b5-a438-bfabcb074add)](https://lingo-ai-app.vercel.app/)
 
 ### Concepts Page
 [![image](https://github.com/user-attachments/assets/1330fb9f-2ccc-4ecd-987c-8c64a3f387b0)](https://lingo-ai-app.vercel.app/concepts)
