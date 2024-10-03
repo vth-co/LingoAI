@@ -116,84 +116,91 @@ async function generateQuestionsByAI(
     if (picked_concept === "vocabulary") {
       if (picked_topic === "nouns") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on the topic '${vocabulary_nouns_content[level]}'. Ensure that:
-                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers must match one of the provided options. 
-                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+                  - Provide 4 distinct and contextually appropriate answer options in English, with only one answer being the best fit based on the specific context of the sentence.
+                  - Ensure that the correct answer must always match one of the provided answer options. If the generated answer does not match any of the options, generate a new question.
+                  - Include clear reasons in ${native_language} for why the chosen answer is correct, taking into account the overall meaning of the sentence, and why other options are incorrect.
                   ${jsonschema}`;
       } else if (picked_topic === "verbs") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on the topic '${vocabulary_verbs_content[level]}'. Ensure that:
-                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers must match one of the provided options. 
-                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+                  - Provide 4 distinct and contextually appropriate answer options in English, with only one answer being the best fit based on the specific context of the sentence.
+                  - Ensure that the correct answer must always match one of the provided answer options. If the generated answer does not match any of the options, generate a new question.
+                  - Avoid using verbs that may create ambiguity (like 'go', 'walk', and 'run') unless the sentence provides additional context to clarify the difference.
+                  - Include clear reasons in ${native_language} for why the chosen answer is correct, taking into account the overall meaning of the sentence. Include why other options are incorrect — be sure to include those options as well.
         ${jsonschema}`;
 
       } else if (picked_topic === "adjectives") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on the topic '${vocabulary_adjectives_content[level]}'. Ensure that:
-                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers must match one of the provided options. 
-                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+                  - Provide 4 distinct and contextually appropriate answer options in English, with only one answer being the best fit based on the specific context of the sentence.
+                  - Ensure that the correct answer must always match one of the provided answer options. If the generated answer does not match any of the options, generate a new question.
+                  - Include clear reasons in ${native_language} for why the chosen answer is correct, taking into account the overall meaning of the sentence, and why other options are incorrect.
                   ${jsonschema}`;
       } else if (picked_topic === "pronouns") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on the topic '${vocabulary_pronouns_content[level]}'. Ensure that:
-                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers must match one of the provided options. 
-                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+                  - Provide 4 distinct and contextually appropriate answer options in English, with only one answer being the best fit based on the specific context of the sentence.
+                  - Ensure that the correct answer must always match one of the provided answer options. If the generated answer does not match any of the options, generate a new question.
+                  - Make sure the correct pronoun type (e.g., possessive, subject, reflexive) is chosen based on the sentence.
+                  - If the subject is a person or an animal, specify the gender to avoid confusion between 'He', 'She', 'It', 'They', and possessive forms like 'His', 'Her'.
+                  - Avoid using gender-neutral pronouns like 'It' unless the context explicitly supports it (e.g., inanimate objects).
+                  - Include clear reasons in ${native_language} for why the chosen answer is correct, taking into account the overall meaning of the sentence, and why other options are incorrect.
                   ${jsonschema}`;
       }
     } else if (picked_concept === "grammar") {
       if (picked_topic === "sentencestructure") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on sentence structure. '${grammar_sentence_structure_question[level]}'. Ensure that:
-                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers must match one of the provided options. 
-                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+                  - Provide 4 distinct and contextually appropriate answer options in English, with only one answer being the best fit based on the specific context of the sentence.
+                  - Ensure that the correct answer must always match one of the provided answer options. If the generated answer does not match any of the options, generate a new question.
+                  - Include clear reasons in ${native_language} for why the chosen answer is correct, taking into account the overall meaning of the sentence, and why other options are incorrect.
                   ${jsonschema}`;
       } else if (picked_topic === "tense") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions focusing on tenses. '${grammar_tense_question[level]}'. Ensure that:
-                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers must match one of the provided options. 
-                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+                  - Provide 4 distinct and contextually appropriate answer options in English, with only one answer being the best fit based on the specific context of the sentence.
+                  - Ensure that the correct answer must always match one of the provided answer options. If the generated answer does not match any of the options, generate a new question.
+                  - Include clear reasons in ${native_language} for why the chosen answer is correct, taking into account the overall meaning of the sentence, and why other options are incorrect.
                   ${jsonschema}`;
       } else if (picked_topic === "prepositions") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on prepositions. '${grammar_prepositions_question[level]}'. Ensure that:
-                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers must match one of the provided options. 
-                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+                  - Provide 4 distinct and contextually appropriate answer options in English, with only one answer being the best fit based on the specific context of the sentence.
+                  - Ensure that the correct answer must always match one of the provided answer options. If the generated answer does not match any of the options, generate a new question.
+                  - Include clear reasons in ${native_language} for why the chosen answer is correct, considering the overall meaning of the sentence, as well as explanations for why the other options are incorrect. Be specific about any idiomatic expressions or rules regarding preposition usage when applicable.
                   ${jsonschema}`;
       } else if (picked_topic === "articles") {
         prompt = `${role} For a ${level} learner, create 3 unique fill-in-the-blank questions on articles. '${grammar_articles_question[level]}'. Ensure that:
-                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers must match one of the provided options. 
-                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+                  - Provide 4 distinct and contextually appropriate answer options in English, with only one answer being the best fit based on the specific context of the sentence.
+                  - Ensure that the correct answer must always match one of the provided answer options. If the generated answer does not match any of the options, generate a new question.
+                  - Include clear reasons in ${native_language} for why the chosen answer is correct, considering the overall meaning of the sentence and the context of the noun.
+                  - Explain why the chosen article (e.g., "a," "an," "the") fits based on whether the noun is countable or uncountable, singular or plural, and whether it is being introduced for the first time or has already been mentioned.
+                  - For "a" and "an," clarify that "a" is used before words that begin with a consonant sound, while "an" is used before words that begin with a vowel sound (e.g., "an apple," "a banana") in the explanation.
+                  - Additionally, specify why other options are incorrect in the explanation. For example, if "the" is chosen, explain that it cannot be used for nouns that have not yet been introduced in the context. If "no article" is presented as an option, clarify that it applies only in cases where the noun represents a general concept rather than a specific instance.
                   ${jsonschema}`;
       }
     } else if (picked_concept === "everydaysituations") {
       if (picked_topic === "introductions") {
         prompt = `${role} For a ${level} learner, create 3 unique questions involving dialogues related to introductions. '${everyday_situations_introductions_question[level]}'. Ensure that:
                   - Each question presents a realistic scenario with a fill-in-the-blank format.
-                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers must match one of the provided options. 
-                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+                  - Provide 4 distinct and contextually appropriate answer options in English, with only one answer being the best fit based on the specific context of the sentence.
+                  - Ensure that the correct answer must always match one of the provided answer options. If the generated answer does not match any of the options, generate a new question.
+                  - Include clear reasons in ${native_language} for why the chosen answer is correct, taking into account the overall meaning of the sentence, and why other options are incorrect.
                   ${jsonschema}`;
       } else if (picked_topic === "familyandfriends") {
         prompt = `${role} For a ${level} learner, create 3 unique questions involving dialogues related to family and friends. '${everyday_situations_familyandfriends_question[level]}'. Ensure that:
                   - Each question presents a realistic scenario with a fill-in-the-blank format.
-                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers must match one of the provided options. 
-                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+                  - Provide 4 distinct and contextually appropriate answer options in English, with only one answer being the best fit based on the specific context of the sentence.
+                  - Ensure that the correct answer must always match one of the provided answer options. If the generated answer does not match any of the options, generate a new question.
+                  - Include clear reasons in ${native_language} for why the chosen answer is correct, taking into account the overall meaning of the sentence, and why other options are incorrect.
                   ${jsonschema}`;
       } else if (picked_topic === "dailyroutines") {
         prompt = `${role} For a ${level} learner, create 3 unique questions involving dialogues related to daily routines. '${everyday_situations_dailyroutines_question[level]}'. Ensure that:
                   - Each question presents a realistic scenario with a fill-in-the-blank format.
-                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers must match one of the provided options. 
-                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+                  - Provide 4 distinct and contextually appropriate answer options in English, with only one answer being the best fit based on the specific context of the sentence.
+                  - Ensure that the correct answer must always match one of the provided answer options. If the generated answer does not match any of the options, generate a new question.
+                  - Include clear reasons in ${native_language} for why the chosen answer is correct, taking into account the overall meaning of the sentence, and why other options are incorrect.
                   ${jsonschema}`;
       } else if (picked_topic === "shopping") {
         prompt = `${role} For a ${level} learner, create 3 unique questions involving dialogues related to shopping. '${everyday_situations_shopping_question[level]}'. Ensure that:
                   - Each question presents a realistic scenario with a fill-in-the-blank format.
-                  - Provide 4 distinct and contextually appropriate answer options in English with only one clearly fitting the context.
-                  - Generated answers must match one of the provided options. 
-                  - Include why answer is correct with a clear explanation provided in ${native_language}.
+                  - Provide 4 distinct and contextually appropriate answer options in English, with only one answer being the best fit based on the specific context of the sentence.
+                  - Ensure that the correct answer must always match one of the provided answer options. If the generated answer does not match any of the options, generate a new question.
+                  - Include clear reasons in ${native_language} for why the chosen answer is correct, taking into account the overall meaning of the sentence, and why other options are incorrect.
                   ${jsonschema}`;
       }
     } else {
