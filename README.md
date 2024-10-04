@@ -47,7 +47,7 @@ _Check out the [Lingo.ai Wiki](https://github.com/athena-codes/a-A-summer-hackat
 [![image](https://github.com/user-attachments/assets/d928de01-7eb5-402a-827c-63e50edd8f7c)](https://lingo-ai-app.vercel.app/concepts/slXLuVF45Qi1awSR0isu/topics/GAakbJy9YcPKy9gRCg4R/decks)
 
 ### Card Page
-<img src="https://github.com/user-attachments/assets/94a1ac1d-15df-4ccb-ae3d-4b6db3ae75fb" width="1012px">
+<img src="https://github.com/user-attachments/assets/e652c9a6-58b3-47a9-9629-65a3c4031beb" width="1012px">
 
 ## Getting Started
 
